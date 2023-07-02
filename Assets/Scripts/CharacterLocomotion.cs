@@ -8,6 +8,7 @@ public class CharacterLocomotion : MonoBehaviour
     public float airControl;
     public float jumpDamp;
     public float groundSpeed;
+    public float pushPower;
 
     Animator animator;
     CharacterController characterController;
@@ -52,6 +53,17 @@ public class CharacterLocomotion : MonoBehaviour
             UpdateOnGround();
         }
     }
+    private void UpdateInAir()
+    {
+        velocity.y -= gravity * Time.deltaTime;
+        Vector3 displacement = velocity * Time.fixedDeltaTime;
+        displacement += CalculateAirControl();
+        characterController.Move(displacement);
+        isJumping = !characterController.isGrounded;
+        rootMotion = Vector3.zero;
+        animator.SetBool("isJumping", isJumping);
+        //Debug.Log(isJumping);
+    }
 
     private void UpdateOnGround()
     {
@@ -64,16 +76,6 @@ public class CharacterLocomotion : MonoBehaviour
         {
             SetInAir(0);
         }
-    }
-
-    private void UpdateInAir()
-    {
-        velocity.y -= gravity * Time.deltaTime;
-        Vector3 displacement = velocity * Time.fixedDeltaTime;
-        displacement += CalculateAirControl();
-        characterController.Move(displacement);
-        isJumping = !characterController.isGrounded;
-        rootMotion = Vector3.zero;
     }
 
     Vector3 CalculateAirControl()
@@ -95,5 +97,29 @@ public class CharacterLocomotion : MonoBehaviour
         isJumping = true;
         velocity = animator.velocity * jumpDamp * groundSpeed;
         velocity.y = jumpVelocity;
+        animator.SetBool("isJumping", true);
+    }
+
+    void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        Rigidbody body = hit.collider.attachedRigidbody;
+
+        // no rigidbody
+        if (body == null || body.isKinematic)
+            return;
+
+        // We dont want to push objects below us
+        if (hit.moveDirection.y < -0.3f)
+            return;
+
+        // Calculate push direction from move direction,
+        // we only push objects to the sides never up and down
+        Vector3 pushDir = new Vector3(hit.moveDirection.x, 0, hit.moveDirection.z);
+
+        // If you know how fast your character is trying to move,
+        // then you can also multiply the push velocity by that.
+
+        // Apply the push
+        body.velocity = pushDir * pushPower;
     }
 }
