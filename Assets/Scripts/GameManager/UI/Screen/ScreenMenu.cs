@@ -5,23 +5,23 @@ using TMPro;
 
 public class ScreenMenu : BaseScreen
 {
-    public TextMeshProUGUI userName;
+    //public TextMeshProUGUI userName;
 
-    public override void Show(object data)
-    {
-        base.Show(data);
+    //public override void Show(object data)
+    //{
+    //    base.Show(data);
 
-        //if(data != null)
-        //{
-        //    if(data is UserInfo info)
-        //    {
-        //        userName.text = info.userName;
-        //    }
-        //}
-    }
+    //    //if(data != null)
+    //    //{
+    //    //    if(data is UserInfo info)
+    //    //    {
+    //    //        userName.text = info.userName;
+    //    //    }
+    //    //}
+    //}
 
-    public override void Hide()
-    {
-        base.Hide();
-    }
+    //public override void Hide()
+    //{
+    //    base.Hide();
+    //}
 }
