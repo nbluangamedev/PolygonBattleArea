@@ -402,7 +402,7 @@ MonoBehaviour:
   weaponSlot: 1
   isFiring: 0
   fireRate: 1
-  bulletSpeed: 200
+  bulletSpeed: 500
   bulletDrop: 0
   muzzleFlash:
   - {fileID: 7453575894076332368}
@@ -429,7 +429,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7627a0eec0640345aac65cc24d3d322, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCamera: {fileID: 0}
+  characterAiming: {fileID: 0}
   cameraShake: {fileID: 0}
   rigController: {fileID: 0}
   recoilPattern:
@@ -437,6 +437,7 @@ MonoBehaviour:
   - {x: 3, y: 10}
   - {x: 7, y: 10}
   duration: 0.5
+  recoilModifier: 1
 --- !u!114 &1126023541969594337
 MonoBehaviour:
   m_ObjectHideFlags: 0

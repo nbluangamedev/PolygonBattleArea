@@ -61,7 +61,7 @@ public class CharacterAiming : MonoBehaviour
                 weapon.StartFiring();
             }
 
-            if(weapon.isFiring)
+            if (weapon.isFiring)
             {
                 weapon.UpdateFiring(Time.deltaTime);
             }
@@ -72,6 +72,6 @@ public class CharacterAiming : MonoBehaviour
             {
                 weapon.StopFiring();
             }
-        }        
+        }
     }
 }

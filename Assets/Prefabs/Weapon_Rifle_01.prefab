@@ -88,7 +88,7 @@ MonoBehaviour:
   weaponSlot: 0
   isFiring: 0
   fireRate: 15
-  bulletSpeed: 500
+  bulletSpeed: 1000
   bulletDrop: 0
   muzzleFlash:
   - {fileID: 7453575894076332368}
@@ -115,27 +115,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7627a0eec0640345aac65cc24d3d322, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCamera: {fileID: 0}
+  characterAiming: {fileID: 0}
   cameraShake: {fileID: 0}
   rigController: {fileID: 0}
   recoilPattern:
-  - {x: 10, y: 10}
-  - {x: 7, y: 10}
-  - {x: 5, y: 10}
-  - {x: 2, y: 10}
-  - {x: 1, y: 10}
-  - {x: -2, y: 10}
-  - {x: -5, y: 10}
-  - {x: -7, y: 10}
-  - {x: -10, y: 10}
+  - {x: -9, y: 10}
   - {x: -7, y: 10}
   - {x: -5, y: 10}
   - {x: -2, y: 10}
   - {x: -1, y: 10}
-  - {x: 2, y: 10}
-  - {x: 5, y: 10}
-  - {x: 7, y: 10}
+  - {x: -2, y: 10}
+  - {x: -4, y: 10}
+  - {x: -6, y: 10}
+  - {x: -8, y: 10}
   duration: 0.1
+  recoilModifier: 1
 --- !u!114 &2019497701751307170
 MonoBehaviour:
   m_ObjectHideFlags: 0

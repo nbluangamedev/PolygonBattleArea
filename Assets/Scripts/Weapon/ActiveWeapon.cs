@@ -60,7 +60,7 @@ public class ActiveWeapon : MonoBehaviour
         bool notSprinting = rigController.GetCurrentAnimatorStateInfo(2).shortNameHash == Animator.StringToHash("notSprinting");
         if (weapon && !isHolstered && notSprinting)
         {
-            weapon.UpdateWeapon(Time.deltaTime);       
+            weapon.UpdateWeapon(Time.deltaTime);
         }
 
         if (Input.GetKeyDown(KeyCode.X))

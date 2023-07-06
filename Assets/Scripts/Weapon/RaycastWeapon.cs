@@ -62,7 +62,7 @@ public class RaycastWeapon : MonoBehaviour
     {
         isFiring = true;
         accumulatedTime = 0.0f;
-        FireBullet();
+        //FireBullet();
         recoil.Reset();
     }
 

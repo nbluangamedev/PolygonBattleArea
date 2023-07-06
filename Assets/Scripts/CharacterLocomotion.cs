@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class CharacterLocomotion : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class CharacterLocomotion : MonoBehaviour
     public float groundSpeed;
     public float pushPower;
 
+    public float animationSmoothTime = 0.15f;
+
     Animator animator;
     CharacterController characterController;
     ActiveWeapon activeWeapon;
@@ -23,6 +26,11 @@ public class CharacterLocomotion : MonoBehaviour
     bool isJumping;
     int isSprintingParameter = Animator.StringToHash("isSprinting");
 
+    PlayerInput playerInput;
+    InputAction moveAction;
+    Vector2 currentAnimationBlendVector;
+    Vector2 animationVelocity;
+
     private void Start()
     {
         animator = GetComponent<Animator>();
@@ -30,15 +38,21 @@ public class CharacterLocomotion : MonoBehaviour
         activeWeapon = GetComponent<ActiveWeapon>();
         weaponReload = GetComponent<WeaponReload>();
         characterAiming = GetComponent<CharacterAiming>();
+
+        playerInput = GetComponent<PlayerInput>();
+        moveAction = playerInput.actions["Move"];
     }
 
     private void Update()
     {
-        input.x = Input.GetAxis("Horizontal");
-        input.y = Input.GetAxis("Vertical");
+        //input.x = Input.GetAxis("Horizontal");
+        //input.y = Input.GetAxis("Vertical");
 
-        animator.SetFloat("InputX", input.x);
-        animator.SetFloat("InputY", input.y);
+        input = moveAction.ReadValue<Vector2>();
+        currentAnimationBlendVector = Vector2.SmoothDamp(currentAnimationBlendVector, input, ref animationVelocity, animationSmoothTime);
+
+        animator.SetFloat("InputX", currentAnimationBlendVector.x);
+        animator.SetFloat("InputY", currentAnimationBlendVector.y);
 
         UpdateIsSprinting();
 
