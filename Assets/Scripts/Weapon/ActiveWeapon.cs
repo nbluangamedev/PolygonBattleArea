@@ -15,6 +15,7 @@ public class ActiveWeapon : MonoBehaviour
     public Animator rigController;
     public Transform[] weaponSlots;
     public CharacterAiming characterAiming;
+    public WeaponReload weaponReload;
     public bool isChangingWeapon;
 
     RaycastWeapon[] equippedWeapon = new RaycastWeapon[2];
@@ -23,11 +24,49 @@ public class ActiveWeapon : MonoBehaviour
 
     private void Start()
     {
+        weaponReload = GetComponent<WeaponReload>();
         RaycastWeapon existingWeapon = GetComponentInChildren<RaycastWeapon>();
         if (existingWeapon)
         {
-            Equip(existingWeapon); 
+            Equip(existingWeapon);
         }
+    }
+
+    private void Update()
+    {
+        var weapon = GetWeapon(activeWeaponIndex);
+        bool notSprinting = rigController.GetCurrentAnimatorStateInfo(2).shortNameHash == Animator.StringToHash("notSprinting");
+        bool canFire = !isHolstered && notSprinting && !weaponReload.isReloading;
+
+        if (weapon)
+        {
+            if (Input.GetButtonDown("Fire1") && canFire && !weapon.isFiring)
+            {
+                weapon.StartFiring();
+            }
+
+            weapon.UpdateWeapon(Time.deltaTime, crossHairTarget.position);
+
+            if (Input.GetButtonUp("Fire1") || !canFire)
+            {
+                weapon.StopFiring();
+            }
+
+            if (Input.GetKeyDown(KeyCode.X))
+            {
+                ToggleActiveWeapon();
+            }
+
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                SetActiveWeapon(WeaponSlot.Primary);
+            }
+
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                SetActiveWeapon(WeaponSlot.Secondary);
+            }
+        }        
     }
 
     public bool IsFiring()
@@ -37,7 +76,10 @@ public class ActiveWeapon : MonoBehaviour
         {
             return false;
         }
-        return currentWeapon.isFiring;
+        else
+        {
+            return currentWeapon.isFiring;
+        }
     }
 
     public RaycastWeapon GetActiveWeapon()
@@ -54,30 +96,6 @@ public class ActiveWeapon : MonoBehaviour
         return equippedWeapon[index];
     }
 
-    private void Update()
-    {
-        var weapon = GetWeapon(activeWeaponIndex);
-        bool notSprinting = rigController.GetCurrentAnimatorStateInfo(2).shortNameHash == Animator.StringToHash("notSprinting");
-        if (weapon && !isHolstered && notSprinting)
-        {
-            weapon.UpdateWeapon(Time.deltaTime);
-        }
-
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            ToggleActiveWeapon();
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            SetActiveWeapon(WeaponSlot.Primary);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            SetActiveWeapon(WeaponSlot.Secondary);
-        }
-    }
 
     public void Equip(RaycastWeapon newWeapon)
     {

@@ -414,9 +414,10 @@ MonoBehaviour:
   raycastDestination: {fileID: 0}
   recoil: {fileID: 0}
   magazine: {fileID: 2054690038695303234}
-  bulletImpulse: 1
+  forceBullet: 0.5
   ammoCount: 15
   clipSize: 15
+  damage: 10
 --- !u!114 &4245193159445016210
 MonoBehaviour:
   m_ObjectHideFlags: 0

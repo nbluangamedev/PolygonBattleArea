@@ -28,11 +28,6 @@ public class WeaponRecoil : MonoBehaviour
         index = 0;
     }
 
-    int NextIndex(int index)
-    {
-        return (index + 1) % recoilPattern.Length;
-    }
-
     public void GenerateRecoil(string weaponName)
     {
         time = duration;
@@ -45,6 +40,11 @@ public class WeaponRecoil : MonoBehaviour
         index = NextIndex(index);
 
         rigController.Play("weapon_Recoil_" + weaponName, 1, 0.0f);
+    }
+
+    int NextIndex(int index)
+    {
+        return (index + 1) % recoilPattern.Length;
     }
 
     private void Update()

@@ -87,7 +87,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponSlot: 0
   isFiring: 0
-  fireRate: 15
+  fireRate: 5
   bulletSpeed: 1000
   bulletDrop: 0
   muzzleFlash:
@@ -100,9 +100,10 @@ MonoBehaviour:
   raycastDestination: {fileID: 0}
   recoil: {fileID: 0}
   magazine: {fileID: 4800477670966116200}
-  bulletImpulse: 3
+  forceBullet: 2
   ammoCount: 30
   clipSize: 30
+  damage: 10
 --- !u!114 &-4924447125473106102
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -119,15 +120,15 @@ MonoBehaviour:
   cameraShake: {fileID: 0}
   rigController: {fileID: 0}
   recoilPattern:
-  - {x: -9, y: 10}
+  - {x: -10, y: 10}
   - {x: -7, y: 10}
   - {x: -5, y: 10}
-  - {x: -2, y: 10}
-  - {x: -1, y: 10}
-  - {x: -2, y: 10}
-  - {x: -4, y: 10}
-  - {x: -6, y: 10}
-  - {x: -8, y: 10}
+  - {x: -3, y: 10}
+  - {x: 1, y: 10}
+  - {x: 3, y: 10}
+  - {x: 5, y: 10}
+  - {x: 7, y: 10}
+  - {x: 10, y: 10}
   duration: 0.1
   recoilModifier: 1
 --- !u!114 &2019497701751307170

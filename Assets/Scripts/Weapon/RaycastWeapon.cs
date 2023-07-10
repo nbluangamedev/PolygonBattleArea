@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 public class RaycastWeapon : MonoBehaviour
 {
@@ -14,7 +15,7 @@ public class RaycastWeapon : MonoBehaviour
 
     public ActiveWeapon.WeaponSlot weaponSlot;
     public bool isFiring = false;
-    public int fireRate = 25;
+    public int fireRate = 15;
     public float bulletSpeed = 1000.0f;
     public float bulletDrop = 0.0f;
     public ParticleSystem[] muzzleFlash;
@@ -25,15 +26,16 @@ public class RaycastWeapon : MonoBehaviour
     public Transform raycastDestination;
     public WeaponRecoil recoil;
     public GameObject magazine;
-    public float bulletImpulse;
+    public float forceBullet = 2f;
     public int ammoCount;
     public int clipSize;
+    public float damage = 10f;
 
     Ray ray;
     RaycastHit hitInfo;
     float accumulatedTime;
     List<Bullet> bullets = new List<Bullet>();
-    float maxLifetime = 3.0f;
+    float maxLifetime = 2.0f;
 
     private void Awake()
     {
@@ -49,11 +51,14 @@ public class RaycastWeapon : MonoBehaviour
 
     Bullet CreateBullet(Vector3 position, Vector3 velocity)
     {
-        Bullet bullet = new Bullet();
-        bullet.initialPosition = position;
-        bullet.initialVelocity = velocity;
-        bullet.time = 0.0f;
-        bullet.tracer = Instantiate(tracerEffect, position, Quaternion.identity);
+        Bullet bullet = new Bullet()
+        {
+            initialPosition = position,
+            initialVelocity = velocity,
+            time = 0.0f,
+            tracer = Instantiate(tracerEffect, position, Quaternion.identity),
+        };
+
         bullet.tracer.AddPosition(position);
         return bullet;
     }
@@ -61,40 +66,34 @@ public class RaycastWeapon : MonoBehaviour
     public void StartFiring()
     {
         isFiring = true;
-        accumulatedTime = 0.0f;
-        //FireBullet();
+        if (accumulatedTime > 0f)
+        {
+            accumulatedTime = 0f;
+        }
         recoil.Reset();
     }
 
-    public void UpdateFiring(float deltaTime)
+    public void UpdateFiring(float deltaTime, Vector3 target)
     {
         accumulatedTime += deltaTime;
         float fireInterval = 1.0f / fireRate;
         while (accumulatedTime >= 0.0f)
         {
-            FireBullet();
+            FireBullet(target);
             accumulatedTime -= fireInterval;
         }
     }
 
-    public void UpdateWeapon(float deltaTime)
+    public void UpdateWeapon(float deltaTime, Vector3 target)
     {
-        if (Input.GetButtonDown("Fire1"))
-        {
-            StartFiring();
-        }
-
         if (isFiring)
         {
-            UpdateFiring(Time.deltaTime);
+            UpdateFiring(Time.deltaTime, target);
         }
+
+        accumulatedTime += deltaTime;
 
         UpdateBullets(Time.deltaTime);
-
-        if (Input.GetButtonUp("Fire1"))
-        {
-            StopFiring();
-        }
     }
 
     public void UpdateBullets(float deltaTime)
@@ -135,11 +134,18 @@ public class RaycastWeapon : MonoBehaviour
 
             bullet.tracer.transform.position = hitInfo.point;
             bullet.time = maxLifetime;
+            end = hitInfo.point;
 
             var rb = hitInfo.collider.GetComponent<Rigidbody>();
             if (rb)
             {
-                rb.AddForceAtPosition(ray.direction * bulletImpulse, hitInfo.point, ForceMode.Impulse);
+                rb.AddForceAtPosition(ray.direction * forceBullet, hitInfo.point, ForceMode.Impulse);
+            }
+
+            var hitBox = hitInfo.collider.GetComponent<HitBox>();
+            if (hitBox)
+            {
+                hitBox.OnHit(this, ray.direction);
             }
         }
         else
@@ -148,7 +154,7 @@ public class RaycastWeapon : MonoBehaviour
         }
     }
 
-    private void FireBullet()
+    private void FireBullet(Vector3 target)
     {
         if (ammoCount <= 0)
         {
@@ -165,7 +171,7 @@ public class RaycastWeapon : MonoBehaviour
             p.Emit(1);
         }
 
-        Vector3 velocity = (raycastDestination.position - raycastOrigin.position).normalized * bulletSpeed;
+        Vector3 velocity = (target - raycastOrigin.position).normalized * bulletSpeed;
         var bullet = CreateBullet(raycastOrigin.position, velocity);
         bullets.Add(bullet);
 
