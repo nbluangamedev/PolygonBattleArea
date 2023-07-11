@@ -401,7 +401,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponSlot: 1
   isFiring: 0
-  fireRate: 1
+  fireRate: 2
   bulletSpeed: 500
   bulletDrop: 0
   muzzleFlash:
@@ -414,7 +414,7 @@ MonoBehaviour:
   raycastDestination: {fileID: 0}
   recoil: {fileID: 0}
   magazine: {fileID: 2054690038695303234}
-  forceBullet: 0.5
+  forceBullet: 1
   ammoCount: 15
   clipSize: 15
   damage: 10
@@ -463,7 +463,7 @@ MonoBehaviour:
     m_ImpulseDuration: 0.2
     m_ImpulseType: 3
     m_DissipationRate: 0.25
-    m_RawSignal: {fileID: 11400000, guid: f95d48bdcba188c41879708f4c90b4f8, type: 2}
+    m_RawSignal: {fileID: 11400000, guid: 27b35b9313d0eb542a30dd748f855e0b, type: 2}
     m_AmplitudeGain: 1
     m_FrequencyGain: 1
     m_RepeatMode: 0
