@@ -8,7 +8,8 @@ public class ActiveWeapon : MonoBehaviour
     public enum WeaponSlot
     {
         Primary = 0,
-        Secondary = 1
+        Secondary = 1,
+        Knife = 2
     }
 
     public Transform crossHairTarget;

@@ -1,72 +1,81 @@
-using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class CharacterLocomotion : MonoBehaviour
 {
     public Animator rigController;
-    public float jumpHeight;
-    public float gravity;
-    public float stepDown;
-    public float airControl;
-    public float jumpDamp;
-    public float groundSpeed;
-    public float pushPower;
 
-    public float animationSmoothTime = 0.15f;
+    private float jumpHeight;
+    private float gravity;
+    private float stepDown;
+    private float airControl;
+    private float jumpDamp;
+    private float groundSpeed;
+    private float pushPower;
 
-    Animator animator;
-    CharacterController characterController;
-    ActiveWeapon activeWeapon;
-    WeaponReload weaponReload;
-    CharacterAiming characterAiming;
-    Vector2 input;
-    Vector3 rootMotion;
-    Vector3 velocity;
-    bool isJumping;
-    int isSprintingParameter = Animator.StringToHash("isSprinting");
+    private Animator animator;
+    private CharacterController characterController;
+    private ActiveWeapon activeWeapon;
+    private WeaponReload reloadWeapon;
+    private CharacterAiming characterAiming;
+    private Vector2 userInput;
+    private Vector3 rootMotion;
+    private Vector3 velocity;
+    private bool isJumping;
 
-    PlayerInput playerInput;
-    InputAction moveAction;
-    Vector2 currentAnimationBlendVector;
-    Vector2 animationVelocity;
+    private int isSprintingParam = Animator.StringToHash("isSprinting");
 
-    private void Start()
+    void Start()
     {
         animator = GetComponent<Animator>();
         characterController = GetComponent<CharacterController>();
         activeWeapon = GetComponent<ActiveWeapon>();
-        weaponReload = GetComponent<WeaponReload>();
+        reloadWeapon = GetComponent<WeaponReload>();
         characterAiming = GetComponent<CharacterAiming>();
-
-        playerInput = GetComponent<PlayerInput>();
-        moveAction = playerInput.actions["Move"];
+        if (DataManager.HasInstance)
+        {
+            jumpHeight = DataManager.Instance.globalConfig.jumpHeight;
+            gravity = DataManager.Instance.globalConfig.gravity;
+            stepDown = DataManager.Instance.globalConfig.stepDown;
+            airControl = DataManager.Instance.globalConfig.airControl;
+            jumpDamp = DataManager.Instance.globalConfig.jumpDamp;
+            groundSpeed = DataManager.Instance.globalConfig.groundSpeed;
+            pushPower = DataManager.Instance.globalConfig.pushPower;
+        }
     }
 
-    private void Update()
+    void Update()
     {
-        //input.x = Input.GetAxis("Horizontal");
-        //input.y = Input.GetAxis("Vertical");
+        userInput.x = Input.GetAxis("Horizontal");
+        userInput.y = Input.GetAxis("Vertical");
 
-        input = moveAction.ReadValue<Vector2>();
-        currentAnimationBlendVector = Vector2.SmoothDamp(currentAnimationBlendVector, input, ref animationVelocity, animationSmoothTime);
-
-        animator.SetFloat("InputX", currentAnimationBlendVector.x);
-        animator.SetFloat("InputY", currentAnimationBlendVector.y);
+        animator.SetFloat("InputX", userInput.x);
+        animator.SetFloat("InputY", userInput.y);
 
         UpdateIsSprinting();
 
-        if(Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             Jump();
         }
     }
 
-    bool IsSprinting()
+    private void FixedUpdate()
+    {
+        if (isJumping)
+        {
+            UpdateInAir();
+        }
+        else
+        {
+            UpdateOnGround();
+        }
+    }
+
+    private bool IsSprinting()
     {
         bool isSprinting = Input.GetKey(KeyCode.LeftShift);
         bool isFiring = activeWeapon.IsFiring();
-        bool isReloading = weaponReload.isReloading;
+        bool isReloading = reloadWeapon.isReloading;
         bool isChangingWeapon = activeWeapon.isChangingWeapon;
         bool isAiming = characterAiming.isAiming;
         return isSprinting && !isFiring && !isReloading && !isChangingWeapon && !isAiming;
@@ -75,36 +84,8 @@ public class CharacterLocomotion : MonoBehaviour
     private void UpdateIsSprinting()
     {
         bool isSprinting = IsSprinting();
-        animator.SetBool(isSprintingParameter, isSprinting);
-        rigController.SetBool(isSprintingParameter, isSprinting);
-    }
-
-    private void OnAnimatorMove()
-    {
-        rootMotion += animator.deltaPosition;
-    }
-
-    private void FixedUpdate()
-    {
-        if(isJumping)   //Air State
-        {
-            UpdateInAir();
-        }
-        else           //Ground State
-        {
-            UpdateOnGround();
-        }
-    }
-    private void UpdateInAir()
-    {
-        velocity.y -= gravity * Time.deltaTime;
-        Vector3 displacement = velocity * Time.fixedDeltaTime;
-        displacement += CalculateAirControl();
-        characterController.Move(displacement);
-        isJumping = !characterController.isGrounded;
-        rootMotion = Vector3.zero;
-        animator.SetBool("isJumping", isJumping);
-        //Debug.Log(isJumping);
+        animator.SetBool(isSprintingParam, isSprinting);
+        rigController.SetBool(isSprintingParam, isSprinting);
     }
 
     private void UpdateOnGround()
@@ -113,21 +94,31 @@ public class CharacterLocomotion : MonoBehaviour
         Vector3 stepDownAmount = Vector3.down * stepDown;
         characterController.Move(stepForwardAmount + stepDownAmount);
         rootMotion = Vector3.zero;
-
         if (!characterController.isGrounded)
         {
             SetInAir(0);
         }
     }
 
-    Vector3 CalculateAirControl()
+    private void UpdateInAir()
     {
-        return ((transform.forward * input.y) + (transform.right * input.x)) * (airControl / 100);
+        velocity.y -= gravity * Time.fixedDeltaTime;
+        Vector3 airDisplacement = velocity * Time.fixedDeltaTime;
+        airDisplacement += CalculateAircontrol();
+        characterController.Move(airDisplacement);
+        isJumping = !characterController.isGrounded;
+        rootMotion = Vector3.zero;
+        animator.SetBool("isJumping", isJumping);
     }
 
-    void Jump()
+    private void OnAnimatorMove()
     {
-        if(!isJumping)
+        rootMotion += animator.deltaPosition;
+    }
+
+    private void Jump()
+    {
+        if (!isJumping)
         {
             float jumpVelocity = Mathf.Sqrt(2 * gravity * jumpHeight);
             SetInAir(jumpVelocity);
@@ -140,6 +131,11 @@ public class CharacterLocomotion : MonoBehaviour
         velocity = animator.velocity * jumpDamp * groundSpeed;
         velocity.y = jumpVelocity;
         animator.SetBool("isJumping", true);
+    }
+
+    private Vector3 CalculateAircontrol()
+    {
+        return ((transform.forward * userInput.y) + (transform.right * userInput.x)) * (airControl / 100);
     }
 
     void OnControllerColliderHit(ControllerColliderHit hit)

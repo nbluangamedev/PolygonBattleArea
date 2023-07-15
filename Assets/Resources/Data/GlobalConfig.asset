@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a88454a4673b254ca8b8a880b1ef1b1, type: 3}
+  m_Name: GlobalConfig
+  m_EditorClassIdentifier: 
+  maxTime: 0.1
+  maxDistance: 2
+  maxHealth: 100
+  blinkDuration: 0.1
+  dieForce: 20
+  maxSight: 5
+  jumpHeight: 3
+  gravity: 20
+  stepDown: 0.1
+  airControl: 2.5
+  jumpDamp: 0.5
+  groundSpeed: 1
+  pushPower: 2
+  turnSpeed: 10
+  defaultRecoil: 1
+  aimRecoil: 0.3
+  timeDestroyDroppedMagazine: 5
+  maxCroissHairTargetDistance: 100
+  amountInPool: 30
