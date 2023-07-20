@@ -26,7 +26,7 @@ public class CrossHairTarget : MonoBehaviour
         }
         else
         {
-            transform.position = ray.GetPoint(50f);
+            transform.position = ray.GetPoint(100f);
         }
     }
 }

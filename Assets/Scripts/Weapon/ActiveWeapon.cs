@@ -20,7 +20,7 @@ public class ActiveWeapon : MonoBehaviour
 
     RaycastWeapon[] equippedWeapon = new RaycastWeapon[2];
     int activeWeaponIndex;
-    bool isHolstered = false;
+    public bool isHolstered = false;
 
     private void Start()
     {

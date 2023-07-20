@@ -15,4 +15,7 @@ public class GlobalConfig : ScriptableObject
 
     [Header("Player")]
     public int amountInPool = 30;
+
+    [Header("UI")]
+    public float loadingOverLapTime = 1f;
 }

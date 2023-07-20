@@ -16,3 +16,16 @@ public enum UIType
     Notify = 3,
     Overlap = 4,
 }
+
+public enum AiStateID
+{
+    ChasePlayer,
+    Death,
+    Idle
+}
+
+public enum WeaponSlot
+{
+    Primary = 0,
+    Secondary = 1
+}

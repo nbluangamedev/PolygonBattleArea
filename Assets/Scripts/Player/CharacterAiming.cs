@@ -9,7 +9,7 @@ public class CharacterAiming : MonoBehaviour
     public Transform cameraLookAt;
     public Cinemachine.AxisState xAxis;
     public Cinemachine.AxisState yAxis;
-    public bool isAiming;
+    public bool isAiming = false;
 
     Camera mainCamera;
     Animator animator;
@@ -28,12 +28,17 @@ public class CharacterAiming : MonoBehaviour
 
     private void Update()
     {
-        isAiming = Input.GetMouseButton(1);
-        animator.SetBool(isAimingParameter, isAiming);
-
         var weapon = activeWeapon.GetActiveWeapon();
-        if (weapon)
+        bool canAim = !activeWeapon.isHolstered && !activeWeapon.weaponReload.isReloading;
+
+        if (weapon && canAim)
         {
+            if (Input.GetMouseButtonDown(1))
+            {
+                isAiming = !isAiming;
+                animator.SetBool(isAimingParameter, isAiming);
+            }
+
             weapon.recoil.recoilModifier = isAiming ? 0.3f : 1.0f;
         }
     }
