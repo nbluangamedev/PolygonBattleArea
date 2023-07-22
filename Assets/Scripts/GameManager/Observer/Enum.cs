@@ -17,11 +17,19 @@ public enum UIType
     Overlap = 4,
 }
 
-public enum AiStateID
+public enum AIStateID
 {
     ChasePlayer,
     Death,
-    Idle
+    Idle,
+    FindWeapon,
+    Attack
+}
+
+public enum SocketID
+{
+    Spine,
+    RightHand
 }
 
 public enum WeaponSlot

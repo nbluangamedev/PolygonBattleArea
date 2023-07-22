@@ -10,6 +10,7 @@ public class AIAgent : MonoBehaviour
     public UIHealthBar healthBar;
     public Health health;
     public Transform playerTransform;
+    public AIWeapon weapon;
 
     private void Start()
     {
@@ -18,6 +19,7 @@ public class AIAgent : MonoBehaviour
             playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         }
 
+        weapon = GetComponent<AIWeapon>();
         navMeshAgent = GetComponent<NavMeshAgent>();
         ragdoll = GetComponent<Ragdoll>();
         health = GetComponent<Health>();
@@ -26,6 +28,8 @@ public class AIAgent : MonoBehaviour
         stateMachine.RegisterState(new AIChasePlayerState());
         stateMachine.RegisterState(new AIDeathState());
         stateMachine.RegisterState(new AIIdleState());
+        stateMachine.RegisterState(new AIFindWeaponState());
+        stateMachine.RegisterState(new AIAttackState());
         stateMachine.ChangeState(initState);
     }
 

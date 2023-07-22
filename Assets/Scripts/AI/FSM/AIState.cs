@@ -1,10 +1,3 @@
-public enum AIStateID
-{
-    ChasePlayer,
-    Death,
-    Idle
-}
-
 public interface AIState
 {
     AIStateID GetID();
