@@ -14,11 +14,17 @@ public class AIAttackState : AIState
         agent.weapon.ActivateWeapon();
         agent.weapon.SetTarget(agent.playerTransform);
         agent.navMeshAgent.stoppingDistance = 5.0f;
+        agent.weapon.SetFiring(true);
     }
 
     public void Update(AIAgent agent)
     {
         agent.navMeshAgent.destination = agent.playerTransform.position;
+
+        if (agent.playerTransform.GetComponent<Health>().IsDead())
+        {
+            agent.stateMachine.ChangeState(AIStateID.Idle);
+        }
     }
 
     public void Exit(AIAgent agent)

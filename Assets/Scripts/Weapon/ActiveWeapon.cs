@@ -5,11 +5,7 @@ using Cinemachine;
 
 public class ActiveWeapon : MonoBehaviour
 {
-    public enum WeaponSlot
-    {
-        Primary = 0,
-        Secondary = 1
-    }
+    public WeaponSlot weaponSlot;
 
     public Transform crossHairTarget;
     public Animator rigController;
@@ -17,10 +13,11 @@ public class ActiveWeapon : MonoBehaviour
     public CharacterAiming characterAiming;
     public WeaponReload weaponReload;
     public bool isChangingWeapon;
+    public bool canFire;
+    public bool isHolstered = false;
 
     RaycastWeapon[] equippedWeapon = new RaycastWeapon[2];
     int activeWeaponIndex;
-    public bool isHolstered = false;
 
     private void Start()
     {
@@ -36,7 +33,7 @@ public class ActiveWeapon : MonoBehaviour
     {
         var weapon = GetWeapon(activeWeaponIndex);
         bool notSprinting = rigController.GetCurrentAnimatorStateInfo(2).shortNameHash == Animator.StringToHash("notSprinting");
-        bool canFire = !isHolstered && notSprinting && !weaponReload.isReloading;
+        canFire = !isHolstered && notSprinting && !weaponReload.isReloading;
 
         if (weapon)
         {
@@ -45,12 +42,12 @@ public class ActiveWeapon : MonoBehaviour
                 weapon.StartFiring();
             }
 
-            weapon.UpdateWeapon(Time.deltaTime, crossHairTarget.position);
-
             if (Input.GetButtonUp("Fire1") || !canFire)
             {
                 weapon.StopFiring();
             }
+
+            weapon.UpdateWeapon(Time.deltaTime, crossHairTarget.position);
 
             if (Input.GetKeyDown(KeyCode.X))
             {
@@ -96,6 +93,17 @@ public class ActiveWeapon : MonoBehaviour
         return equippedWeapon[index];
     }
 
+    public void DropWeapon()
+    {
+        var currentWeapon = GetActiveWeapon();
+        if (currentWeapon)
+        {
+            currentWeapon.transform.SetParent(null);
+            currentWeapon.gameObject.GetComponent<BoxCollider>().enabled = true;
+            currentWeapon.gameObject.AddComponent<Rigidbody>();
+            equippedWeapon[activeWeaponIndex] = null;
+        }
+    }
 
     public void Equip(RaycastWeapon newWeapon)
     {
@@ -107,7 +115,7 @@ public class ActiveWeapon : MonoBehaviour
         }
 
         weapon = newWeapon;
-        weapon.raycastDestination = crossHairTarget;
+        //weapon.raycastDestination = crossHairTarget;
         weapon.recoil.characterAiming = characterAiming;
         weapon.recoil.rigController = rigController;
         weapon.transform.SetParent(weaponSlots[weaponSlotIndex], false);
@@ -117,7 +125,7 @@ public class ActiveWeapon : MonoBehaviour
 
         if (ListenerManager.HasInstance)
         {
-            ListenerManager.Instance.BroadCast(ListenType.UPDATE_AMMO, weapon.ammoCount);
+            ListenerManager.Instance.BroadCast(ListenType.UPDATE_AMMO, weapon);
         }
     }
 
@@ -187,7 +195,7 @@ public class ActiveWeapon : MonoBehaviour
             isHolstered = false;
             if (ListenerManager.HasInstance)
             {
-                ListenerManager.Instance.BroadCast(ListenType.UPDATE_AMMO, weapon.ammoCount);
+                ListenerManager.Instance.BroadCast(ListenType.UPDATE_AMMO, weapon);
             }
         }
         isChangingWeapon = false;

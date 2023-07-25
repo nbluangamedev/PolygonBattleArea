@@ -1,32 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    private float maxHealth;
-    private float blinkDuration;
-    private float currentHealth;
-    private Ragdoll ragdoll;
-    private UIHealthBar healthBar;
-    private SkinnedMeshRenderer skinnedMeshRenderer;
-    private AIAgent aiAgent;
+    protected float maxHealth;
+    protected float currentHealth;
 
-    // Start is called before the first frame update
     void Start()
     {
-        if (DataManager.HasInstance)
-        {
-            maxHealth = DataManager.Instance.globalConfig.maxHealth;
-            blinkDuration = DataManager.Instance.globalConfig.blinkDuration;
-        }
-
-        currentHealth = maxHealth;
-        ragdoll = GetComponent<Ragdoll>();
-        healthBar = GetComponentInChildren<UIHealthBar>();
-        aiAgent = GetComponent<AIAgent>();
-        skinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
         Setup();
+        OnStart();
     }
 
     private void Setup()
@@ -37,44 +19,47 @@ public class Health : MonoBehaviour
             HitBox hitBox = rigidBody.gameObject.AddComponent<HitBox>();
             hitBox.health = this;
             hitBox.rb = rigidBody;
+            if (hitBox.gameObject != gameObject)
+            {
+                hitBox.gameObject.layer = LayerMask.NameToLayer("HitBox");
+            }
         }
+    }
+
+    public bool IsDead()
+    {
+        return currentHealth <= 0;
     }
 
     public void TakeDamage(float amount, Vector3 direction, Rigidbody rigidbody)
     {
         currentHealth -= amount;
-        if (healthBar != null)
-        {
-            healthBar.SetHealthBarPercentage(currentHealth / maxHealth);
-        }
+
+        OnDamage(direction, rigidbody);
 
         if (currentHealth <= 0)
         {
             Die(direction, rigidbody);
         }
-
-        StartCoroutine(EnemyFlash());
     }
 
     private void Die(Vector3 direction, Rigidbody rigidbody)
     {
-        AIDeathState deathState = aiAgent.stateMachine.GetState(AIStateID.Death) as AIDeathState;
-        deathState.direction = direction;
-        deathState.rigidbody = rigidbody;
-
-        aiAgent.stateMachine.ChangeState(AIStateID.Death);
+        OnDeath(direction, rigidbody);
     }
 
-    IEnumerator EnemyFlash()
+    protected virtual void OnStart()
     {
-        skinnedMeshRenderer.material.EnableKeyword("_EMISSION");
-        yield return new WaitForSeconds(blinkDuration);
-        skinnedMeshRenderer.material.DisableKeyword("_EMISSION");
-        StopCoroutine(nameof(EnemyFlash));
+
     }
 
-    public void DestroyWhenDeath()
+    protected virtual void OnDeath(Vector3 direction, Rigidbody ridigBody)
     {
-        Destroy(this.gameObject, 3f);
+
+    }
+
+    protected virtual void OnDamage(Vector3 direction, Rigidbody rigidBody)
+    {
+
     }
 }

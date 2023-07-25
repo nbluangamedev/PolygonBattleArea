@@ -400,6 +400,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cd427bf719cc0c459c3ab4ee4e20b15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  equipWeaponBy: 0
   weaponSlot: 1
   isFiring: 0
   fireRate: 2
@@ -412,12 +413,11 @@ MonoBehaviour:
   tracerEffect: {fileID: 4830472651728588450, guid: 648e4974a1d31544bb2db135e92fe6a1, type: 3}
   weaponName: Pistol
   raycastOrigin: {fileID: 3172744936664121336}
-  raycastDestination: {fileID: 0}
   recoil: {fileID: 0}
   magazine: {fileID: 2054690038695303234}
   forceBullet: 1
-  ammoCount: 15
-  clipSize: 15
+  ammoCount: 50
+  clipSize: 50
   damage: 10
 --- !u!114 &4245193159445016210
 MonoBehaviour:
@@ -434,12 +434,12 @@ MonoBehaviour:
   characterAiming: {fileID: 0}
   cameraShake: {fileID: 0}
   rigController: {fileID: 0}
+  recoilModifier: 1
   recoilPattern:
   - {x: 1, y: 10}
   - {x: 3, y: 10}
   - {x: 7, y: 10}
-  duration: 0.5
-  recoilModifier: 1
+  duration: 0
 --- !u!114 &1126023541969594337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -530,7 +530,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3172744936664121319}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.0019999593, z: 0.9785}
+  m_LocalPosition: {x: 0, y: 0.0611, z: 0.1979}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

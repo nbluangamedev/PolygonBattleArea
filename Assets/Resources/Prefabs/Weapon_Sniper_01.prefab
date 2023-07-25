@@ -47,6 +47,7 @@ GameObject:
   - component: {fileID: 3172744936653632963}
   - component: {fileID: -4924447125473106102}
   - component: {fileID: 2019497701751307170}
+  - component: {fileID: -6131057237178109509}
   m_Layer: 6
   m_Name: Weapon_Sniper_01
   m_TagString: Untagged
@@ -61,8 +62,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3172744936653632961}
-  m_LocalRotation: {x: -0.054078825, y: 0, z: 0, w: 0.9985367}
-  m_LocalPosition: {x: -0.003, y: -0.083, z: 0.314}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -71,7 +72,7 @@ Transform:
   - {fileID: 3747197701064065755}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -6.2, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3172744936653632963
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -84,6 +85,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cd427bf719cc0c459c3ab4ee4e20b15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  equipWeaponBy: 0
   weaponSlot: 0
   isFiring: 0
   fireRate: 1
@@ -96,7 +98,6 @@ MonoBehaviour:
   tracerEffect: {fileID: 4830472651728588450, guid: 648e4974a1d31544bb2db135e92fe6a1, type: 3}
   weaponName: Sniper
   raycastOrigin: {fileID: 3172744936664121336}
-  raycastDestination: {fileID: 0}
   recoil: {fileID: 0}
   magazine: {fileID: 6069767782647701680}
   forceBullet: 2
@@ -118,6 +119,7 @@ MonoBehaviour:
   characterAiming: {fileID: 0}
   cameraShake: {fileID: 0}
   rigController: {fileID: 0}
+  recoilModifier: 1
   recoilPattern:
   - {x: -10, y: 10}
   - {x: -7, y: 10}
@@ -128,8 +130,7 @@ MonoBehaviour:
   - {x: 5, y: 10}
   - {x: 7, y: 10}
   - {x: 10, y: 10}
-  duration: 0.1
-  recoilModifier: 1
+  duration: 0
 --- !u!114 &2019497701751307170
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,6 +184,19 @@ MonoBehaviour:
     m_DissipationDistance: 100
     m_PropagationSpeed: 343
   m_DefaultVelocity: {x: 0, y: -1, z: 0}
+--- !u!65 &-6131057237178109509
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3172744936653632961}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 0.088100106, y: 0.34040678, z: 1.5371915}
+  m_Center: {x: 0.000000014901161, y: 0.058105037, z: 0.35019606}
 --- !u!1 &3172744936664121319
 GameObject:
   m_ObjectHideFlags: 0

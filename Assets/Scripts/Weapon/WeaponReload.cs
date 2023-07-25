@@ -59,6 +59,7 @@ public class WeaponReload : MonoBehaviour
     void DropMagazine()
     {
         GameObject droppedMagazine = Instantiate(magazineHand, magazineHand.transform.position, magazineHand.transform.rotation);
+        droppedMagazine.transform.localScale = Vector3.one;
         droppedMagazine.AddComponent<Rigidbody>();
         droppedMagazine.AddComponent<BoxCollider>();
         magazineHand.SetActive(false);
@@ -76,7 +77,7 @@ public class WeaponReload : MonoBehaviour
         rigController.ResetTrigger("reload_Weapon");
         if (ListenerManager.HasInstance)
         {
-            ListenerManager.Instance.BroadCast(ListenType.UPDATE_AMMO, weapon.ammoCount);
+            ListenerManager.Instance.BroadCast(ListenType.UPDATE_AMMO, weapon);
         }
         isReloading = false;
     }

@@ -25,9 +25,12 @@ public class GamePanel : BaseScreen
 
     private void OnUpdateAmmo(object value)
     {
-        if (value is int ammo)
+        if (value is RaycastWeapon weapon)
         {
-            ammoText.text = ammo.ToString();
+            if (weapon.equipWeaponBy == EquipWeaponBy.Player)
+            {
+                ammoText.text = weapon.ammoCount.ToString();
+            }
         }
     }
 }

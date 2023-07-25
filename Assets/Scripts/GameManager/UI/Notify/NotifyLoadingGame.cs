@@ -19,7 +19,7 @@ public class NotifyLoadingGame : BaseNotify
 
     public override void Show(object data)
     {
-        base.Show(data); 
+        base.Show(data);
     }
 
     public override void Hide()
@@ -37,7 +37,7 @@ public class NotifyLoadingGame : BaseNotify
         {
             loadingSlider.value = asyncOperation.progress;
             loadingPercentText.SetText($"LOADING SCENES: {asyncOperation.progress * 100}%");
-            if(asyncOperation.progress >= 0.9f)
+            if (asyncOperation.progress >= 0.9f)
             {
                 loadingSlider.value = 1f;
                 loadingPercentText.SetText($"LOADING SCENES: {loadingSlider.value * 100}%");
@@ -45,9 +45,10 @@ public class NotifyLoadingGame : BaseNotify
                 {
                     UIManager.Instance.ShowOverlap<OverlapFade>();
                 }
+                yield return new WaitForSecondsRealtime(1.0f);
+                    //yield return new WaitForSeconds(2.0f);
                 asyncOperation.allowSceneActivation = true;
-                yield return new WaitForSeconds(1f);
-                this.Hide();               
+                this.Hide();
             }
             yield return null;
         }

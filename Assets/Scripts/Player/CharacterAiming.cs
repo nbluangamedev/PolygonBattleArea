@@ -5,11 +5,14 @@ using UnityEngine.Animations.Rigging;
 
 public class CharacterAiming : MonoBehaviour
 {
-    public float turnSpeed = 15;
     public Transform cameraLookAt;
     public Cinemachine.AxisState xAxis;
     public Cinemachine.AxisState yAxis;
     public bool isAiming = false;
+
+    private float turnSpeed;
+    private float defaultRecoil;
+    private float aimRecoil;
 
     Camera mainCamera;
     Animator animator;
@@ -24,6 +27,12 @@ public class CharacterAiming : MonoBehaviour
         mainCamera = Camera.main;
         animator = GetComponent<Animator>();
         activeWeapon = GetComponent<ActiveWeapon>();
+        if (DataManager.HasInstance)
+        {
+            turnSpeed = DataManager.Instance.globalConfig.turnSpeed;
+            defaultRecoil = DataManager.Instance.globalConfig.defaultRecoil;
+            aimRecoil = DataManager.Instance.globalConfig.aimRecoil;
+        }
     }
 
     private void Update()
@@ -37,9 +46,8 @@ public class CharacterAiming : MonoBehaviour
             {
                 isAiming = !isAiming;
                 animator.SetBool(isAimingParameter, isAiming);
+                weapon.recoil.recoilModifier = isAiming ? aimRecoil : defaultRecoil;
             }
-
-            weapon.recoil.recoilModifier = isAiming ? 0.3f : 1.0f;
         }
     }
 

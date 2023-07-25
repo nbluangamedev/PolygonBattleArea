@@ -8,19 +8,28 @@ public class WeaponRecoil : MonoBehaviour
     [HideInInspector] public CharacterAiming characterAiming;
     [HideInInspector] public CinemachineImpulseSource cameraShake;
     [HideInInspector] public Animator rigController;
-
+    [HideInInspector] public float recoilModifier = 1.0f;
+    
     public Vector2[] recoilPattern;
     public float duration;
-    public float recoilModifier = 1.0f;
 
     float verticalRecoil;
     float horizontalRecoil;
     float time;
     int index;
+    private int recoilLayerIndex = -1;
 
     private void Awake()
     {
         cameraShake = GetComponent<CinemachineImpulseSource>();
+    }
+
+    private void Start()
+    {
+        if (rigController)
+        {
+            recoilLayerIndex = rigController.GetLayerIndex("Recoil Layer");
+        }
     }
 
     public void Reset()
@@ -39,7 +48,10 @@ public class WeaponRecoil : MonoBehaviour
 
         index = NextIndex(index);
 
-        rigController.Play("weapon_Recoil_" + weaponName, 1, 0.0f);
+        if (rigController)
+        {
+            rigController.Play("weapon_Recoil_" + weaponName, recoilLayerIndex, 0f);
+        }
     }
 
     int NextIndex(int index)

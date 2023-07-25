@@ -48,6 +48,7 @@ GameObject:
   - component: {fileID: 3172744936653632963}
   - component: {fileID: -4924447125473106102}
   - component: {fileID: 2019497701751307170}
+  - component: {fileID: 4604090417289358407}
   m_Layer: 6
   m_Name: Weapon_Rifle_01
   m_TagString: Untagged
@@ -85,6 +86,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cd427bf719cc0c459c3ab4ee4e20b15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  equipWeaponBy: 0
   weaponSlot: 0
   isFiring: 0
   fireRate: 5
@@ -97,13 +99,12 @@ MonoBehaviour:
   tracerEffect: {fileID: 4830472651728588450, guid: 648e4974a1d31544bb2db135e92fe6a1, type: 3}
   weaponName: Rifle
   raycastOrigin: {fileID: 3172744936664121336}
-  raycastDestination: {fileID: 0}
   recoil: {fileID: 0}
   magazine: {fileID: 4800477670966116200}
   forceBullet: 2
   ammoCount: 30
   clipSize: 30
-  damage: 10
+  damage: 25
 --- !u!114 &-4924447125473106102
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -119,6 +120,7 @@ MonoBehaviour:
   characterAiming: {fileID: 0}
   cameraShake: {fileID: 0}
   rigController: {fileID: 0}
+  recoilModifier: 1
   recoilPattern:
   - {x: -10, y: 10}
   - {x: -7, y: 10}
@@ -129,8 +131,7 @@ MonoBehaviour:
   - {x: 5, y: 10}
   - {x: 7, y: 10}
   - {x: 10, y: 10}
-  duration: 0.1
-  recoilModifier: 1
+  duration: 0
 --- !u!114 &2019497701751307170
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -184,6 +185,19 @@ MonoBehaviour:
     m_DissipationDistance: 100
     m_PropagationSpeed: 343
   m_DefaultVelocity: {x: 0, y: -1, z: 0}
+--- !u!65 &4604090417289358407
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3172744936653632961}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 0.1095677, y: 0.29702714, z: 1.041462}
+  m_Center: {x: -0.0015621781, y: -0.045302704, z: 0.5123631}
 --- !u!1 &3172744936664121319
 GameObject:
   m_ObjectHideFlags: 0

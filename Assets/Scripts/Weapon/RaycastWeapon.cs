@@ -5,7 +5,9 @@ using static UnityEngine.Rendering.DebugUI;
 
 public class RaycastWeapon : MonoBehaviour
 {
-    public ActiveWeapon.WeaponSlot weaponSlot;
+    public EquipWeaponBy equipWeaponBy;
+    public WeaponSlot weaponSlot;
+
     public bool isFiring = false;
     public int fireRate = 15;
     public float bulletSpeed = 1000.0f;
@@ -14,8 +16,9 @@ public class RaycastWeapon : MonoBehaviour
     public ParticleSystem hitEffect;
     public TrailRenderer tracerEffect;
     public string weaponName;
+
     public Transform raycastOrigin;
-    public Transform raycastDestination;
+    //public Transform raycastDestination;
     public WeaponRecoil recoil;
     public GameObject magazine;
     public float forceBullet = 2f;
@@ -33,13 +36,6 @@ public class RaycastWeapon : MonoBehaviour
         recoil = GetComponent<WeaponRecoil>();
     }
 
-    Vector3 GetPosition(Bullet bullet)
-    {
-        //p + v*t + 0.5*g*t*t
-        Vector3 gravity = Vector3.down * bulletDrop;
-        return (bullet.initialPosition) + (bullet.initialVelocity * bullet.time) + (0.5f * gravity * bullet.time * bullet.time);
-    }
-
     public void StartFiring()
     {
         isFiring = true;
@@ -50,9 +46,14 @@ public class RaycastWeapon : MonoBehaviour
         recoil.Reset();
     }
 
+    public void StopFiring()
+    {
+        isFiring = false;
+    }
+
     public void UpdateFiring(float deltaTime, Vector3 target)
     {
-        accumulatedTime += deltaTime;
+        //accumulatedTime += deltaTime;
         float fireInterval = 1.0f / fireRate;
         while (accumulatedTime >= 0.0f)
         {
@@ -70,7 +71,32 @@ public class RaycastWeapon : MonoBehaviour
 
         accumulatedTime += deltaTime;
 
-        UpdateBullets(Time.deltaTime);
+        UpdateBullets(deltaTime);
+    }
+
+    private void FireBullet(Vector3 target)
+    {
+        if (ammoCount <= 0)
+        {
+            return;
+        }
+        ammoCount--;
+
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.BroadCast(ListenType.UPDATE_AMMO, this);
+        }
+
+        foreach (var p in muzzleFlash)
+        {
+            p.Emit(1);
+        }
+
+        Vector3 velocity = (target - raycastOrigin.position).normalized * bulletSpeed;
+        var bullet = ObjectPool.Instance.GetPoolObject();
+        bullet.Active(raycastOrigin.position, velocity);
+        
+        recoil.GenerateRecoil(weaponName);
     }
 
     public void UpdateBullets(float deltaTime)
@@ -90,17 +116,6 @@ public class RaycastWeapon : MonoBehaviour
         });
     }
 
-    private void DestroyBullets()
-    {
-        foreach (Bullet bullet in ObjectPool.Instance.pooledObjects)
-        {
-            if (bullet.time >= maxLifetime)
-            {
-                bullet.Deactive();
-            }
-        }
-    }
-
     private void RaycastSegment(Vector3 start, Vector3 end, Bullet bullet)
     {
         Vector3 direction = end - start;
@@ -110,7 +125,6 @@ public class RaycastWeapon : MonoBehaviour
 
         if (Physics.Raycast(ray, out hitInfo, distance))
         {
-            //Debug.DrawLine(ray.origin, hitInfo.point, Color.red, 1.0f);
             hitEffect.transform.position = hitInfo.point;
             hitEffect.transform.forward = hitInfo.normal;
             hitEffect.Emit(1);
@@ -136,32 +150,21 @@ public class RaycastWeapon : MonoBehaviour
         }
     }
 
-    private void FireBullet(Vector3 target)
+    private void DestroyBullets()
     {
-        if (ammoCount <= 0)
+        foreach (Bullet bullet in ObjectPool.Instance.pooledObjects)
         {
-            return;
+            if (bullet.time >= maxLifetime)
+            {
+                bullet.Deactive();
+            }
         }
-        ammoCount--;
-        if (ListenerManager.HasInstance)
-        {
-            ListenerManager.Instance.BroadCast(ListenType.UPDATE_AMMO, ammoCount);
-        }
-
-        foreach (var p in muzzleFlash)
-        {
-            p.Emit(1);
-        }
-
-        Vector3 velocity = (target - raycastOrigin.position).normalized * bulletSpeed;
-        var bullet = ObjectPool.Instance.GetPoolObject();
-        bullet.Active(raycastOrigin.position, velocity);
-
-        recoil.GenerateRecoil(weaponName);
     }
 
-    public void StopFiring()
+    Vector3 GetPosition(Bullet bullet)
     {
-        isFiring = false;
+        //p + v*t + 0.5*g*t*t
+        Vector3 gravity = Vector3.down * bulletDrop;
+        return (bullet.initialPosition) + (bullet.initialVelocity * bullet.time) + (0.5f * gravity * bullet.time * bullet.time);
     }
 }

@@ -13,9 +13,16 @@ public class GlobalConfig : ScriptableObject
     public float dieForce = 10.0f;
     public float maxSight = 5.0f;
 
+    public float timeDestroyAI = 2f;
+
     [Header("Player")]
     public int amountInPool = 30;
 
+    public float playerMaxHealth = 100f;
+    public float turnSpeed = 15f;
+    public float defaultRecoil = 1f;
+    public float aimRecoil = 0.3f;
+
     [Header("UI")]
-    public float loadingOverLapTime = 1f;
+    public float loadingOverLapTime = 1.0f;
 }
