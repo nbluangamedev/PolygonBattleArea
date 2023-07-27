@@ -89,7 +89,7 @@ MonoBehaviour:
   equipWeaponBy: 0
   weaponSlot: 0
   isFiring: 0
-  fireRate: 5
+  fireRate: 10
   bulletSpeed: 1000
   bulletDrop: 0
   muzzleFlash:
@@ -98,6 +98,9 @@ MonoBehaviour:
   hitEffect: {fileID: 5005547369649574431}
   tracerEffect: {fileID: 4830472651728588450, guid: 648e4974a1d31544bb2db135e92fe6a1, type: 3}
   weaponName: Rifle
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1025
   raycastOrigin: {fileID: 3172744936664121336}
   recoil: {fileID: 0}
   magazine: {fileID: 4800477670966116200}

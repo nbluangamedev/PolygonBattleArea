@@ -5,6 +5,7 @@ using UnityEngine;
 public class AIDeathState : AIState
 {
     private float dieForce;
+
     public Vector3 direction;
     public Rigidbody rigidbody;
 
@@ -21,9 +22,9 @@ public class AIDeathState : AIState
         agent.ragdoll.ActiveRagdoll();
         direction.y = 1f;
         agent.ragdoll.ApplyForce(direction * dieForce, rigidbody);
+        agent.weapon.DropWeapon();
         agent.healthBar.Deactive();
         agent.health.DestroyWhenDeath();
-        agent.weapon.DropWeapon();
     }
 
     public void Update(AIAgent agent)

@@ -16,9 +16,9 @@ public class RaycastWeapon : MonoBehaviour
     public ParticleSystem hitEffect;
     public TrailRenderer tracerEffect;
     public string weaponName;
+    public LayerMask layerMask;
 
     public Transform raycastOrigin;
-    //public Transform raycastDestination;
     public WeaponRecoil recoil;
     public GameObject magazine;
     public float forceBullet = 2f;

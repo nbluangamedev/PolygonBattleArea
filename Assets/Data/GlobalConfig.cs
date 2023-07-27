@@ -10,7 +10,7 @@ public class GlobalConfig : ScriptableObject
     public float maxDistance = 1.0f;
     public float maxHealth = 100f;
     public float blinkDuration = 0.1f;
-    public float dieForce = 10.0f;
+    public float dieForce = .5f;
     public float maxSight = 5.0f;
 
     public float timeDestroyAI = 2f;

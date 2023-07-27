@@ -45,8 +45,7 @@ public class NotifyLoadingGame : BaseNotify
                 {
                     UIManager.Instance.ShowOverlap<OverlapFade>();
                 }
-                yield return new WaitForSecondsRealtime(1.0f);
-                    //yield return new WaitForSeconds(2.0f);
+                yield return new WaitForSeconds(1f);
                 asyncOperation.allowSceneActivation = true;
                 this.Hide();
             }

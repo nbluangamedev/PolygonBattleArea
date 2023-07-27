@@ -35,16 +35,14 @@ public class AIIdleState : AIState
         {
             return;
         }
-        else
-        {
-            Vector3 agentDirection = agent.transform.forward;
-            playerDirection.Normalize();
 
-            float dotProduct = Vector3.Dot(playerDirection, agentDirection);
-            if (dotProduct >= 0.0f)
-            {
-                agent.stateMachine.ChangeState(AIStateID.ChasePlayer);
-            }
+        Vector3 agentDirection = agent.transform.forward;
+        playerDirection.Normalize();
+
+        float dotProduct = Vector3.Dot(playerDirection, agentDirection);
+        if (dotProduct >= 0.0f)
+        {
+            agent.stateMachine.ChangeState(AIStateID.ChasePlayer);
         }
     }
 

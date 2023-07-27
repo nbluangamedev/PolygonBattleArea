@@ -10,6 +10,7 @@ public class PlayerHealth : Health
     private Ragdoll ragdoll;
     private ActiveWeapon activeWeapon;
     private CharacterAiming aiming;
+    CameraManager cameraManager;
 
     protected override void OnStart()
     {
@@ -21,6 +22,7 @@ public class PlayerHealth : Health
         ragdoll = GetComponent<Ragdoll>();
         activeWeapon = GetComponent<ActiveWeapon>();
         aiming = GetComponent<CharacterAiming>();
+        cameraManager = FindObjectOfType<CameraManager>();
     }
 
     protected override void OnDamage(Vector3 direction, Rigidbody rigidBody)

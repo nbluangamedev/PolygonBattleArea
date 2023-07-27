@@ -50,12 +50,10 @@ public class OverlapFade : BaseOverlap
 
     private void OnFinish()
     {
-        this.Hide();
-
         if (UIManager.HasInstance)
         {
             UIManager.Instance.ShowScreen<ScreenGame>();
         }
+        this.Hide();
     }
-
 }

@@ -84,7 +84,7 @@ public class AIWeapon : MonoBehaviour
         }
 
         weaponIK.SetAimTransform(currentWeapon.raycastOrigin);
-        weaponActive = true;
+        //weaponActive = false;
     }
 
     public bool HasWeapon()
@@ -96,9 +96,9 @@ public class AIWeapon : MonoBehaviour
     {
         if (currentWeapon)
         {
-            //currentWeapon.transform.SetParent(null);
-            //currentWeapon.gameObject.GetComponent<BoxCollider>().enabled = true;
-            //currentWeapon.gameObject.AddComponent<Rigidbody>();
+            currentWeapon.transform.SetParent(null);
+            currentWeapon.gameObject.GetComponent<BoxCollider>().enabled = true;
+            currentWeapon.gameObject.AddComponent<Rigidbody>();
             currentWeapon = null;
         }
     }
