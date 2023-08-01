@@ -25,6 +25,7 @@ public class RaycastWeapon : MonoBehaviour
     public int ammoCount;
     public int clipSize;
     public float damage = 10f;
+    public RuntimeAnimatorController overrideAnimator;
 
     Ray ray;
     RaycastHit hitInfo;

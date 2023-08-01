@@ -422,6 +422,7 @@ MonoBehaviour:
   ammoCount: 50
   clipSize: 50
   damage: 10
+  overrideAnimator: {fileID: 22100000, guid: 1bb80f148a11a7e45b772a1cf0ef8205, type: 2}
 --- !u!114 &4245193159445016210
 MonoBehaviour:
   m_ObjectHideFlags: 0

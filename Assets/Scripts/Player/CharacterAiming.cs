@@ -10,6 +10,11 @@ public class CharacterAiming : MonoBehaviour
     public Cinemachine.AxisState yAxis;
     public bool isAiming = false;
 
+    public GameObject scopeOverlay;
+    public GameObject weaponCamera;
+
+    private float scopedFOV = 15f;
+    private float normalFOV;
     private float turnSpeed;
     private float defaultRecoil;
     private float aimRecoil;
@@ -44,9 +49,27 @@ public class CharacterAiming : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(1))
             {
-                isAiming = !isAiming;
-                animator.SetBool(isAimingParameter, isAiming);
-                weapon.recoil.recoilModifier = isAiming ? aimRecoil : defaultRecoil;
+                if (weapon.weaponName.Equals("Sniper"))
+                {
+                    isAiming = !isAiming;
+                    animator.SetBool(isAimingParameter, isAiming);
+
+                    if (isAiming)
+                    {
+                        StartCoroutine(OnScope());
+                    }
+                    else StartCoroutine(UnScope());
+                }
+                else if (weapon.weaponName.Equals("Shotgun"))
+                {
+                    return;
+                }
+                else
+                {
+                    isAiming = !isAiming;
+                    animator.SetBool(isAimingParameter, isAiming);
+                    weapon.recoil.recoilModifier = isAiming ? aimRecoil : defaultRecoil;
+                }
             }
         }
     }
@@ -60,5 +83,26 @@ public class CharacterAiming : MonoBehaviour
 
         float yawCamera = mainCamera.transform.rotation.eulerAngles.y;
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, yawCamera, 0), turnSpeed * Time.fixedDeltaTime);
+    }
+
+    IEnumerator UnScope()
+    {
+        yield return new WaitForSeconds(0.15f);
+
+        scopeOverlay.SetActive(false);
+        weaponCamera.SetActive(true);
+
+        mainCamera.fieldOfView = normalFOV;
+    }
+
+    IEnumerator OnScope()
+    {
+        yield return new WaitForSeconds(0.15f);
+
+        scopeOverlay.SetActive(true);
+        weaponCamera.SetActive(false);
+
+        normalFOV = mainCamera.fieldOfView;
+        mainCamera.fieldOfView = scopedFOV;
     }
 }

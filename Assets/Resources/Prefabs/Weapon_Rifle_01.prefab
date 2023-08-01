@@ -107,7 +107,8 @@ MonoBehaviour:
   forceBullet: 2
   ammoCount: 30
   clipSize: 30
-  damage: 25
+  damage: 5
+  overrideAnimator: {fileID: 9100000, guid: c4b2b3f0050f5054e82a4517a7e026ad, type: 2}
 --- !u!114 &-4924447125473106102
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -134,7 +135,7 @@ MonoBehaviour:
   - {x: 5, y: 10}
   - {x: 7, y: 10}
   - {x: 10, y: 10}
-  duration: 0
+  duration: 0.1
 --- !u!114 &2019497701751307170
 MonoBehaviour:
   m_ObjectHideFlags: 0

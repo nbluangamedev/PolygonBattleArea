@@ -10,7 +10,7 @@ public class PlayerHealth : Health
     private Ragdoll ragdoll;
     private ActiveWeapon activeWeapon;
     private CharacterAiming aiming;
-    CameraManager cameraManager;
+    //CameraManager cameraManager;
 
     protected override void OnStart()
     {
@@ -22,7 +22,7 @@ public class PlayerHealth : Health
         ragdoll = GetComponent<Ragdoll>();
         activeWeapon = GetComponent<ActiveWeapon>();
         aiming = GetComponent<CharacterAiming>();
-        cameraManager = FindObjectOfType<CameraManager>();
+        //cameraManager = FindObjectOfType<CameraManager>();
     }
 
     protected override void OnDamage(Vector3 direction, Rigidbody rigidBody)
@@ -41,6 +41,9 @@ public class PlayerHealth : Health
         ragdoll.ApplyForce(direction, ridigBody);
         activeWeapon.DropWeapon();
         aiming.enabled = false;
-        CameraManager.Instance.EnableKillCam();
+        if (CameraManager.HasInstance)
+        {
+            CameraManager.Instance.EnableKillCam();
+        }
     }
 }

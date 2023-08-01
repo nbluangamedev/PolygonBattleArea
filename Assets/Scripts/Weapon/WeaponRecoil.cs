@@ -9,7 +9,7 @@ public class WeaponRecoil : MonoBehaviour
     [HideInInspector] public CinemachineImpulseSource cameraShake;
     [HideInInspector] public Animator rigController;
     [HideInInspector] public float recoilModifier = 1.0f;
-    
+
     public Vector2[] recoilPattern;
     public float duration;
 
