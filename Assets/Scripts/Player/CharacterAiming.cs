@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,9 +12,11 @@ public class CharacterAiming : MonoBehaviour
     public bool isAiming = false;
 
     public GameObject scopeOverlay;
-    public GameObject weaponCamera;
-
-    private float scopedFOV = 15f;
+    public CinemachineVirtualCamera weaponCamera;
+    public LayerMask defaultMask;
+    public LayerMask weaponMask;
+    public float scopedFOV = 15f;
+    
     private float normalFOV;
     private float turnSpeed;
     private float defaultRecoil;
@@ -90,9 +93,9 @@ public class CharacterAiming : MonoBehaviour
         yield return new WaitForSeconds(0.15f);
 
         scopeOverlay.SetActive(false);
-        weaponCamera.SetActive(true);
 
-        mainCamera.fieldOfView = normalFOV;
+        mainCamera.cullingMask = defaultMask;
+        weaponCamera.m_Lens.FieldOfView = normalFOV;
     }
 
     IEnumerator OnScope()
@@ -100,9 +103,10 @@ public class CharacterAiming : MonoBehaviour
         yield return new WaitForSeconds(0.15f);
 
         scopeOverlay.SetActive(true);
-        weaponCamera.SetActive(false);
 
+        mainCamera.cullingMask = weaponMask;
         normalFOV = mainCamera.fieldOfView;
-        mainCamera.fieldOfView = scopedFOV;
+        //mainCamera.fieldOfView = scopedFOV;
+        weaponCamera.m_Lens.FieldOfView = scopedFOV;
     }
 }
