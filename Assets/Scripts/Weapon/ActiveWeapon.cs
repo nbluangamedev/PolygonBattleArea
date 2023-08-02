@@ -18,10 +18,12 @@ public class ActiveWeapon : MonoBehaviour
 
     RaycastWeapon[] equippedWeapon = new RaycastWeapon[2];
     int activeWeaponIndex;
+    WeaponAnimationEvent checkExistingWeapon;
 
     private void Start()
     {
         weaponReload = GetComponent<WeaponReload>();
+        checkExistingWeapon = GetComponent<WeaponAnimationEvent>();
         RaycastWeapon existingWeapon = GetComponentInChildren<RaycastWeapon>();
         if (existingWeapon)
         {
@@ -56,14 +58,20 @@ public class ActiveWeapon : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-                SetActiveWeapon(WeaponSlot.Primary);
+                if (GetWeapon(0))
+                {
+                    SetActiveWeapon(WeaponSlot.Primary);
+                }
             }
 
             if (Input.GetKeyDown(KeyCode.Alpha2))
             {
-                SetActiveWeapon(WeaponSlot.Secondary);
+                if (GetWeapon(1))
+                {
+                    SetActiveWeapon(WeaponSlot.Secondary);
+                }
             }
-        }        
+        }
     }
 
     public bool IsFiring()
@@ -101,6 +109,12 @@ public class ActiveWeapon : MonoBehaviour
             currentWeapon.transform.SetParent(null);
             currentWeapon.gameObject.GetComponent<BoxCollider>().enabled = true;
             currentWeapon.gameObject.AddComponent<Rigidbody>();
+
+            foreach (Transform child in currentWeapon.transform)
+            {
+                child.gameObject.layer = LayerMask.NameToLayer("Default");
+            }
+
             equippedWeapon[activeWeaponIndex] = null;
         }
     }
@@ -111,7 +125,8 @@ public class ActiveWeapon : MonoBehaviour
         var weapon = GetWeapon(weaponSlotIndex);
         if (weapon)
         {
-            Destroy(weapon.gameObject);
+            //Destroy(weapon.gameObject);
+            DropWeapon();
         }
 
         weapon = newWeapon;
@@ -151,6 +166,7 @@ public class ActiveWeapon : MonoBehaviour
         {
             holsterIndex = -1;
         }
+
         StartCoroutine(SwitchWeapon(holsterIndex, activateIndex));
     }
 

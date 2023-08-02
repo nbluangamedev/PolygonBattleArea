@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 using static UnityEngine.Rendering.DebugUI;
 
 public class RaycastWeapon : MonoBehaviour
@@ -96,7 +97,7 @@ public class RaycastWeapon : MonoBehaviour
         Vector3 velocity = (target - raycastOrigin.position).normalized * bulletSpeed;
         var bullet = ObjectPool.Instance.GetPoolObject();
         bullet.Active(raycastOrigin.position, velocity);
-        
+
         recoil.GenerateRecoil(weaponName);
     }
 
@@ -119,36 +120,82 @@ public class RaycastWeapon : MonoBehaviour
 
     private void RaycastSegment(Vector3 start, Vector3 end, Bullet bullet)
     {
-        Vector3 direction = end - start;
-        float distance = direction.magnitude;
-        ray.origin = start;
-        ray.direction = direction;
-
-        if (Physics.Raycast(ray, out hitInfo, distance))
+        if(weaponName != "Shotgun")
         {
-            hitEffect.transform.position = hitInfo.point;
-            hitEffect.transform.forward = hitInfo.normal;
-            hitEffect.Emit(1);
+            Vector3 direction = end - start;
+            float distance = direction.magnitude;
+            ray.origin = start;
+            ray.direction = direction;
 
-            bullet.transform.position = hitInfo.point;
-            bullet.time = maxLifetime;
-
-            var rb = hitInfo.collider.GetComponent<Rigidbody>();
-            if (rb)
+            if (Physics.Raycast(ray, out hitInfo, distance))
             {
-                rb.AddForceAtPosition(ray.direction * forceBullet, hitInfo.point, ForceMode.Impulse);
+                hitEffect.transform.position = hitInfo.point;
+                hitEffect.transform.forward = hitInfo.normal;
+                hitEffect.Emit(1);
+
+                bullet.transform.position = hitInfo.point;
+                bullet.time = maxLifetime;
+
+                var rb = hitInfo.collider.GetComponent<Rigidbody>();
+                if (rb)
+                {
+                    rb.AddForceAtPosition(ray.direction * forceBullet, hitInfo.point, ForceMode.Impulse);
+                }
+
+                var hitBox = hitInfo.collider.GetComponent<HitBox>();
+                if (hitBox)
+                {
+                    hitBox.OnHit(this, ray.direction);
+                }
             }
-
-            var hitBox = hitInfo.collider.GetComponent<HitBox>();
-            if (hitBox)
+            else
             {
-                hitBox.OnHit(this, ray.direction);
+                bullet.transform.position = end;
             }
         }
         else
         {
-            bullet.transform.position = end;
+            for(int i = 0; i < 5; i++)
+            {
+                var BulletRotationPrecision = end;
+                BulletRotationPrecision.x += Random.Range(-1, 1);
+                BulletRotationPrecision.y += Random.Range(-1, 1);
+                BulletRotationPrecision.z += Random.Range(-1, 1);
+                //ShotErrorProbability = ShotErrorProbability + 5 * LossOfAccuracyPerShot;
+
+                Vector3 direction = end - start;
+                float distance = direction.magnitude;
+                ray.origin = start;
+                ray.direction = direction;
+
+                if (Physics.Raycast(ray, out hitInfo, distance))
+                {
+                    hitEffect.transform.position = hitInfo.point;
+                    hitEffect.transform.forward = hitInfo.normal;
+                    hitEffect.Emit(1);
+
+                    bullet.transform.position = hitInfo.point;
+                    bullet.time = maxLifetime;
+
+                    var rb = hitInfo.collider.GetComponent<Rigidbody>();
+                    if (rb)
+                    {
+                        rb.AddForceAtPosition(ray.direction * forceBullet, hitInfo.point, ForceMode.Impulse);
+                    }
+
+                    var hitBox = hitInfo.collider.GetComponent<HitBox>();
+                    if (hitBox)
+                    {
+                        hitBox.OnHit(this, ray.direction);
+                    }
+                }
+                else
+                {
+                    bullet.transform.position = end;
+                }
+            }
         }
+        
     }
 
     private void DestroyBullets()

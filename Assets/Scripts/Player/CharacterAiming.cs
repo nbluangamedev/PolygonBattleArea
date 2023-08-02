@@ -16,7 +16,7 @@ public class CharacterAiming : MonoBehaviour
     public LayerMask defaultMask;
     public LayerMask weaponMask;
     public float scopedFOV = 15f;
-    
+
     private float normalFOV;
     private float turnSpeed;
     private float defaultRecoil;
@@ -48,6 +48,35 @@ public class CharacterAiming : MonoBehaviour
         var weapon = activeWeapon.GetActiveWeapon();
         bool canAim = !activeWeapon.isHolstered && !activeWeapon.weaponReload.isReloading;
 
+        if (isAiming)
+        {
+            if (Input.GetKeyDown(KeyCode.R) || weapon.ammoCount <= 0)
+            {
+                UnScopeAndAim(weapon);
+            }
+
+            if (Input.GetKeyDown(KeyCode.X))
+            {
+                UnScopeAndAim(weapon);
+            }
+
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                if (activeWeapon.isChangingWeapon)
+                {
+                    UnScopeAndAim(weapon);
+                }
+            }
+
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                if (activeWeapon.isChangingWeapon)
+                {
+                    UnScopeAndAim(weapon);
+                }
+            }
+        }
+
         if (weapon && canAim)
         {
             if (Input.GetMouseButtonDown(1))
@@ -55,13 +84,15 @@ public class CharacterAiming : MonoBehaviour
                 if (weapon.weaponName.Equals("Sniper"))
                 {
                     isAiming = !isAiming;
-                    animator.SetBool(isAimingParameter, isAiming);
 
                     if (isAiming)
                     {
                         StartCoroutine(OnScope());
                     }
-                    else StartCoroutine(UnScope());
+                    else
+                    {
+                        StartCoroutine(UnScope());
+                    }
                 }
                 else if (weapon.weaponName.Equals("Shotgun"))
                 {
@@ -69,12 +100,30 @@ public class CharacterAiming : MonoBehaviour
                 }
                 else
                 {
-                    isAiming = !isAiming;
-                    animator.SetBool(isAimingParameter, isAiming);
-                    weapon.recoil.recoilModifier = isAiming ? aimRecoil : defaultRecoil;
+                    UnAiming(weapon);
                 }
             }
         }
+    }
+
+    private void UnScopeAndAim(RaycastWeapon weapon)
+    {
+        if (weapon.weaponName.Equals("Sniper"))
+        {
+            StartCoroutine(UnScope());
+        }
+        else
+        {
+            UnAiming(weapon);
+        }
+    }
+
+    private void UnAiming(RaycastWeapon weapon)
+    {
+        isAiming = !isAiming;
+        animator.SetBool(isAimingParameter, isAiming);
+        weaponCamera.m_Lens.FieldOfView = isAiming ? 25 : 60;
+        weapon.recoil.recoilModifier = isAiming ? aimRecoil : defaultRecoil;
     }
 
     void FixedUpdate()
@@ -90,23 +139,24 @@ public class CharacterAiming : MonoBehaviour
 
     IEnumerator UnScope()
     {
-        yield return new WaitForSeconds(0.15f);
+        yield return new WaitForSeconds(0.1f);
 
         scopeOverlay.SetActive(false);
 
         mainCamera.cullingMask = defaultMask;
+
         weaponCamera.m_Lens.FieldOfView = normalFOV;
     }
 
     IEnumerator OnScope()
     {
-        yield return new WaitForSeconds(0.15f);
+        yield return new WaitForSeconds(0.1f);
 
         scopeOverlay.SetActive(true);
 
         mainCamera.cullingMask = weaponMask;
         normalFOV = mainCamera.fieldOfView;
-        //mainCamera.fieldOfView = scopedFOV;
+
         weaponCamera.m_Lens.FieldOfView = scopedFOV;
     }
 }
