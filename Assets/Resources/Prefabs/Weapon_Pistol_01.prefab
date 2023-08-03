@@ -403,7 +403,7 @@ MonoBehaviour:
   equipWeaponBy: 0
   weaponSlot: 1
   isFiring: 0
-  fireRate: 2
+  fireRate: 3
   bulletSpeed: 500
   bulletDrop: 0
   muzzleFlash:
@@ -419,8 +419,8 @@ MonoBehaviour:
   recoil: {fileID: 0}
   magazine: {fileID: 2054690038695303234}
   forceBullet: 1
-  ammoCount: 50
-  clipSize: 50
+  ammoCount: 20
+  clipSize: 20
   damage: 10
   overrideAnimator: {fileID: 22100000, guid: 1bb80f148a11a7e45b772a1cf0ef8205, type: 2}
 --- !u!114 &4245193159445016210

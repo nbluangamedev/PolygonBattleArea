@@ -106,7 +106,7 @@ public class CharacterAiming : MonoBehaviour
         }
     }
 
-    private void UnScopeAndAim(RaycastWeapon weapon)
+    public void UnScopeAndAim(RaycastWeapon weapon)
     {
         if (weapon.weaponName.Equals("Sniper"))
         {

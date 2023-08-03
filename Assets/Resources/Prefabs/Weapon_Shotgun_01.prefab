@@ -319,7 +319,7 @@ MonoBehaviour:
   equipWeaponBy: 0
   weaponSlot: 0
   isFiring: 0
-  fireRate: 1
+  fireRate: 2
   bulletSpeed: 1000
   bulletDrop: 0
   muzzleFlash:

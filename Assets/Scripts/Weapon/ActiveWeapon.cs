@@ -1,7 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Cinemachine;
 
 public class ActiveWeapon : MonoBehaviour
 {
@@ -18,12 +16,14 @@ public class ActiveWeapon : MonoBehaviour
 
     RaycastWeapon[] equippedWeapon = new RaycastWeapon[2];
     int activeWeaponIndex;
-    WeaponAnimationEvent checkExistingWeapon;
+    //Ray rayPickupWeapon;
+    //RaycastHit hitBoxCollider;
+    //Camera mainCamera;
 
     private void Start()
     {
+        //mainCamera = Camera.main;
         weaponReload = GetComponent<WeaponReload>();
-        checkExistingWeapon = GetComponent<WeaponAnimationEvent>();
         RaycastWeapon existingWeapon = GetComponentInChildren<RaycastWeapon>();
         if (existingWeapon)
         {
@@ -71,8 +71,27 @@ public class ActiveWeapon : MonoBehaviour
                     SetActiveWeapon(WeaponSlot.Secondary);
                 }
             }
+
+            //if (Input.GetKeyDown(KeyCode.G))
+            //{
+            //    TriggerBoxCollider();
+            //}
         }
     }
+
+    //private void TriggerBoxCollider()
+    //{
+    //    rayPickupWeapon.origin = mainCamera.transform.position;
+    //    rayPickupWeapon.direction = mainCamera.transform.forward;
+
+    //    Debug.DrawLine(rayPickupWeapon.origin, rayPickupWeapon.direction, Color.red);
+
+    //    if (Physics.Raycast(rayPickupWeapon, out hitBoxCollider, 100f, LayerMask.NameToLayer("Weapon")))
+    //    {
+    //        if(hitBoxCollider.collider.GetComponent<BoxCollider>());
+    //            hitBoxCollider.collider.isTrigger = true;
+    //    }
+    //}
 
     public bool IsFiring()
     {
@@ -109,12 +128,11 @@ public class ActiveWeapon : MonoBehaviour
             currentWeapon.transform.SetParent(null);
             currentWeapon.gameObject.GetComponent<BoxCollider>().enabled = true;
             currentWeapon.gameObject.AddComponent<Rigidbody>();
-
+            currentWeapon.gameObject.AddComponent<WeaponPickup>().weaponPrefab = currentWeapon;
             foreach (Transform child in currentWeapon.transform)
             {
                 child.gameObject.layer = LayerMask.NameToLayer("Default");
             }
-
             equippedWeapon[activeWeaponIndex] = null;
         }
     }
