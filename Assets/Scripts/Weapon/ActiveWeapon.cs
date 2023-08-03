@@ -128,7 +128,7 @@ public class ActiveWeapon : MonoBehaviour
             currentWeapon.transform.SetParent(null);
             currentWeapon.gameObject.GetComponent<BoxCollider>().enabled = true;
             currentWeapon.gameObject.AddComponent<Rigidbody>();
-            currentWeapon.gameObject.AddComponent<WeaponPickup>().weaponPrefab = currentWeapon;
+            //currentWeapon.gameObject.AddComponent<WeaponPickup>().weaponPrefab = currentWeapon;
             foreach (Transform child in currentWeapon.transform)
             {
                 child.gameObject.layer = LayerMask.NameToLayer("Default");

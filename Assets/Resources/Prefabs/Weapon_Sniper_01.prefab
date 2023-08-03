@@ -103,7 +103,7 @@ MonoBehaviour:
   raycastOrigin: {fileID: 3172744936664121336}
   recoil: {fileID: 0}
   magazine: {fileID: 6069767782647701680}
-  forceBullet: 2
+  forceBullet: 5
   ammoCount: 10
   clipSize: 10
   damage: 100

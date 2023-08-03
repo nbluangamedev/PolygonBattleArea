@@ -68,7 +68,7 @@ public class RaycastWeapon : MonoBehaviour
     {
         if (isFiring)
         {
-            UpdateFiring(Time.deltaTime, target);
+            UpdateFiring(deltaTime, target);
         }
 
         accumulatedTime += deltaTime;
@@ -163,7 +163,7 @@ public class RaycastWeapon : MonoBehaviour
                 BulletRotationPrecision.z += Random.Range(-1, 1);
                 //ShotErrorProbability = ShotErrorProbability + 5 * LossOfAccuracyPerShot;
 
-                Vector3 direction = end - start;
+                Vector3 direction = BulletRotationPrecision - start;
                 float distance = direction.magnitude;
                 ray.origin = start;
                 ray.direction = direction;
