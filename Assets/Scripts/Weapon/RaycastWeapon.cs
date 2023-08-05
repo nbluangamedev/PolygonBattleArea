@@ -100,7 +100,6 @@ public class RaycastWeapon : MonoBehaviour
                 hitEffect.transform.position = hitInfo.point;
                 hitEffect.transform.forward = hitInfo.normal;
                 hitEffect.Emit(1);
-                //EmitBulletCasing();
 
                 bullet.transform.position = hitInfo.point;
                 bullet.time = maxLifetime;

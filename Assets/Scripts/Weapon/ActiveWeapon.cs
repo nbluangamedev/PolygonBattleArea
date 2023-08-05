@@ -12,7 +12,7 @@ public class ActiveWeapon : MonoBehaviour
     public CharacterAiming characterAiming;
     public WeaponReload weaponReload;
     public Transform crossHairTarget;
-    public Transform[] weaponSlots;    
+    public Transform[] weaponSlots;
 
     private RaycastWeapon[] equippedWeapon = new RaycastWeapon[2];
     private int activeWeaponIndex;
@@ -106,32 +106,29 @@ public class ActiveWeapon : MonoBehaviour
     public void Equip(RaycastWeapon newWeapon)
     {
         int weaponSlotIndex = (int)newWeapon.weaponSlot;
-        RaycastWeapon weapon = GetWeapon(weaponSlotIndex);
-        if (weapon)
+
+        RaycastWeapon equipWeapon = GetWeapon(weaponSlotIndex);
+
+        if (equipWeapon)
         {
-            //Destroy(weapon.gameObject);
-            GetActiveWeapon();
-            DropWeapon();
+            DropWeapon(weaponSlotIndex);
         }
 
-        weapon = newWeapon;
-        weapon.recoil.characterAiming = characterAiming;
-        weapon.recoil.rigController = rigController;
-        weapon.transform.SetParent(weaponSlots[weaponSlotIndex], false);
-        equippedWeapon[weaponSlotIndex] = weapon;
-
+        equipWeapon = newWeapon;
+        equipWeapon.recoil.characterAiming = characterAiming;
+        equipWeapon.recoil.rigController = rigController;
+        equipWeapon.transform.SetParent(weaponSlots[weaponSlotIndex], false);
+        equippedWeapon[weaponSlotIndex] = equipWeapon;
         SetActiveWeapon(newWeapon.weaponSlot);
-
         if (ListenerManager.HasInstance)
         {
-            ListenerManager.Instance.BroadCast(ListenType.UPDATE_AMMO, weapon);
+            ListenerManager.Instance.BroadCast(ListenType.UPDATE_AMMO, equipWeapon);
         }
-
     }
 
-    public void DropWeapon()
+    public void DropWeapon(int dropWeaponSlot)
     {
-        RaycastWeapon currentWeapon = GetActiveWeapon();
+        RaycastWeapon currentWeapon = GetWeapon(dropWeaponSlot);
         if (currentWeapon)
         {
             currentWeapon.transform.SetParent(null);
@@ -141,7 +138,8 @@ public class ActiveWeapon : MonoBehaviour
             {
                 child.gameObject.layer = LayerMask.NameToLayer("Default");
             }
-            equippedWeapon[activeWeaponIndex] = null;
+            equippedWeapon[dropWeaponSlot] = null;
+            Destroy(currentWeapon, 5f);
         }
     }
 
@@ -230,5 +228,5 @@ public class ActiveWeapon : MonoBehaviour
             }
         }
         isChangingWeapon = false;
-    }    
+    }
 }

@@ -11,7 +11,6 @@ public class CharacterAiming : MonoBehaviour
     public Transform cameraLookAt;
 
     private CinemachineVirtualCamera weaponCamera;
-    //private GameObject scopeOverlay;
 
     private Camera mainCamera;
     private Animator animator;
@@ -54,48 +53,50 @@ public class CharacterAiming : MonoBehaviour
         var weapon = activeWeapon.GetActiveWeapon();
         bool canAim = !activeWeapon.isHolstered && !activeWeapon.weaponReload.isReloading;
 
-        if (isAiming)
+        if (weapon && canAim)
         {
-            if (Input.GetKeyDown(KeyCode.R) || weapon.ammoCount <= 0)
-            {
-                UnScopeAndAim(weapon);
-            }
-
-            if (Input.GetKeyDown(KeyCode.X))
-            {
-                UnScopeAndAim(weapon);
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                if (activeWeapon.isChangingWeapon)
+            if (isAiming)
+            {                
+                if (Input.GetKeyDown(KeyCode.R) || weapon.ammoCount <= 0)
                 {
+                    isAiming = !isAiming;
                     UnScopeAndAim(weapon);
                 }
-            }
 
-            if (Input.GetKeyDown(KeyCode.Alpha2))
-            {
-                if (activeWeapon.isChangingWeapon)
+                if (Input.GetKeyDown(KeyCode.X))
                 {
+                    isAiming = !isAiming;
                     UnScopeAndAim(weapon);
                 }
-            }
 
-            if (Input.GetKeyDown(KeyCode.Q))
-            {
-                if (isAiming)
+                if (Input.GetKeyDown(KeyCode.Alpha1))
                 {
                     if (activeWeapon.isChangingWeapon)
                     {
+                        isAiming = !isAiming;
+                        UnScopeAndAim(weapon);
+                    }
+                }
+
+                if (Input.GetKeyDown(KeyCode.Alpha2))
+                {
+                    if (activeWeapon.isChangingWeapon)
+                    {
+                        isAiming = !isAiming;
+                        UnScopeAndAim(weapon);
+                    }
+                }
+
+                if (Input.GetKeyDown(KeyCode.Q))
+                {
+                    if (activeWeapon.isChangingWeapon)
+                    {
+                        isAiming = !isAiming;
                         UnScopeAndAim(weapon);
                     }
                 }
             }
-        }
 
-        if (weapon && canAim)
-        {
             if (Input.GetMouseButtonDown(1))
             {
                 isAiming = !isAiming;
@@ -135,10 +136,8 @@ public class CharacterAiming : MonoBehaviour
 
     public void UnScopeAndAim(RaycastWeapon weapon)
     {
-        isAiming = false;
-        normalFOV = 60f;
         if (weapon.weaponName.Equals("Sniper"))
-        {            
+        {
             StartCoroutine(UnScope());
         }
         UnAiming(weapon);
@@ -147,7 +146,7 @@ public class CharacterAiming : MonoBehaviour
     private void UnAiming(RaycastWeapon weapon)
     {
         animator.SetBool(isAimingParameter, isAiming);
-        weaponCamera.m_Lens.FieldOfView = isAiming ? 25 : 60;
+        weaponCamera.m_Lens.FieldOfView = isAiming ? 25 : normalFOV;
         weapon.recoil.recoilModifier = isAiming ? aimRecoil : defaultRecoil;
     }
 
