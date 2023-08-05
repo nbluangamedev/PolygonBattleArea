@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -38,11 +37,11 @@ public class UIManager : BaseManager<UIManager>
 
     #region Screen
 
-    private BaseScreen GetNewScreen<T>() where T: BaseScreen
+    private BaseScreen GetNewScreen<T>() where T : BaseScreen
     {
         string nameScreen = typeof(T).Name;
         GameObject pfScreen = GetUIPrefab(UIType.Screen, nameScreen);
-        if(pfScreen == null || !pfScreen.GetComponent<BaseScreen>())
+        if (pfScreen == null || !pfScreen.GetComponent<BaseScreen>())
         {
             throw new MissingReferenceException("Can not found" + nameScreen + "screen. !!!");
         }
@@ -62,7 +61,7 @@ public class UIManager : BaseManager<UIManager>
     {
         BaseScreen screenScr = null;
 
-        foreach (KeyValuePair<string, BaseScreen> item in screens) 
+        foreach (KeyValuePair<string, BaseScreen> item in screens)
         {
             screenScr = item.Value;
             if (screenScr == null || screenScr.IsHide)
@@ -108,7 +107,7 @@ public class UIManager : BaseManager<UIManager>
         string screenName = typeof(T).Name;
         BaseScreen result = null;
 
-        if(curScreen != null)
+        if (curScreen != null)
         {
             var curName = curScreen.GetType().Name;
             if (curName.Equals(screenName))
@@ -121,12 +120,12 @@ public class UIManager : BaseManager<UIManager>
             }
         }
 
-        if(result == null)
+        if (result == null)
         {
             if (!screens.ContainsKey(screenName))
             {
                 BaseScreen screenScr = GetNewScreen<T>();
-                if(screenScr != null)
+                if (screenScr != null)
                 {
                     screens.Add(screenName, screenScr);
                 }
@@ -139,7 +138,7 @@ public class UIManager : BaseManager<UIManager>
         }
 
         bool isShow = false;
-        if(result != null)
+        if (result != null)
         {
             if (forceShowData)
             {
@@ -552,7 +551,7 @@ public class UIManager : BaseManager<UIManager>
     {
         GameObject result = null;
         var defaultPath = "";
-        if(result == null)
+        if (result == null)
         {
             switch (t)
             {

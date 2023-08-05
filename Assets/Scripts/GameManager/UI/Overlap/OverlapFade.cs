@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
@@ -7,10 +5,8 @@ using System;
 
 public class OverlapFade : BaseOverlap
 {
-    [SerializeField]
-    private Image imgFade;
-    [SerializeField]
-    private Color fadeColor;
+    [SerializeField] private Image imgFade;
+    [SerializeField] private Color fadeColor;
 
     public override void Init()
     {

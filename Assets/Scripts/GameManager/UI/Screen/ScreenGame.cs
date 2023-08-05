@@ -1,11 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
+using Cinemachine;
 using TMPro;
 using UnityEngine;
 
 public class ScreenGame : BaseScreen
 {
     [SerializeField] private TextMeshProUGUI ammoText;
+    public GameObject scopeOverlay;
+    public GameObject crossHair;
 
     public override void Init()
     {
@@ -14,6 +15,7 @@ public class ScreenGame : BaseScreen
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.Register(ListenType.UPDATE_AMMO, OnUpdateAmmo);
+            ListenerManager.Instance.Register(ListenType.SCOPE, OnUpdateScope);
         }
     }
 
@@ -22,6 +24,7 @@ public class ScreenGame : BaseScreen
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.Unregister(ListenType.UPDATE_AMMO, OnUpdateAmmo);
+            ListenerManager.Instance.Unregister(ListenType.SCOPE, OnUpdateScope);
         }
     }
 
@@ -33,6 +36,15 @@ public class ScreenGame : BaseScreen
             {
                 ammoText.text = weapon.ammoCount.ToString();
             }
+        }
+    }
+
+    private void OnUpdateScope(object value)
+    {
+        if (value is bool active)
+        {
+            scopeOverlay.SetActive(active);
+            crossHair.SetActive(!active);
         }
     }
 }

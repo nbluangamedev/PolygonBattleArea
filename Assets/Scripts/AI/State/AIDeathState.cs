@@ -1,18 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AIDeathState : AIState
 {
-    private float dieForce;
-
     public Vector3 direction;
     public Rigidbody rigidbody;
+
+    private float dieForce;
 
     public AIStateID GetID()
     {
         return AIStateID.Death;
     }
+
     public void Enter(AIAgent agent)
     {
         if (DataManager.HasInstance)
@@ -24,7 +23,7 @@ public class AIDeathState : AIState
         agent.ragdoll.ApplyForce(direction * dieForce, rigidbody);
         agent.weapon.DropWeapon();
         agent.healthBar.Deactive();
-        agent.health.DestroyWhenDeath();
+        agent.aiHealth.DestroyWhenDeath();
     }
 
     public void Update(AIAgent agent)

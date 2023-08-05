@@ -4,8 +4,8 @@ using UnityEngine.AI;
 public class AIChasePlayerState : AIState
 {
     private float timer = 0f;
-    private float maxDistance;
     private float maxTime;
+    private float maxDistance;
 
     public AIStateID GetID()
     {
@@ -14,8 +14,6 @@ public class AIChasePlayerState : AIState
 
     public void Enter(AIAgent agent)
     {
-
-
         if (DataManager.HasInstance)
         {
             maxDistance = DataManager.Instance.globalConfig.maxDistance;

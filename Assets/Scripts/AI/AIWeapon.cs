@@ -1,20 +1,23 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AIWeapon : MonoBehaviour
 {
-    public float inAccurancy = 0.4f;
-
-    RaycastWeapon currentWeapon;
-    Animator animator;
-    MeshSocketController socketController;
-    WeaponIK weaponIK;
-    Transform currentTarget;
-    bool weaponActive = false;
+    private Animator animator;
+    private WeaponIK weaponIK;
+    private MeshSocketController socketController;
+    private RaycastWeapon currentWeapon;
+    private Transform currentTarget;
+    private bool weaponActive = false;
+    private float inAccurancy = 0.4f;
 
     private void Awake()
     {
+        if (DataManager.HasInstance)
+        {
+            inAccurancy = DataManager.Instance.globalConfig.inAccurancy;
+        }
+
         animator = GetComponent<Animator>();
         weaponIK = GetComponent<WeaponIK>();
         socketController = GetComponent<MeshSocketController>();
@@ -53,7 +56,7 @@ public class AIWeapon : MonoBehaviour
         StartCoroutine(EquipWeapon());
     }
 
-    IEnumerator EquipWeapon()
+    private IEnumerator EquipWeapon()
     {
         animator.runtimeAnimatorController = currentWeapon.overrideAnimator;
         animator.SetBool("equip", true);
@@ -74,7 +77,7 @@ public class AIWeapon : MonoBehaviour
         StartCoroutine(Holster());
     }
 
-    IEnumerator Holster()
+    private IEnumerator Holster()
     {
         weaponActive = false;
         animator.SetBool("equip", false);

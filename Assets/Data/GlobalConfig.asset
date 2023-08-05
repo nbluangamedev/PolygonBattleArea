@@ -14,7 +14,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxTime: 1
   maxDistance: 3
+  enemyDieForce: 0.5
   maxHealth: 100
   blinkDuration: 0.1
-  dieForce: 20
+  timeDestroyAI: 2
+  inAccurancy: 0.4
   maxSight: 5
+  gravity: 20
+  groundSpeed: 1
+  stepDown: 0.1
+  jumpHeight: 3
+  jumpDamp: 0.5
+  airControl: 2.5
+  pushPower: 2
+  animationSmoothTime: 0.15
+  defaultRecoil: 1
+  aimRecoil: 0.3
+  turnSpeed: 15
+  scopedFOV: 10
+  defaultMask:
+    serializedVersion: 2
+    m_Bits: 2039
+  weaponMask:
+    serializedVersion: 2
+    m_Bits: 1975
+  scopeOverlay: {fileID: 2287727143583154844, guid: 1b010632b5954a44db5e72a3b00da538, type: 3}
+  playerMaxHealth: 100
+  duration: 0
+  amountInPool: 30
+  loadingOverLapTime: 1

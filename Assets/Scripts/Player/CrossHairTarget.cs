@@ -1,11 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CrossHairTarget : MonoBehaviour
 {
     private Camera mainCamera;
-
     private Ray ray;
     private RaycastHit hitInfo;
 
@@ -15,7 +12,7 @@ public class CrossHairTarget : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         ray.origin = mainCamera.transform.position;
         ray.direction = mainCamera.transform.forward;

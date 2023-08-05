@@ -1,46 +1,52 @@
 using Cinemachine;
+using Sirenix.Utilities;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Animations.Rigging;
 
 public class CharacterAiming : MonoBehaviour
 {
-    public Transform cameraLookAt;
     public Cinemachine.AxisState xAxis;
     public Cinemachine.AxisState yAxis;
     public bool isAiming = false;
+    public Transform cameraLookAt;
 
-    public GameObject scopeOverlay;
-    public CinemachineVirtualCamera weaponCamera;
-    public LayerMask defaultMask;
-    public LayerMask weaponMask;
-    public float scopedFOV = 15f;
+    private CinemachineVirtualCamera weaponCamera;
+    //private GameObject scopeOverlay;
 
+    private Camera mainCamera;
+    private Animator animator;
+    private ActiveWeapon activeWeapon;
+    private LayerMask defaultMask;
+    private LayerMask weaponMask;
+    private float scopedFOV = 15f;
     private float normalFOV;
     private float turnSpeed;
     private float defaultRecoil;
     private float aimRecoil;
+    private int isAimingParameter = Animator.StringToHash("isAiming");
 
-    Camera mainCamera;
-    Animator animator;
-    ActiveWeapon activeWeapon;
-
-    int isAimingParameter = Animator.StringToHash("isAiming");
-
-    void Start()
+    private void Start()
     {
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
-        mainCamera = Camera.main;
-        animator = GetComponent<Animator>();
-        activeWeapon = GetComponent<ActiveWeapon>();
+        if (CameraManager.HasInstance)
+        {
+            weaponCamera = CameraManager.Instance.weaponCamera;
+        }
+
         if (DataManager.HasInstance)
         {
             turnSpeed = DataManager.Instance.globalConfig.turnSpeed;
             defaultRecoil = DataManager.Instance.globalConfig.defaultRecoil;
             aimRecoil = DataManager.Instance.globalConfig.aimRecoil;
+            scopedFOV = DataManager.Instance.globalConfig.scopedFOV;
+            defaultMask = DataManager.Instance.globalConfig.defaultMask;
+            weaponMask = DataManager.Instance.globalConfig.weaponMask;
         }
+
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        mainCamera = Camera.main;
+        animator = GetComponent<Animator>();
+        activeWeapon = GetComponent<ActiveWeapon>();
     }
 
     private void Update()
@@ -75,16 +81,26 @@ public class CharacterAiming : MonoBehaviour
                     UnScopeAndAim(weapon);
                 }
             }
+
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                if (isAiming)
+                {
+                    if (activeWeapon.isChangingWeapon)
+                    {
+                        UnScopeAndAim(weapon);
+                    }
+                }
+            }
         }
 
         if (weapon && canAim)
         {
             if (Input.GetMouseButtonDown(1))
             {
+                isAiming = !isAiming;
                 if (weapon.weaponName.Equals("Sniper"))
                 {
-                    isAiming = !isAiming;
-
                     if (isAiming)
                     {
                         StartCoroutine(OnScope());
@@ -94,7 +110,7 @@ public class CharacterAiming : MonoBehaviour
                         StartCoroutine(UnScope());
                     }
                 }
-                else if (weapon.weaponName.Equals("Shotgun"))
+                if (weapon.weaponName.Equals("Shotgun"))
                 {
                     return;
                 }
@@ -106,27 +122,7 @@ public class CharacterAiming : MonoBehaviour
         }
     }
 
-    public void UnScopeAndAim(RaycastWeapon weapon)
-    {
-        if (weapon.weaponName.Equals("Sniper"))
-        {
-            StartCoroutine(UnScope());
-        }
-        else
-        {
-            UnAiming(weapon);
-        }
-    }
-
-    private void UnAiming(RaycastWeapon weapon)
-    {
-        isAiming = !isAiming;
-        animator.SetBool(isAimingParameter, isAiming);
-        weaponCamera.m_Lens.FieldOfView = isAiming ? 25 : 60;
-        weapon.recoil.recoilModifier = isAiming ? aimRecoil : defaultRecoil;
-    }
-
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         xAxis.Update(Time.fixedDeltaTime);
         yAxis.Update(Time.fixedDeltaTime);
@@ -137,22 +133,46 @@ public class CharacterAiming : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, yawCamera, 0), turnSpeed * Time.fixedDeltaTime);
     }
 
-    IEnumerator UnScope()
+    public void UnScopeAndAim(RaycastWeapon weapon)
+    {
+        isAiming = false;
+        normalFOV = 60f;
+        if (weapon.weaponName.Equals("Sniper"))
+        {            
+            StartCoroutine(UnScope());
+        }
+        UnAiming(weapon);
+    }
+
+    private void UnAiming(RaycastWeapon weapon)
+    {
+        animator.SetBool(isAimingParameter, isAiming);
+        weaponCamera.m_Lens.FieldOfView = isAiming ? 25 : 60;
+        weapon.recoil.recoilModifier = isAiming ? aimRecoil : defaultRecoil;
+    }
+
+    private IEnumerator UnScope()
     {
         yield return new WaitForSeconds(0.1f);
 
-        scopeOverlay.SetActive(false);
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.BroadCast(ListenType.SCOPE, isAiming);
+        }
 
         mainCamera.cullingMask = defaultMask;
 
         weaponCamera.m_Lens.FieldOfView = normalFOV;
     }
 
-    IEnumerator OnScope()
+    private IEnumerator OnScope()
     {
         yield return new WaitForSeconds(0.1f);
 
-        scopeOverlay.SetActive(true);
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.BroadCast(ListenType.SCOPE, isAiming);
+        }
 
         mainCamera.cullingMask = weaponMask;
         normalFOV = mainCamera.fieldOfView;

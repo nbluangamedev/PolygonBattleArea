@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AIFindWeaponState : AIState
@@ -34,7 +32,7 @@ public class AIFindWeaponState : AIState
         WeaponPickup[] weapons = Object.FindObjectsOfType<WeaponPickup>();
         WeaponPickup closestWeapon = null;
         float closestDistance = float.MaxValue;
-        foreach(var weapon in weapons)
+        foreach (var weapon in weapons)
         {
             float distanceToWeapon = Vector3.Distance(agent.transform.position, weapon.transform.position);
             if (distanceToWeapon < closestDistance)

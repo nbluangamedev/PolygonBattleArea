@@ -1,9 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.SceneManagement;
-using TMPro;
-
 public class ScreenHome : BaseScreen
 {
     public override void Show(object data)
@@ -16,14 +10,6 @@ public class ScreenHome : BaseScreen
         base.Hide();
     }
 
-    public void OnClickPopupSetting()
-    {
-        if (UIManager.HasInstance)
-        {
-            UIManager.Instance.ShowPopup<PopupSetting>();
-        }
-    }
-
     public void StartGame()
     {
         if (UIManager.HasInstance)
@@ -31,5 +17,13 @@ public class ScreenHome : BaseScreen
             UIManager.Instance.ShowNotify<NotifyLoadingGame>();
         }
         this.Hide();
+    }
+
+    public void OnClickPopupSetting()
+    {
+        if (UIManager.HasInstance)
+        {
+            UIManager.Instance.ShowPopup<PopupSetting>();
+        }
     }
 }

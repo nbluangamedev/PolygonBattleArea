@@ -1,16 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WeaponReload : MonoBehaviour
 {
-    public Animator rigController;
     public WeaponAnimationEvent animationEvents;
+    public Animator rigController;
     public ActiveWeapon activeWeapon;
     public Transform leftHand;
     public bool isReloading;
 
-    GameObject magazineHand;
+    private GameObject magazineHand;
 
     private void Start()
     {
@@ -30,7 +28,7 @@ public class WeaponReload : MonoBehaviour
         }
     }
 
-    void OnAnimationEvent(string eventName)
+    private void OnAnimationEvent(string eventName)
     {
         switch (eventName)
         {
@@ -49,26 +47,28 @@ public class WeaponReload : MonoBehaviour
         }
     }
 
-    void DetachMagazine()
+    private void DetachMagazine()
     {
         RaycastWeapon weapon = activeWeapon.GetActiveWeapon();
         magazineHand = Instantiate(weapon.magazine, leftHand, true);
         weapon.magazine.SetActive(false);
     }
 
-    void DropMagazine()
+    private void DropMagazine()
     {
         GameObject droppedMagazine = Instantiate(magazineHand, magazineHand.transform.position, magazineHand.transform.rotation);
         droppedMagazine.transform.localScale = Vector3.one;
         droppedMagazine.AddComponent<Rigidbody>();
         droppedMagazine.AddComponent<BoxCollider>();
         magazineHand.SetActive(false);
+        Destroy(droppedMagazine, 5f);
+        droppedMagazine.hideFlags = HideFlags.HideInHierarchy;
     }
-    void RefillMagazine()
+    private void RefillMagazine()
     {
         magazineHand.SetActive(true);
     }
-    void AttachMagazine()
+    private void AttachMagazine()
     {
         RaycastWeapon weapon = activeWeapon.GetActiveWeapon();
         weapon.magazine.SetActive(true);

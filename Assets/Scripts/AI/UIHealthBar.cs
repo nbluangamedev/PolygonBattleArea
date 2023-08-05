@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,8 +8,7 @@ public class UIHealthBar : MonoBehaviour
 
     private Transform target;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         canvas.worldCamera = Camera.main;
         target = Camera.main.transform;

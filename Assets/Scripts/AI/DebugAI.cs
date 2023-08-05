@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -11,7 +9,7 @@ public class DebugAI : MonoBehaviour
     public Color pathColor;
     private NavMeshAgent agent;
 
-    void Start()
+    private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
     }

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 
@@ -11,12 +9,12 @@ public class WeaponRecoil : MonoBehaviour
     [HideInInspector] public float recoilModifier = 1.0f;
 
     public Vector2[] recoilPattern;
-    public float duration;
 
-    float verticalRecoil;
-    float horizontalRecoil;
-    float time;
-    int index;
+    private float duration;
+    private float verticalRecoil;
+    private float horizontalRecoil;
+    private float time;
+    private int index;
     private int recoilLayerIndex = -1;
 
     private void Awake()
@@ -26,15 +24,25 @@ public class WeaponRecoil : MonoBehaviour
 
     private void Start()
     {
+        if (DataManager.HasInstance)
+        {
+            duration = DataManager.Instance.globalConfig.duration;
+        }
+
         if (rigController)
         {
             recoilLayerIndex = rigController.GetLayerIndex("Recoil Layer");
         }
     }
 
-    public void Reset()
+    private void Update()
     {
-        index = 0;
+        if (time > 0)
+        {
+            characterAiming.yAxis.Value -= (((verticalRecoil / 10) * Time.deltaTime) / duration) * recoilModifier;
+            characterAiming.xAxis.Value -= (((horizontalRecoil / 10) * Time.deltaTime) / duration) * recoilModifier;
+            time -= Time.deltaTime;
+        }
     }
 
     public void GenerateRecoil(string weaponName)
@@ -54,18 +62,13 @@ public class WeaponRecoil : MonoBehaviour
         }
     }
 
-    int NextIndex(int index)
+    public void Reset()
     {
-        return (index + 1) % recoilPattern.Length;
+        index = 0;
     }
 
-    private void Update()
+    private int NextIndex(int index)
     {
-        if (time > 0)
-        {
-            characterAiming.yAxis.Value -= (((verticalRecoil / 10) * Time.deltaTime) / duration) * recoilModifier;
-            characterAiming.xAxis.Value -= (((horizontalRecoil / 10) * Time.deltaTime) / duration) * recoilModifier;
-            time -= Time.deltaTime;
-        }
+        return (index + 1) % recoilPattern.Length;
     }
 }

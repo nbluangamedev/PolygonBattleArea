@@ -7,8 +7,8 @@ public class AIAgent : MonoBehaviour
     public AIStateID initState;
     public NavMeshAgent navMeshAgent;
     public Ragdoll ragdoll;
+    public AIHealth aiHealth;
     public UIHealthBar healthBar;
-    public AIHealth health;
     public Transform playerTransform;
 
     [HideInInspector] public AIWeapon weapon;
@@ -22,9 +22,10 @@ public class AIAgent : MonoBehaviour
 
         navMeshAgent = GetComponent<NavMeshAgent>();
         ragdoll = GetComponent<Ragdoll>();
-        health = GetComponent<AIHealth>();
+        aiHealth = GetComponent<AIHealth>();
         healthBar = GetComponentInChildren<UIHealthBar>();
         weapon = GetComponent<AIWeapon>();
+
         stateMachine = new AIStateMachine(this);
         stateMachine.RegisterState(new AIChasePlayerState());
         stateMachine.RegisterState(new AIDeathState());

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BaseUIElement : MonoBehaviour
@@ -7,10 +5,11 @@ public class BaseUIElement : MonoBehaviour
     protected CanvasGroup canvasGroup;
     protected UIType uiType = UIType.Unknow;
     protected bool isHide;
-    private bool isInited;
-
-    public bool IsInited => isInited;
     public bool IsHide => isHide;
+
+    private bool isInited;
+    public bool IsInited => isInited;
+
     public CanvasGroup CanvasGroup => canvasGroup;
     public UIType UIType => uiType;
 
