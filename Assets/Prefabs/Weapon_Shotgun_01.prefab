@@ -339,7 +339,7 @@ MonoBehaviour:
   ammoCount: 8
   clipSize: 8
   damage: 15
-  BulletCasingPrefab: {fileID: 3525363408539371240, guid: 646dbef2eecbba041bde7b716db6d7e2, type: 3}
+  BulletCasingPrefab: {fileID: 1076261940137426, guid: 96631445180422140bb3de3e846561d6, type: 3}
   GunSlider: {fileID: 2886826341630675307}
   overrideAnimator: {fileID: 0}
 --- !u!114 &-4924447125473106102

@@ -8,7 +8,11 @@ public class WeaponPickup : MonoBehaviour
     {
         ActiveWeapon activeWeapon = other.gameObject.GetComponent<ActiveWeapon>();
         if (activeWeapon)
-        {            
+        {
+            if (activeWeapon.characterAiming.isAiming)
+            {
+                activeWeapon.characterAiming.UnScopeAndAim(activeWeapon.GetActiveWeapon());
+            }
             RaycastWeapon newWeapon = Instantiate(weaponPrefab);
             newWeapon.equipWeaponBy = EquipWeaponBy.Player;
             activeWeapon.Equip(newWeapon);

@@ -3,7 +3,7 @@ using UnityEngine;
 public class RaycastWeapon : MonoBehaviour
 {
     public LayerMask layerMask;
-    
+
     public EquipWeaponBy equipWeaponBy;
     public WeaponSlot weaponSlot;
     public bool isFiring = false;
@@ -88,7 +88,7 @@ public class RaycastWeapon : MonoBehaviour
 
     private void RaycastSegment(Vector3 start, Vector3 end, Bullet bullet)
     {
-        if(weaponName != "Shotgun")
+        if (weaponName != "Shotgun")
         {
             Vector3 direction = end - start;
             float distance = direction.magnitude;
@@ -123,7 +123,7 @@ public class RaycastWeapon : MonoBehaviour
         }
         else
         {
-            for(int i = 0; i < 6; i++)
+            for (int i = 0; i < 6; i++)
             {
                 var BulletRotationPrecision = end;
                 BulletRotationPrecision.x += Random.Range(-lossOfAccuracyPerShot, lossOfAccuracyPerShot);
@@ -162,7 +162,7 @@ public class RaycastWeapon : MonoBehaviour
                 }
             }
         }
-        
+
     }
 
     private void SimulateBullets(float deltaTime)
@@ -193,7 +193,13 @@ public class RaycastWeapon : MonoBehaviour
         {
             p.Emit(1);
         }
+
         EmitBulletCasing();
+
+        if (this.weaponName.Equals("Sniper") && ammoCount > 0)
+        {
+            recoil.rigController.Play("sniperPullBolt");
+        }
 
         Vector3 velocity = (target - raycastOrigin.position).normalized * bulletSpeed;
         var bullet = ObjectPool.Instance.GetPoolObject();

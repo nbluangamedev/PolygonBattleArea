@@ -31,7 +31,9 @@ MonoBehaviour:
   defaultRecoil: 1
   aimRecoil: 0.3
   turnSpeed: 15
+  normalFOV: 60
   scopedFOV: 10
+  aimFOV: 25
   defaultMask:
     serializedVersion: 2
     m_Bits: 2039
@@ -40,6 +42,7 @@ MonoBehaviour:
     m_Bits: 1975
   scopeOverlay: {fileID: 2287727143583154844, guid: 1b010632b5954a44db5e72a3b00da538, type: 3}
   playerMaxHealth: 100
+  lossOfAccuracyPerShot: 1
   duration: 0
   amountInPool: 30
   loadingOverLapTime: 1

@@ -37,7 +37,9 @@ public class GlobalConfig : ScriptableObject
     public float defaultRecoil = 1f;
     public float aimRecoil = 0.3f;
     public float turnSpeed = 15f;
+    public float normalFOV = 15f;
     public float scopedFOV = 15f;
+    public float aimFOV = 25f;
     public LayerMask defaultMask;
     public LayerMask weaponMask;
     public GameObject scopeOverlay;

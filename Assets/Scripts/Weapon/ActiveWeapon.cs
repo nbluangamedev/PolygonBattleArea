@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ActiveWeapon : MonoBehaviour
 {
-    //public WeaponSlot weaponSlot;
+    public WeaponSlot weaponSlot;
 
     public bool canFire;
     public bool isChangingWeapon;
@@ -133,11 +133,11 @@ public class ActiveWeapon : MonoBehaviour
         {
             currentWeapon.transform.SetParent(null);
             currentWeapon.gameObject.GetComponent<BoxCollider>().enabled = true;
-            currentWeapon.gameObject.AddComponent<Rigidbody>();
             foreach (Transform child in currentWeapon.transform)
             {
                 child.gameObject.layer = LayerMask.NameToLayer("Default");
             }
+            currentWeapon.gameObject.AddComponent<Rigidbody>();
             equippedWeapon[dropWeaponSlot] = null;
             Destroy(currentWeapon, 5f);
         }

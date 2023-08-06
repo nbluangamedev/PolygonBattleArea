@@ -38,7 +38,7 @@ public class PlayerHealth : Health
         ragdoll.ActiveRagdoll();
         direction.y = 1f;
         ragdoll.ApplyForce(direction, ridigBody);
-        activeWeapon.DropWeapon((int)activeWeapon.GetActiveWeapon().weaponSlot);
+        activeWeapon?.DropWeapon((int)activeWeapon.GetActiveWeapon().weaponSlot);
         aiming.enabled = false;
         if (CameraManager.HasInstance)
         {
