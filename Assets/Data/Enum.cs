@@ -30,8 +30,9 @@ public enum AIStateID
 public enum SocketID
 {
     Spine,
-    RightHand,
-    LeftHand
+    RightHandRifle,
+    RightHandPistol,
+    Hip
 }
 
 public enum WeaponSlot
@@ -44,4 +45,13 @@ public enum EquipWeaponBy
 {
     Player,
     AI
+}
+
+public enum WeaponState
+{
+    Holstering,
+    Holstered,
+    Activating,
+    Active,
+    Reloading
 }

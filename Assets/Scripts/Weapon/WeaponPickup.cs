@@ -24,9 +24,7 @@ public class WeaponPickup : MonoBehaviour
         {
             RaycastWeapon newWeapon = Instantiate(weaponPrefab);
             newWeapon.equipWeaponBy = EquipWeaponBy.AI;
-            aiWeapon.Equip(newWeapon);
-            SphereCollider sphereCollider = aiWeapon.gameObject.GetComponent<SphereCollider>();
-            Destroy(sphereCollider);
+            aiWeapon.Equip(newWeapon);            
             Destroy(gameObject);
         }
     }

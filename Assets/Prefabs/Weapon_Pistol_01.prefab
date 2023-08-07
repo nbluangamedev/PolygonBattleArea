@@ -401,9 +401,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cd427bf719cc0c459c3ab4ee4e20b15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 1025
   equipWeaponBy: 0
   weaponSlot: 1
   isFiring: 0
@@ -422,10 +419,14 @@ MonoBehaviour:
   forceBullet: 1
   ammoCount: 20
   clipSize: 20
-  damage: 10
+  damage: 1
   BulletCasingPrefab: {fileID: 3525363408539371240, guid: 646dbef2eecbba041bde7b716db6d7e2, type: 3}
   GunSlider: {fileID: 3645663858191130892}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1025
   overrideAnimator: {fileID: 22100000, guid: 1bb80f148a11a7e45b772a1cf0ef8205, type: 2}
+  test: {fileID: 0}
 --- !u!114 &4245193159445016210
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -521,6 +522,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3172744936664121336}
+  - component: {fileID: 780767085784124968}
   m_Layer: 0
   m_Name: RaycastOrigin
   m_TagString: Untagged
@@ -543,6 +545,18 @@ Transform:
   m_Father: {fileID: 3172744936653632962}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &780767085784124968
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3172744936664121319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1af51bbb9ac38f42bd401fe326125b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3700994830957412173
 GameObject:
   m_ObjectHideFlags: 0

@@ -35,10 +35,14 @@ public class PlayerHealth : Health
 
     protected override void OnDeath(Vector3 direction, Rigidbody ridigBody)
     {
+        RaycastWeapon weapon = activeWeapon.GetActiveWeapon();
         ragdoll.ActiveRagdoll();
         direction.y = 1f;
         ragdoll.ApplyForce(direction, ridigBody);
-        activeWeapon?.DropWeapon((int)activeWeapon.GetActiveWeapon().weaponSlot);
+        if (weapon)
+        {
+            activeWeapon.DropWeapon((int)activeWeapon.GetActiveWeapon().weaponSlot);
+        }
         aiming.enabled = false;
         if (CameraManager.HasInstance)
         {

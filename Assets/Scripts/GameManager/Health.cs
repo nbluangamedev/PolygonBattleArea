@@ -30,7 +30,7 @@ public class Health : MonoBehaviour
 
     private void Setup()
     {
-        var rigidBodies = GetComponentsInChildren<Rigidbody>();
+        Rigidbody[] rigidBodies = GetComponentsInChildren<Rigidbody>();
         foreach (var rigidBody in rigidBodies)
         {
             HitBox hitBox = rigidBody.gameObject.AddComponent<HitBox>();

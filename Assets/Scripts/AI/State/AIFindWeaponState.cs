@@ -16,9 +16,14 @@ public class AIFindWeaponState : AIState
 
     public void Update(AIAgent agent)
     {
-        if (agent.weapon.HasWeapon())
+        if (agent.weapon.CountWeapon() == 2)
         {
             agent.stateMachine.ChangeState(AIStateID.Attack);
+        }
+        else
+        {
+            WeaponPickup pickup = FindClosestWeapon(agent);
+            agent.navMeshAgent.destination = pickup.transform.position;
         }
     }
 

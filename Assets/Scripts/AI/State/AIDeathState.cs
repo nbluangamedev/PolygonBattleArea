@@ -18,8 +18,10 @@ public class AIDeathState : AIState
         {
             dieForce = DataManager.Instance.globalConfig.enemyDieForce;
         }
+        agent.weapon.SetTarget(null);
+        agent.navMeshAgent.enabled = false;
         agent.ragdoll.ActiveRagdoll();
-        direction.y = 1f;
+        direction.y = 2f;
         agent.ragdoll.ApplyForce(direction * dieForce, rigidbody);
         agent.weapon.DropWeapon();
         agent.healthBar.Deactive();

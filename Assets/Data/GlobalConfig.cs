@@ -9,6 +9,7 @@ public class GlobalConfig : ScriptableObject
     public float maxTime = 1.0f;
     public float maxDistance = 1.0f;
     public float enemyDieForce = .5f;
+    public float closeRange = 7.0f;
 
     [Header("Health")]
     public float maxHealth = 100f;
@@ -16,7 +17,8 @@ public class GlobalConfig : ScriptableObject
     public float timeDestroyAI = 2f;
 
     [Header("Weapon")]
-    public float inAccurancy = 0.4f;
+    public float inAccuracy = 0.4f;
+    public float inAccuracySniper = 2f;
 
     public float maxSight = 5.0f;
 

@@ -146,6 +146,7 @@ public class CharacterAiming : MonoBehaviour
             StartCoroutine(UnScope());
         }
         UnAiming(weapon);
+        isAiming = false;
     }
 
     private void UnAiming(RaycastWeapon weapon)

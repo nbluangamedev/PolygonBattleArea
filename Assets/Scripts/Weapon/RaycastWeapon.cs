@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class RaycastWeapon : MonoBehaviour
 {
-    public LayerMask layerMask;
-
     public EquipWeaponBy equipWeaponBy;
     public WeaponSlot weaponSlot;
     public bool isFiring = false;
@@ -24,7 +22,9 @@ public class RaycastWeapon : MonoBehaviour
     public GameObject BulletCasingPrefab;
     public Transform GunSlider;
 
+    public LayerMask layerMask;
     public RuntimeAnimatorController overrideAnimator;
+    public Animation test;
 
     private Ray ray;
     private RaycastHit hitInfo;
@@ -95,7 +95,7 @@ public class RaycastWeapon : MonoBehaviour
             ray.origin = start;
             ray.direction = direction;
 
-            if (Physics.Raycast(ray, out hitInfo, distance))
+            if (Physics.Raycast(ray, out hitInfo, distance, layerMask))
             {
                 hitEffect.transform.position = hitInfo.point;
                 hitEffect.transform.forward = hitInfo.normal;
@@ -135,7 +135,7 @@ public class RaycastWeapon : MonoBehaviour
                 ray.origin = start;
                 ray.direction = direction;
 
-                if (Physics.Raycast(ray, out hitInfo, distance))
+                if (Physics.Raycast(ray, out hitInfo, distance, layerMask))
                 {
                     hitEffect.transform.position = hitInfo.point;
                     hitEffect.transform.forward = hitInfo.normal;
@@ -196,7 +196,7 @@ public class RaycastWeapon : MonoBehaviour
 
         EmitBulletCasing();
 
-        if (this.weaponName.Equals("Sniper") && ammoCount > 0)
+        if (this.equipWeaponBy == EquipWeaponBy.Player && this.weaponName.Equals("Sniper") && ammoCount > 0)
         {
             recoil.rigController.Play("sniperPullBolt");
         }
