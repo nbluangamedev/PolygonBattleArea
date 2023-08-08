@@ -13,5 +13,5 @@ public class WeaponAnimationEvent : MonoBehaviour
     public void OnAnimationEvent(string eventName)
     {
         weaponAnimationEvent.Invoke(eventName);
-    }
+    }  
 }

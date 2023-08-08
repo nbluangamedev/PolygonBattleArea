@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class RaycastWeapon : MonoBehaviour
@@ -23,13 +24,14 @@ public class RaycastWeapon : MonoBehaviour
 
     public LayerMask layerMask;
     public RuntimeAnimatorController overrideAnimator;
-    public Animation test;
 
     private Ray ray;
     private RaycastHit hitInfo;
     private float accumulatedTime;
     private float maxLifetime = 2.0f;
     private int lossOfAccuracyPerShot;
+    [SerializeField]
+    private CharacterAiming characterAiming;
 
     private void Awake()
     {
@@ -39,6 +41,7 @@ public class RaycastWeapon : MonoBehaviour
         }
 
         recoil = GetComponent<WeaponRecoil>();
+        characterAiming = GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterAiming>();
     }
 
     public void StartFiring()
@@ -196,12 +199,11 @@ public class RaycastWeapon : MonoBehaviour
 
         if (this.equipWeaponBy == EquipWeaponBy.Player && this.weaponName.Equals("Sniper") && ammoCount > 0)
         {
-            recoil.rigController.Play("sniperPullBolt");
-            if (ListenerManager.HasInstance)
+            if (characterAiming.isAiming)
             {
-                ListenerManager.Instance.BroadCast(ListenType.SCOPE, false);
-                ListenerManager.Instance.BroadCast(ListenType.UNAIM, false);
+                StartCoroutine(ActivateOnScope());
             }
+            else recoil.rigController.Play("sniperPullBolt");
         }
 
         Vector3 velocity = (target - raycastOrigin.position).normalized * bulletSpeed;
@@ -237,6 +239,30 @@ public class RaycastWeapon : MonoBehaviour
             var bulletcasing = Instantiate(BulletCasingPrefab, GunSlider.position, transform.rotation);
             bulletcasing.hideFlags = HideFlags.HideInHierarchy;
             Destroy(bulletcasing, 5f);
+        }
+    }
+
+    private IEnumerator ActivateOnScope()
+    {
+        yield return new WaitForSeconds(.1f);
+        recoil.rigController.Play("sniperPullBolt");
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.BroadCast(ListenType.SCOPE, false);
+            ListenerManager.Instance.BroadCast(ListenType.ACTIVECROSSHAIR, false);
+            characterAiming.UnScopeAndAim(this);
+            characterAiming.isAiming = true;
+        }
+
+        while (recoil.rigController.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f) ;
+        {
+            yield return null;
+        } 
+        yield return new WaitForSeconds(1f);
+
+        if (characterAiming.isAiming)
+        {
+            StartCoroutine(characterAiming.OnScope());
         }
     }
 }

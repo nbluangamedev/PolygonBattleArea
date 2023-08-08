@@ -8,7 +8,7 @@ public enum ListenType
     UPDATE_AMMO,
     SCOPE,
     UNSCOPE,
-    UNAIM
+    ACTIVECROSSHAIR
 }
 
 public enum UIType

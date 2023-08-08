@@ -203,7 +203,7 @@ public class ActiveWeapon : MonoBehaviour
 
             if (ListenerManager.HasInstance)
             {
-                ListenerManager.Instance.BroadCast(ListenType.UNAIM, true);
+                ListenerManager.Instance.BroadCast(ListenType.ACTIVECROSSHAIR, true);
             }
 
             yield return new WaitForSeconds(0.1f);
@@ -228,11 +228,11 @@ public class ActiveWeapon : MonoBehaviour
             {
                 if (weapon.weaponName == "Sniper")
                 {
-                    ListenerManager.Instance.BroadCast(ListenType.UNAIM, false);
+                    ListenerManager.Instance.BroadCast(ListenType.ACTIVECROSSHAIR, false);
                 }
                 else
                 {
-                    ListenerManager.Instance.BroadCast(ListenType.UNAIM, true);
+                    ListenerManager.Instance.BroadCast(ListenType.ACTIVECROSSHAIR, true);
                 }
             }
 

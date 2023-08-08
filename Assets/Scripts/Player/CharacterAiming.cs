@@ -1,5 +1,6 @@
 using Cinemachine;
 using Sirenix.Utilities;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -43,6 +44,7 @@ public class CharacterAiming : MonoBehaviour
             weaponMask = DataManager.Instance.globalConfig.weaponMask;
         }
 
+
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         mainCamera = Camera.main;
@@ -85,6 +87,7 @@ public class CharacterAiming : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.Q))
             {
+                isAiming = !isAiming;
                 if (activeWeapon.isChangingWeapon)
                 {
                     UnScopeAndAim(weapon);
@@ -163,28 +166,30 @@ public class CharacterAiming : MonoBehaviour
         weapon.recoil.recoilModifier = aimRecoil;
     }
 
-    private IEnumerator UnScope()
+    public IEnumerator UnScope()
     {
+        isAiming = false;
         yield return new WaitForSeconds(0.1f);
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.BroadCast(ListenType.SCOPE, false);
-            ListenerManager.Instance.BroadCast(ListenType.UNAIM, false);
+            ListenerManager.Instance.BroadCast(ListenType.ACTIVECROSSHAIR, false);
         }
 
         mainCamera.cullingMask = defaultMask;
         weaponCamera.m_Lens.FieldOfView = normalFOV;
     }
 
-    private IEnumerator OnScope()
+    public IEnumerator OnScope()
     {
+        isAiming = true;
         yield return new WaitForSeconds(0.1f);
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.BroadCast(ListenType.SCOPE, true);
-            ListenerManager.Instance.BroadCast(ListenType.UNAIM, false);
+            ListenerManager.Instance.BroadCast(ListenType.ACTIVECROSSHAIR, false);
         }
         mainCamera.cullingMask = weaponMask;
         weaponCamera.m_Lens.FieldOfView = scopedFOV;
-    }    
+    }
 }
