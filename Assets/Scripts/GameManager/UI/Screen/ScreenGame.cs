@@ -7,6 +7,18 @@ public class ScreenGame : BaseScreen
     [SerializeField] private TextMeshProUGUI ammoText;
     public GameObject scopeOverlay;
     public GameObject crossHair;
+    private CinemachineVirtualCamera weaponCamera;
+    private Camera mainCamera;
+
+    private void Start()
+    {
+        if (CameraManager.HasInstance)
+        {
+            weaponCamera = CameraManager.Instance.weaponCamera;
+        }
+
+        mainCamera = Camera.main;
+    }
 
     public override void Init()
     {
@@ -16,6 +28,7 @@ public class ScreenGame : BaseScreen
         {
             ListenerManager.Instance.Register(ListenType.UPDATE_AMMO, OnUpdateAmmo);
             ListenerManager.Instance.Register(ListenType.SCOPE, OnUpdateScope);
+            ListenerManager.Instance.Register(ListenType.UNAIM, OnUpdateUnAim);
         }
     }
 
@@ -25,6 +38,7 @@ public class ScreenGame : BaseScreen
         {
             ListenerManager.Instance.Unregister(ListenType.UPDATE_AMMO, OnUpdateAmmo);
             ListenerManager.Instance.Unregister(ListenType.SCOPE, OnUpdateScope);
+            ListenerManager.Instance.Unregister(ListenType.UNAIM, OnUpdateUnAim);
         }
     }
 
@@ -44,7 +58,19 @@ public class ScreenGame : BaseScreen
         if (value is bool active)
         {
             scopeOverlay.SetActive(active);
-            crossHair.SetActive(!active);
+            if (active == false)
+            {
+                weaponCamera.m_Lens.FieldOfView = DataManager.Instance.globalConfig.normalFOV;
+                mainCamera.cullingMask = DataManager.Instance.globalConfig.defaultMask;
+            }
+        }
+    }
+
+    private void OnUpdateUnAim(object value)
+    {
+        if (value is bool active)
+        {
+            crossHair.SetActive(active);
         }
     }
 }

@@ -33,6 +33,7 @@ public class Health : MonoBehaviour
         Rigidbody[] rigidBodies = GetComponentsInChildren<Rigidbody>();
         foreach (var rigidBody in rigidBodies)
         {
+            rigidBody.collisionDetectionMode = CollisionDetectionMode.Continuous;
             HitBox hitBox = rigidBody.gameObject.AddComponent<HitBox>();
             hitBox.health = this;
             hitBox.rb = rigidBody;

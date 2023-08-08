@@ -6,7 +6,9 @@ public enum ListenType
     UPDATE_COUNT_TEXT,
     UPDATE_USER_INFO,
     UPDATE_AMMO,
-    SCOPE
+    SCOPE,
+    UNSCOPE,
+    UNAIM
 }
 
 public enum UIType

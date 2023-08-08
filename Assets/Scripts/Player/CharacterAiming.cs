@@ -141,12 +141,12 @@ public class CharacterAiming : MonoBehaviour
 
     public void UnScopeAndAim(RaycastWeapon weapon)
     {
+        isAiming = false;
         if (weapon.weaponName.Equals("Sniper"))
         {
             StartCoroutine(UnScope());
         }
         UnAiming(weapon);
-        isAiming = false;
     }
 
     private void UnAiming(RaycastWeapon weapon)
@@ -169,7 +169,9 @@ public class CharacterAiming : MonoBehaviour
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.BroadCast(ListenType.SCOPE, false);
+            ListenerManager.Instance.BroadCast(ListenType.UNAIM, false);
         }
+
         mainCamera.cullingMask = defaultMask;
         weaponCamera.m_Lens.FieldOfView = normalFOV;
     }
@@ -180,8 +182,9 @@ public class CharacterAiming : MonoBehaviour
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.BroadCast(ListenType.SCOPE, true);
+            ListenerManager.Instance.BroadCast(ListenType.UNAIM, false);
         }
         mainCamera.cullingMask = weaponMask;
         weaponCamera.m_Lens.FieldOfView = scopedFOV;
-    }
+    }    
 }

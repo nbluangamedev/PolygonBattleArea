@@ -120,6 +120,7 @@ public class ActiveWeapon : MonoBehaviour
         equipWeapon.transform.SetParent(weaponSlots[weaponSlotIndex], false);
         equippedWeapon[weaponSlotIndex] = equipWeapon;
         SetActiveWeapon(newWeapon.weaponSlot);
+
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.BroadCast(ListenType.UPDATE_AMMO, equipWeapon);
@@ -199,6 +200,12 @@ public class ActiveWeapon : MonoBehaviour
         if (weapon)
         {
             rigController.SetBool("holster_Weapon", true);
+
+            if (ListenerManager.HasInstance)
+            {
+                ListenerManager.Instance.BroadCast(ListenType.UNAIM, true);
+            }
+
             yield return new WaitForSeconds(0.1f);
             do
             {
@@ -216,6 +223,19 @@ public class ActiveWeapon : MonoBehaviour
         {
             rigController.SetBool("holster_Weapon", false);
             rigController.Play("equip_" + weapon.weaponName);
+
+            if (ListenerManager.HasInstance)
+            {
+                if (weapon.weaponName == "Sniper")
+                {
+                    ListenerManager.Instance.BroadCast(ListenType.UNAIM, false);
+                }
+                else
+                {
+                    ListenerManager.Instance.BroadCast(ListenType.UNAIM, true);
+                }
+            }
+
             yield return new WaitForSeconds(0.1f);
             do
             {

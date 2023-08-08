@@ -10,7 +10,6 @@ public class RaycastWeapon : MonoBehaviour
     public float bulletDrop = 0.0f;
     public ParticleSystem[] muzzleFlash;
     public ParticleSystem hitEffect;
-    public TrailRenderer tracerEffect;
     public string weaponName;
     public Transform raycastOrigin;
     public WeaponRecoil recoil;
@@ -71,7 +70,6 @@ public class RaycastWeapon : MonoBehaviour
 
     public void UpdateFiring(float deltaTime, Vector3 target)
     {
-        //accumulatedTime += deltaTime;
         float fireInterval = 1.0f / fireRate;
         while (accumulatedTime >= 0.0f)
         {
@@ -199,6 +197,11 @@ public class RaycastWeapon : MonoBehaviour
         if (this.equipWeaponBy == EquipWeaponBy.Player && this.weaponName.Equals("Sniper") && ammoCount > 0)
         {
             recoil.rigController.Play("sniperPullBolt");
+            if (ListenerManager.HasInstance)
+            {
+                ListenerManager.Instance.BroadCast(ListenType.SCOPE, false);
+                ListenerManager.Instance.BroadCast(ListenType.UNAIM, false);
+            }
         }
 
         Vector3 velocity = (target - raycastOrigin.position).normalized * bulletSpeed;
