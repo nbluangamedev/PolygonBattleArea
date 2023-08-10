@@ -9,7 +9,11 @@ public class GlobalConfig : ScriptableObject
     public float maxTime = 1.0f;
     public float maxDistance = 1.0f;
     public float enemyDieForce = .5f;
+    public float stoppingDistance = 5f;
     public float closeRange = 7.0f;
+    public float findWeaponSpeed = 7f;
+    public float findTargetSpeed = 5f;
+    public float attackSpeed = 3f;
 
     [Header("Health")]
     public float maxHealth = 100f;
@@ -19,8 +23,6 @@ public class GlobalConfig : ScriptableObject
     [Header("Weapon")]
     public float inAccuracy = 0.4f;
     public float inAccuracySniper = 2f;
-
-    public float maxSight = 5.0f;
 
 
     //--------------------------PLAYER-------------------------//
@@ -48,6 +50,7 @@ public class GlobalConfig : ScriptableObject
 
     [Header("Health")]
     public float playerMaxHealth = 100f;
+
 
     //---------------------------WEAPON--------------------------//
     [Header("WEAPON")]

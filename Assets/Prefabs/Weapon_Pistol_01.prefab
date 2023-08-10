@@ -411,7 +411,6 @@ MonoBehaviour:
   - {fileID: 7453575894076332368}
   - {fileID: 7453855535404882422}
   hitEffect: {fileID: 5005547369649574431}
-  tracerEffect: {fileID: 4830472651728588450, guid: 648e4974a1d31544bb2db135e92fe6a1, type: 3}
   weaponName: Pistol
   raycastOrigin: {fileID: 3172744936664121336}
   recoil: {fileID: 0}
@@ -419,14 +418,14 @@ MonoBehaviour:
   forceBullet: 1
   ammoCount: 20
   clipSize: 20
-  damage: 1
+  damage: 10
   BulletCasingPrefab: {fileID: 3525363408539371240, guid: 646dbef2eecbba041bde7b716db6d7e2, type: 3}
   GunSlider: {fileID: 3645663858191130892}
   layerMask:
     serializedVersion: 2
     m_Bits: 1025
   overrideAnimator: {fileID: 22100000, guid: 1bb80f148a11a7e45b772a1cf0ef8205, type: 2}
-  test: {fileID: 0}
+  characterAiming: {fileID: 0}
 --- !u!114 &4245193159445016210
 MonoBehaviour:
   m_ObjectHideFlags: 0

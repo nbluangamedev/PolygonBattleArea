@@ -1,8 +1,8 @@
-using UnityEngine;
-
 public class AIAttackState : AIState
 {
     private float closeRange;
+    private float stoppingDistance;
+    private float attackSpeed;
 
     public AIStateID GetID()
     {
@@ -14,27 +14,44 @@ public class AIAttackState : AIState
         if (DataManager.HasInstance)
         {
             closeRange = DataManager.Instance.globalConfig.closeRange;
+            stoppingDistance = DataManager.Instance.globalConfig.stoppingDistance;
+            attackSpeed = DataManager.Instance.globalConfig.attackSpeed;
         }
 
         agent.weapon.ActivateWeapon();
-        agent.weapon.SetTarget(agent.playerTransform);
-        agent.navMeshAgent.stoppingDistance = 15.0f;
-        agent.weapon.SetFiring(true);
+        agent.navMeshAgent.stoppingDistance = stoppingDistance;
+        agent.navMeshAgent.speed = attackSpeed;
     }
 
     public void Update(AIAgent agent)
     {
-        agent.navMeshAgent.destination = agent.playerTransform.position;
+        agent.navMeshAgent.destination = agent.targeting.TargetPosition;
         ReloadWeapon(agent);
         SelectWeapon(agent);
-        if (agent.playerTransform.GetComponent<Health>().IsDead())
+        UpdateFiring(agent);
+
+        if (!agent.targeting.HasTarget)
         {
-            agent.stateMachine.ChangeState(AIStateID.Idle);
+            agent.stateMachine.ChangeState(AIStateID.FindTarget);
+            return;
         }
+
+        agent.weapon.SetTarget(agent.targeting.Target.transform);
+
+    }
+
+    private void UpdateFiring(AIAgent agent)
+    {
+        if (agent.targeting.TargetInSight)
+        {
+            agent.weapon.SetFiring(true);
+        }
+        else agent.weapon.SetFiring(false);
     }
 
     public void Exit(AIAgent agent)
     {
+        agent.weapon.DeActivateWeapon();
         agent.navMeshAgent.stoppingDistance = 0.0f;
     }
 
@@ -50,16 +67,15 @@ public class AIAttackState : AIState
     private void SelectWeapon(AIAgent agent)
     {
         var bestWeapon = ChooseWeapon(agent);
-        if(bestWeapon!=agent.weapon.currentWeaponSlot)
+        if (bestWeapon != agent.weapon.currentWeaponSlot)
         {
             agent.weapon.SwitchWeapon(bestWeapon);
         }
-        agent.weapon.SetFiring(true);
     }
 
     private WeaponSlot ChooseWeapon(AIAgent agent)
     {
-        var distance = Vector3.Distance(agent.playerTransform.position, agent.transform.position);
+        var distance = agent.targeting.TargetDistance;
         if (distance > closeRange)
         {
             return WeaponSlot.Primary;

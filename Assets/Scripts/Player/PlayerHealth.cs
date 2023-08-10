@@ -48,5 +48,9 @@ public class PlayerHealth : Health
         {
             CameraManager.Instance.EnableKillCam();
         }
+        if (postProcessing.profile.TryGet(out Vignette vignette))
+        {
+            vignette.intensity.value = 0f;
+        }
     }
 }

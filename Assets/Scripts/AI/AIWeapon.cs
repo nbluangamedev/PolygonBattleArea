@@ -5,7 +5,10 @@ public class AIWeapon : MonoBehaviour
 {
     public RaycastWeapon currentWeapon
     {
-        get { return weapons[currentWeaponIndex]; }
+        get 
+        { 
+            return weapons[currentWeaponIndex]; 
+        }
     }
     private RaycastWeapon[] weapons = new RaycastWeapon[2];
     private int currentWeaponIndex = 0;

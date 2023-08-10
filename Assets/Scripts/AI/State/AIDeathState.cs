@@ -21,7 +21,7 @@ public class AIDeathState : AIState
         agent.weapon.SetTarget(null);
         agent.navMeshAgent.enabled = false;
         agent.ragdoll.ActiveRagdoll();
-        direction.y = 2f;
+        //direction.y = 2f;
         agent.ragdoll.ApplyForce(direction * dieForce, rigidbody);
         agent.weapon.DropWeapon();
         agent.healthBar.Deactive();

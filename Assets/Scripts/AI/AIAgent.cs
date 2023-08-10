@@ -3,28 +3,31 @@ using UnityEngine.AI;
 
 public class AIAgent : MonoBehaviour
 {
-    public AIStateMachine stateMachine;
     public AIStateID initState;
-    public NavMeshAgent navMeshAgent;
-    public Ragdoll ragdoll;
-    public AIHealth aiHealth;
-    public UIHealthBar healthBar;
-    public Transform playerTransform;
 
+    [HideInInspector] public AIStateMachine stateMachine;
+    [HideInInspector] public NavMeshAgent navMeshAgent;
+    [HideInInspector] public Ragdoll ragdoll;
+    [HideInInspector] public AIHealth aiHealth;
+    [HideInInspector] public UIHealthBar healthBar;
+    [HideInInspector] public Transform playerTransform;
     [HideInInspector] public AIWeapon weapon;
-    
+    [HideInInspector] public AISensor sensor;
+    [HideInInspector] public AITargetingSystem targeting;
+
     private void Start()
     {
-        if (playerTransform == null)
-        {
-            playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
-        }
-
         navMeshAgent = GetComponent<NavMeshAgent>();
         ragdoll = GetComponent<Ragdoll>();
         aiHealth = GetComponent<AIHealth>();
         healthBar = GetComponentInChildren<UIHealthBar>();
         weapon = GetComponent<AIWeapon>();
+        sensor = GetComponent<AISensor>();
+        targeting = GetComponent<AITargetingSystem>();
+        if (playerTransform == null)
+        {
+            playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+        }
 
         stateMachine = new AIStateMachine(this);
         stateMachine.RegisterState(new AIChasePlayerState());
@@ -32,6 +35,7 @@ public class AIAgent : MonoBehaviour
         stateMachine.RegisterState(new AIIdleState());
         stateMachine.RegisterState(new AIFindWeaponState());
         stateMachine.RegisterState(new AIAttackState());
+        stateMachine.RegisterState(new AIFindTargetState());
         stateMachine.ChangeState(initState);
     }
 
