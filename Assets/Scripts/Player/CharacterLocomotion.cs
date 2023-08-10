@@ -23,12 +23,14 @@ public class CharacterLocomotion : MonoBehaviour
     private Vector3 rootMotion;
     private Vector3 velocity;
     private bool isJumping;
+    private bool isCrouching = false;
 
     private PlayerInput playerInput;
     private InputAction moveAction;
     private Vector2 currentAnimationBlendVector;
     private Vector2 animationVelocity;
     private int isSprintingParameter = Animator.StringToHash("isSprinting");
+    private int isCrouchingParameter = Animator.StringToHash("isCrouching");
 
     private void Start()
     {
@@ -65,9 +67,10 @@ public class CharacterLocomotion : MonoBehaviour
         animator.SetFloat("InputX", currentAnimationBlendVector.x);
         animator.SetFloat("InputY", currentAnimationBlendVector.y);
 
+        UpdateIsCrouching();
         UpdateIsSprinting();
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && !isCrouching)
         {
             Jump();
         }
@@ -112,7 +115,8 @@ public class CharacterLocomotion : MonoBehaviour
         bool isReloading = weaponReload.isReloading;
         bool isChangingWeapon = activeWeapon.isChangingWeapon;
         bool isAiming = characterAiming.isAiming;
-        return isSprinting && !isFiring && !isReloading && !isChangingWeapon && !isAiming;
+        bool isCrouching = Input.GetKey(KeyCode.LeftControl);
+        return isSprinting && !isFiring && !isReloading && !isChangingWeapon && !isAiming && !isCrouching;
     }
 
     private void UpdateIsSprinting()
@@ -120,6 +124,15 @@ public class CharacterLocomotion : MonoBehaviour
         bool isSprinting = IsSprinting();
         animator.SetBool(isSprintingParameter, isSprinting);
         rigController.SetBool(isSprintingParameter, isSprinting);
+    }
+
+    private void UpdateIsCrouching()
+    {
+        //isCrouching = Input.GetKey(KeyCode.LeftControl);
+        if (Input.GetKeyDown(KeyCode.LeftControl))
+            isCrouching = !isCrouching;
+        animator.SetBool(isCrouchingParameter, isCrouching);
+        rigController.SetBool(isCrouchingParameter, isCrouching);
     }
 
     private void SetInAir(float jumpVelocity)
@@ -153,7 +166,7 @@ public class CharacterLocomotion : MonoBehaviour
         characterController.Move(stepForwardAmount + stepDownAmount);
         rootMotion = Vector3.zero;
 
-        if (!characterController.isGrounded)
+        if (!characterController.isGrounded && !isCrouching)
         {
             SetInAir(0);
         }
