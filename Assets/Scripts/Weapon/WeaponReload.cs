@@ -9,16 +9,20 @@ public class WeaponReload : MonoBehaviour
     public bool isReloading;
 
     private GameObject magazineHand;
+    private CharacterLocomotion characterLocomotion;
 
     private void Start()
     {
         animationEvents.weaponAnimationEvent.AddListener(OnAnimationEvent);
+        characterLocomotion = GetComponent<CharacterLocomotion>();
     }
 
     private void Update()
     {
+        bool canReload = !characterLocomotion.isCrouching;
+
         RaycastWeapon weapon = activeWeapon.GetActiveWeapon();
-        if (weapon)
+        if (weapon && canReload)
         {
             if (Input.GetKeyDown(KeyCode.R) || weapon.ammoCount <= 0)
             {

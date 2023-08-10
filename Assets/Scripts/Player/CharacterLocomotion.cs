@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 public class CharacterLocomotion : MonoBehaviour
 {
     public Animator rigController;
+    public bool isCrouching = false;
 
     private float gravity;
     private float groundSpeed;
@@ -23,7 +24,6 @@ public class CharacterLocomotion : MonoBehaviour
     private Vector3 rootMotion;
     private Vector3 velocity;
     private bool isJumping;
-    private bool isCrouching = false;
 
     private PlayerInput playerInput;
     private InputAction moveAction;
@@ -58,9 +58,6 @@ public class CharacterLocomotion : MonoBehaviour
 
     private void Update()
     {
-        //input.x = Input.GetAxis("Horizontal");
-        //input.y = Input.GetAxis("Vertical");
-
         input = moveAction.ReadValue<Vector2>();
         currentAnimationBlendVector = Vector2.SmoothDamp(currentAnimationBlendVector, input, ref animationVelocity, animationSmoothTime);
 
@@ -130,7 +127,9 @@ public class CharacterLocomotion : MonoBehaviour
     {
         //isCrouching = Input.GetKey(KeyCode.LeftControl);
         if (Input.GetKeyDown(KeyCode.LeftControl))
+        {
             isCrouching = !isCrouching;
+        }
         animator.SetBool(isCrouchingParameter, isCrouching);
         rigController.SetBool(isCrouchingParameter, isCrouching);
     }
