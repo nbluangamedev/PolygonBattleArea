@@ -15,14 +15,16 @@ MonoBehaviour:
   maxTime: 1
   maxDistance: 3
   enemyDieForce: 5
+  stoppingDistance: 15
   closeRange: 7
   findWeaponSpeed: 10
+  findTargetSpeed: 5
+  attackSpeed: 3
   maxHealth: 100
   blinkDuration: 0.1
   timeDestroyAI: 2
   inAccuracy: 0.5
   inAccuracySniper: 1
-  maxSight: 5
   gravity: 20
   groundSpeed: 1
   stepDown: 0.1

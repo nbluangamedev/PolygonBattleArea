@@ -19,17 +19,13 @@ public class AIAttackState : AIState
         }
 
         agent.weapon.ActivateWeapon();
+        
         agent.navMeshAgent.stoppingDistance = stoppingDistance;
         agent.navMeshAgent.speed = attackSpeed;
     }
 
     public void Update(AIAgent agent)
     {
-        agent.navMeshAgent.destination = agent.targeting.TargetPosition;
-        ReloadWeapon(agent);
-        SelectWeapon(agent);
-        UpdateFiring(agent);
-
         if (!agent.targeting.HasTarget)
         {
             agent.stateMachine.ChangeState(AIStateID.FindTarget);
@@ -37,7 +33,10 @@ public class AIAttackState : AIState
         }
 
         agent.weapon.SetTarget(agent.targeting.Target.transform);
-
+        agent.navMeshAgent.destination = agent.targeting.TargetPosition;
+        SelectWeapon(agent);
+        UpdateFiring(agent);
+        ReloadWeapon(agent);
     }
 
     private void UpdateFiring(AIAgent agent)

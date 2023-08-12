@@ -107,7 +107,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: equip
-  m_Speed: 3
+  m_Speed: 4
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -4545530621347325070}
@@ -434,7 +434,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: holster
-  m_Speed: -3
+  m_Speed: -4
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 3063864676088438197}

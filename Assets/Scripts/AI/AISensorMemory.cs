@@ -66,6 +66,6 @@ public class AISensorMemory
     {
         memories.RemoveAll(m => m.Age > olderThan);
         memories.RemoveAll(m => !m.gameObject);
-        //memories.RemoveAll(m => m.gameObject.GetComponent<Health>().IsDead());
+        memories.RemoveAll(m => m.gameObject.GetComponent<Health>().IsDead());
     }
 }

@@ -9,7 +9,7 @@ public class GlobalConfig : ScriptableObject
     public float maxTime = 1.0f;
     public float maxDistance = 1.0f;
     public float enemyDieForce = .5f;
-    public float stoppingDistance = 5f;
+    public float stoppingDistance = 15f;
     public float closeRange = 7.0f;
     public float findWeaponSpeed = 7f;
     public float findTargetSpeed = 5f;

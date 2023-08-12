@@ -12,11 +12,11 @@ public class ObjectPool : BaseManager<ObjectPool>
     private void Start()
     {
         pooledObjects = new List<Bullet>();
+        Bullet tmp;
         if (DataManager.HasInstance)
         {
             amountInPool = DataManager.Instance.globalConfig.amountInPool;
         }
-        Bullet tmp;
         for (int i = 0; i < amountInPool; i++)
         {
             tmp = Instantiate(objectToPool, this.transform, true);

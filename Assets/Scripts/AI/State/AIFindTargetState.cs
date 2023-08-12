@@ -9,7 +9,10 @@ public class AIFindTargetState : AIState
 
     public void Enter(AIAgent agent)
     {
-        agent.navMeshAgent.speed = 5f;
+        if (DataManager.HasInstance)
+        {
+            agent.navMeshAgent.speed = DataManager.Instance.globalConfig.findTargetSpeed;
+        }
     }
 
     public void Update(AIAgent agent)
@@ -29,6 +32,6 @@ public class AIFindTargetState : AIState
 
     public void Exit(AIAgent agent)
     {
-        
+
     }
 }

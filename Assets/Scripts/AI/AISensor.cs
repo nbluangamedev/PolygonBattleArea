@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[ExecuteInEditMode]
+//[ExecuteInEditMode]
 public class AISensor : MonoBehaviour
 {
     public float distance = 10f;
@@ -53,7 +53,7 @@ public class AISensor : MonoBehaviour
         for (int i = 0; i < count; ++i)
         {
             GameObject obj = colliders[i].gameObject;
-            if (IsInSight(obj) && !obj.tag.Equals("Player"))
+            if (IsInSight(obj))
             {
                 objects.Add(obj);
             }

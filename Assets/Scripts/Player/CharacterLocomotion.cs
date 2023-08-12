@@ -125,11 +125,11 @@ public class CharacterLocomotion : MonoBehaviour
 
     private void UpdateIsCrouching()
     {
-        //isCrouching = Input.GetKey(KeyCode.LeftControl);
-        if (Input.GetKeyDown(KeyCode.LeftControl))
-        {
-            isCrouching = !isCrouching;
-        }
+        isCrouching = Input.GetKey(KeyCode.LeftControl);
+        //if (Input.GetKeyDown(KeyCode.LeftControl))
+        //{
+        //    isCrouching = !isCrouching;
+        //}
         animator.SetBool(isCrouchingParameter, isCrouching);
         rigController.SetBool(isCrouchingParameter, isCrouching);
     }

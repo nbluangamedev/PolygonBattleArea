@@ -11,6 +11,7 @@ public class RaycastWeapon : MonoBehaviour
     public float bulletDrop = 0.0f;
     public ParticleSystem[] muzzleFlash;
     public ParticleSystem hitEffect;
+    public TrailRenderer tracerEffect;
     public string weaponName;
     public Transform raycastOrigin;
     public WeaponRecoil recoil;
@@ -30,8 +31,7 @@ public class RaycastWeapon : MonoBehaviour
     private float accumulatedTime;
     private float maxLifetime = 2.0f;
     private int lossOfAccuracyPerShot;
-    [SerializeField]
-    private CharacterAiming characterAiming;
+    [SerializeField] private CharacterAiming characterAiming;
 
     private void Awake()
     {
@@ -179,6 +179,10 @@ public class RaycastWeapon : MonoBehaviour
 
     private void FireBullet(Vector3 target)
     {
+        Vector3 velocity = (target - raycastOrigin.position).normalized * bulletSpeed;
+        Bullet bullet = ObjectPool.Instance.GetPoolObject();
+        bullet.Active(raycastOrigin.position, velocity);
+
         if (ammoCount <= 0)
         {
             return;
@@ -205,10 +209,6 @@ public class RaycastWeapon : MonoBehaviour
             }
             else recoil.rigController.Play("sniperPullBolt");
         }
-
-        Vector3 velocity = (target - raycastOrigin.position).normalized * bulletSpeed;
-        var bullet = ObjectPool.Instance.GetPoolObject();
-        bullet.Active(raycastOrigin.position, velocity);
 
         recoil.GenerateRecoil(weaponName);
     }

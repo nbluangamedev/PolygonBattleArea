@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[ExecuteInEditMode]
+//[ExecuteInEditMode]
 public class AITargetingSystem : MonoBehaviour
 {
     public float memorySpan = 3.0f;
@@ -72,7 +72,7 @@ public class AITargetingSystem : MonoBehaviour
         foreach (var memory in memory.memories)
         {
             memory.score = CalculateScore(memory);
-            if (bestMemory == null || memory.score>bestMemory.score)
+            if (bestMemory == null || memory.score > bestMemory.score)
             {
                 bestMemory = memory;
             }
@@ -103,7 +103,7 @@ public class AITargetingSystem : MonoBehaviour
         foreach (var memory in memory.memories)
         {
             Color color = Color.red;
-            if(memory == bestMemory)
+            if (memory == bestMemory)
             {
                 color = Color.yellow;
             }

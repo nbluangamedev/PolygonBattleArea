@@ -100,7 +100,7 @@ MonoBehaviour:
   raycastOrigin: {fileID: 3172744936664121336}
   recoil: {fileID: 0}
   magazine: {fileID: 6069767782647701680}
-  forceBullet: 5
+  forceBullet: 4
   ammoCount: 10
   clipSize: 10
   damage: 100
@@ -110,6 +110,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1025
   overrideAnimator: {fileID: 9100000, guid: c4b2b3f0050f5054e82a4517a7e026ad, type: 2}
+  characterAiming: {fileID: 0}
 --- !u!114 &-4924447125473106102
 MonoBehaviour:
   m_ObjectHideFlags: 0

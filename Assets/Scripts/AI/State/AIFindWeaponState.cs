@@ -1,10 +1,8 @@
+
 using UnityEngine;
 
 public class AIFindWeaponState : AIState
 {
-    GameObject pickup;
-    GameObject[] pickups = new GameObject[1];
-
     public AIStateID GetID()
     {
         return AIStateID.FindWeapon;
@@ -12,35 +10,29 @@ public class AIFindWeaponState : AIState
 
     public void Enter(AIAgent agent)
     {
-        pickup = null;
-        if (DataManager.HasInstance)
-        {
-            agent.navMeshAgent.speed = DataManager.Instance.globalConfig.findWeaponSpeed;
-        }
+        WeaponPickup pickup = FindClosetWeapon(agent);
+        agent.navMeshAgent.destination = pickup.transform.position;
+        agent.navMeshAgent.speed = DataManager.Instance.globalConfig.findWeaponSpeed;
     }
 
     public void Update(AIAgent agent)
     {
-        //Find pickup
-        if (pickup == null)
+        if (agent.weapon.HasWeapon())
         {
-            pickup = FindPickup(agent);
+            agent.stateMachine.ChangeState(AIStateID.Attack);
+        }
+
+        if (agent.weapon.CountWeapon() == 2)
+        {
+            agent.stateMachine.ChangeState(AIStateID.Attack);
+        }
+        else
+        {
+            WeaponPickup pickup = FindClosetWeapon(agent);
             if (pickup)
             {
-                CollectPickup(agent, pickup);
+                agent.navMeshAgent.destination = pickup.transform.position;
             }
-        }
-
-        //Wander
-        if (!agent.navMeshAgent.hasPath)
-        {
-            WorldBounds worldBounds = GameObject.FindObjectOfType<WorldBounds>();
-            agent.navMeshAgent.destination = worldBounds.RandomPosition();
-        }
-
-        if (agent.weapon.CountWeapon() == 1)
-        {
-            agent.stateMachine.ChangeState(AIStateID.FindTarget);
         }
     }
 
@@ -49,19 +41,20 @@ public class AIFindWeaponState : AIState
 
     }
 
-    private GameObject FindPickup(AIAgent agent)
+    private WeaponPickup FindClosetWeapon(AIAgent agent)
     {
-        int count = agent.sensor.Filter(pickups, "Pickup");
-
-        if (count > 0)
+        WeaponPickup[] weapons = Object.FindObjectsOfType<WeaponPickup>();
+        WeaponPickup closetWeapon = null;
+        float closetDistance = float.MaxValue;
+        foreach (var weapon in weapons)
         {
-            return pickups[0];
+            float distanceToWeapon = Vector3.Distance(agent.transform.position, weapon.transform.position);
+            if (distanceToWeapon < closetDistance)
+            {
+                closetDistance = distanceToWeapon;
+                closetWeapon = weapon;
+            }
         }
-        return null;
-    }
-
-    private void CollectPickup(AIAgent agent, GameObject pickup)
-    {
-        agent.navMeshAgent.destination = pickup.transform.position;
+        return closetWeapon;
     }
 }
