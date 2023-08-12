@@ -3,29 +3,38 @@ using UnityEngine.AI;
 
 public class DebugAI : MonoBehaviour
 {
-    public bool isShowGizmos;
+    public bool isShowVelocity;
+    public bool isShowDesiredVelocity;
+    public bool isShowPath;
     public Color velocityColor;
     public Color desiredVelocityColor;
     public Color pathColor;
+
     private NavMeshAgent agent;
 
-    private void Start()
+    void Start()
     {
         agent = GetComponent<NavMeshAgent>();
     }
 
     private void OnDrawGizmos()
     {
-        if (isShowGizmos)
+        if (isShowVelocity)
         {
-            Gizmos.color = velocityColor;
+            Gizmos.color = Color.green;
             Gizmos.DrawLine(transform.position, transform.position + agent.velocity);
+        }
 
-            Gizmos.color = desiredVelocityColor;
+        if (isShowDesiredVelocity)
+        {
+            Gizmos.color = Color.red;
             Gizmos.DrawLine(transform.position, transform.position + agent.desiredVelocity);
+        }
 
+        if (isShowPath)
+        {
             Gizmos.color = pathColor;
-            var agentPath = agent.path;
+            NavMeshPath agentPath = agent.path;
             Vector3 prevCornor = transform.position;
             foreach (var conor in agentPath.corners)
             {

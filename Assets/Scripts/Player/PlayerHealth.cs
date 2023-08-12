@@ -10,7 +10,7 @@ public class PlayerHealth : Health
     private Ragdoll ragdoll;
     private ActiveWeapon activeWeapon;
     private CharacterAiming aiming;
-    private CharacterController characterController;
+    private CharacterLocomotion locomotion;
 
     protected override void OnStart()
     {
@@ -23,7 +23,7 @@ public class PlayerHealth : Health
         ragdoll = GetComponent<Ragdoll>();
         activeWeapon = GetComponent<ActiveWeapon>();
         aiming = GetComponent<CharacterAiming>();
-        characterController = GetComponent<CharacterController>();
+        locomotion = GetComponent<CharacterLocomotion>();
     }
 
     protected override void OnDamage(Vector3 direction, Rigidbody rigidBody)
@@ -41,7 +41,7 @@ public class PlayerHealth : Health
         ragdoll.ActiveRagdoll();
         direction.y = 1f;
         ragdoll.ApplyForce(direction, ridigBody);
-        characterController.enabled = false;
+        locomotion.enabled = false;
         if (weapon)
         {
             activeWeapon.DropWeapon((int)activeWeapon.GetActiveWeapon().weaponSlot);

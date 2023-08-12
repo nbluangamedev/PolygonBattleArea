@@ -5,9 +5,9 @@ public class AIWeapon : MonoBehaviour
 {
     public RaycastWeapon currentWeapon
     {
-        get 
-        { 
-            return weapons[currentWeaponIndex]; 
+        get
+        {
+            return weapons[currentWeaponIndex];
         }
     }
     private RaycastWeapon[] weapons = new RaycastWeapon[2];
@@ -75,14 +75,13 @@ public class AIWeapon : MonoBehaviour
     {
         if (enable)
         {
+            int ammo = currentWeapon.ammoCount;
             currentWeapon.StartFiring();
             if (currentWeapon.weaponName.Equals("Sniper"))
             {
-                int ammo = currentWeapon.ammoCount;
                 if (ammo > currentWeapon.ammoCount)
                 {
                     animator.Play("sniperPullBolt");
-                    ammo -= 1;
                 }
             }
         }

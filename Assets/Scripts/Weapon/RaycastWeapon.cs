@@ -254,7 +254,7 @@ public class RaycastWeapon : MonoBehaviour
             characterAiming.isAiming = true;
         }
 
-        while (recoil.rigController.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f) ;
+        while (recoil.rigController.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
         {
             yield return null;
         } 

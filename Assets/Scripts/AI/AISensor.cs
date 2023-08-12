@@ -4,6 +4,7 @@ using UnityEngine;
 //[ExecuteInEditMode]
 public class AISensor : MonoBehaviour
 {
+    public bool debugGizmos = false;
     public float distance = 10f;
     public float angle = 30f;
     public float height = 1.0f;
@@ -180,16 +181,19 @@ public class AISensor : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (mesh)
+        if (debugGizmos)
         {
-            Gizmos.color = color;
-            Gizmos.DrawMesh(mesh, transform.position, transform.rotation);
-        }
+            if (mesh)
+            {
+                Gizmos.color = color;
+                Gizmos.DrawMesh(mesh, transform.position, transform.rotation);
+            }
 
-        Gizmos.color = Color.green;
-        foreach (var obj in Objects)
-        {
-            Gizmos.DrawSphere(obj.transform.position, 0.2f);
+            Gizmos.color = Color.green;
+            foreach (var obj in Objects)
+            {
+                Gizmos.DrawSphere(obj.transform.position, 0.2f);
+            }
         }
     }
 

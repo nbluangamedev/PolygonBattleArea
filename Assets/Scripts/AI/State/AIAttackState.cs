@@ -19,7 +19,7 @@ public class AIAttackState : AIState
         }
 
         agent.weapon.ActivateWeapon();
-        
+
         agent.navMeshAgent.stoppingDistance = stoppingDistance;
         agent.navMeshAgent.speed = attackSpeed;
     }
@@ -34,9 +34,15 @@ public class AIAttackState : AIState
 
         agent.weapon.SetTarget(agent.targeting.Target.transform);
         agent.navMeshAgent.destination = agent.targeting.TargetPosition;
-        SelectWeapon(agent);
+        //SelectWeapon(agent);
         UpdateFiring(agent);
         ReloadWeapon(agent);
+    }
+
+    public void Exit(AIAgent agent)
+    {
+        agent.weapon.DeActivateWeapon();
+        agent.navMeshAgent.stoppingDistance = 0.0f;
     }
 
     private void UpdateFiring(AIAgent agent)
@@ -46,12 +52,6 @@ public class AIAttackState : AIState
             agent.weapon.SetFiring(true);
         }
         else agent.weapon.SetFiring(false);
-    }
-
-    public void Exit(AIAgent agent)
-    {
-        agent.weapon.DeActivateWeapon();
-        agent.navMeshAgent.stoppingDistance = 0.0f;
     }
 
     private void ReloadWeapon(AIAgent agent)
@@ -74,11 +74,19 @@ public class AIAttackState : AIState
 
     private WeaponSlot ChooseWeapon(AIAgent agent)
     {
+        bool hasWeapon = agent.weapon.HasWeapon();
         var distance = agent.targeting.TargetDistance;
-        if (distance > closeRange)
+        if (hasWeapon)
         {
-            return WeaponSlot.Primary;
+            if (distance > closeRange)
+            {
+                return WeaponSlot.Primary;
+            }
+            else
+            {
+                return WeaponSlot.Secondary;
+            }
         }
-        else return WeaponSlot.Secondary;
+        return agent.weapon.currentWeapon.weaponSlot;
     }
 }
