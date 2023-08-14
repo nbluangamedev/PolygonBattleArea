@@ -9,6 +9,7 @@ public class AIFindTargetState : AIState
 
     public void Enter(AIAgent agent)
     {
+        Debug.Log("Find target");
         if (DataManager.HasInstance)
         {
             agent.navMeshAgent.speed = DataManager.Instance.globalConfig.findTargetSpeed;
@@ -22,6 +23,7 @@ public class AIFindTargetState : AIState
         {
             WorldBounds worldBounds = GameObject.FindObjectOfType<WorldBounds>();
             agent.navMeshAgent.destination = worldBounds.RandomPosition();
+            return;
         }
 
         if (agent.targeting.HasTarget)

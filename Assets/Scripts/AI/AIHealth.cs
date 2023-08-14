@@ -29,12 +29,14 @@ public class AIHealth : Health
 
     protected override void OnDamage(Vector3 direction, Rigidbody rigidBody)
     {
-        if (healthBar != null)
+        if (healthBar)
         {
             healthBar.SetHealthBarPercentage(currentHealth / maxHealth);
         }
 
         StartCoroutine(EnemyFlash());
+
+        Debug.Log("ai health: " + currentHealth);
     }
 
     protected override void OnDeath(Vector3 direction, Rigidbody ridigBody)
@@ -43,6 +45,15 @@ public class AIHealth : Health
         deathState.direction = direction;
         deathState.rigidbody = ridigBody;
         aiAgent.stateMachine.ChangeState(AIStateID.Death);
+    }
+
+    protected override void OnHeal(float amout)
+    {
+        if (healthBar)
+        {
+            healthBar.SetHealthBarPercentage(currentHealth / maxHealth);
+        }
+        StartCoroutine(EnemyFlash());
     }
 
     public void DestroyWhenDeath()

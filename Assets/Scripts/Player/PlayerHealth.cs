@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
+using System.Collections;
 
 public class PlayerHealth : Health
 {
@@ -24,9 +25,35 @@ public class PlayerHealth : Health
         activeWeapon = GetComponent<ActiveWeapon>();
         aiming = GetComponent<CharacterAiming>();
         locomotion = GetComponent<CharacterLocomotion>();
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.BroadCast(ListenType.UPDATE_HEALTH, this);
+        }
     }
 
     protected override void OnDamage(Vector3 direction, Rigidbody rigidBody)
+    {
+        UpdateVignette();
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.BroadCast(ListenType.UPDATE_HEALTH, this);
+        }
+
+        Debug.Log("player health: " + currentHealth);
+    }
+
+    protected override void OnHeal(float amount)
+    {
+        UpdateVignette();
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.BroadCast(ListenType.UPDATE_HEALTH, this);
+        }
+
+        Debug.Log("player health: " + currentHealth);
+    }
+
+    private void UpdateVignette()
     {
         if (postProcessing.profile.TryGet(out Vignette vignette))
         {
@@ -55,6 +82,6 @@ public class PlayerHealth : Health
         {
             vignette.intensity.value = 0f;
         }
-        Destroy(this.gameObject,5f);
+        Destroy(this.gameObject, 5f);
     }
 }

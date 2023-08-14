@@ -333,8 +333,9 @@ MonoBehaviour:
   recoil: {fileID: 0}
   magazine: {fileID: 1388283467867362, guid: 2d4668c24a87f7d4eb030615f34a3335, type: 3}
   forceBullet: 3.5
-  ammoCount: 8
-  clipSize: 8
+  ammoCount: 2
+  clipSize: 2
+  ammoTotal: 2
   damage: 15
   BulletCasingPrefab: {fileID: 1076261940137426, guid: 96631445180422140bb3de3e846561d6, type: 3}
   GunSlider: {fileID: 2886826341630675307}
@@ -342,7 +343,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1025
   overrideAnimator: {fileID: 9100000, guid: c4b2b3f0050f5054e82a4517a7e026ad, type: 2}
-  characterAiming: {fileID: 0}
 --- !u!114 &-4924447125473106102
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -479,6 +479,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1af51bbb9ac38f42bd401fe326125b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  showWeaponRaycast: 0
 --- !u!1 &4515388013139790551
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class AIAttackState : AIState
 {
     private float closeRange;
@@ -11,6 +13,7 @@ public class AIAttackState : AIState
 
     public void Enter(AIAgent agent)
     {
+        Debug.Log("Attack state");
         if (DataManager.HasInstance)
         {
             closeRange = DataManager.Instance.globalConfig.closeRange;
@@ -19,9 +22,9 @@ public class AIAttackState : AIState
         }
 
         agent.weapon.ActivateWeapon();
-
         agent.navMeshAgent.stoppingDistance = stoppingDistance;
         agent.navMeshAgent.speed = attackSpeed;
+
     }
 
     public void Update(AIAgent agent)
@@ -34,9 +37,11 @@ public class AIAttackState : AIState
 
         agent.weapon.SetTarget(agent.targeting.Target.transform);
         agent.navMeshAgent.destination = agent.targeting.TargetPosition;
-        //SelectWeapon(agent);
-        UpdateFiring(agent);
         ReloadWeapon(agent);
+        SelectWeapon(agent);
+        UpdateFiring(agent);
+        UpdateLowHealth(agent);
+        UpdateLowAmmo(agent);
     }
 
     public void Exit(AIAgent agent)
@@ -51,15 +56,34 @@ public class AIAttackState : AIState
         {
             agent.weapon.SetFiring(true);
         }
-        else agent.weapon.SetFiring(false);
+        else
+        {
+            agent.weapon.SetFiring(false);
+        }
     }
 
     private void ReloadWeapon(AIAgent agent)
     {
-        var weapon = agent.weapon.currentWeapon;
-        if (weapon && weapon.ammoCount <= 0)
+        var weapon = agent.weapon.AICurrentWeapon;
+        if (weapon && weapon.ShouldReload())
         {
             agent.weapon.ReloadWeapon();
+        }
+    }
+
+    private void UpdateLowHealth(AIAgent agent)
+    {
+        if (agent.aiHealth.IsLowHealth())
+        {
+            agent.stateMachine.ChangeState(AIStateID.FindHealth);
+        }
+    }
+
+    private void UpdateLowAmmo(AIAgent agent)
+    {
+        if (agent.weapon.IsLowAmmo())
+        {
+            agent.stateMachine.ChangeState(AIStateID.FindAmmo);
         }
     }
 
@@ -74,19 +98,16 @@ public class AIAttackState : AIState
 
     private WeaponSlot ChooseWeapon(AIAgent agent)
     {
-        bool hasWeapon = agent.weapon.HasWeapon();
-        var distance = agent.targeting.TargetDistance;
+        bool hasWeapon = agent.weapon.CountWeapon() == 2;
         if (hasWeapon)
         {
-            if (distance > closeRange)
+            foreach(var weaponTMP in agent.weapon.aiWeapons)
+            if (!weaponTMP.IsEmptyAmmo())
             {
-                return WeaponSlot.Primary;
+                return weaponTMP.weaponSlot;
             }
-            else
-            {
-                return WeaponSlot.Secondary;
-            }
+            return agent.weapon.AICurrentWeapon.weaponSlot;
         }
-        return agent.weapon.currentWeapon.weaponSlot;
+        return agent.weapon.AICurrentWeapon.weaponSlot;
     }
 }

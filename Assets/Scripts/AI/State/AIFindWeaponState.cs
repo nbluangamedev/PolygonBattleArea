@@ -1,4 +1,3 @@
-
 using UnityEngine;
 
 public class AIFindWeaponState : AIState
@@ -10,21 +9,28 @@ public class AIFindWeaponState : AIState
 
     public void Enter(AIAgent agent)
     {
+        Debug.Log("Find weapon");
         WeaponPickup pickup = FindClosetWeapon(agent);
-        agent.navMeshAgent.destination = pickup.transform.position;
-        agent.navMeshAgent.speed = DataManager.Instance.globalConfig.findWeaponSpeed;
+        if (pickup)
+        {
+            agent.navMeshAgent.destination = pickup.transform.position;
+            if (DataManager.HasInstance)
+            {
+                agent.navMeshAgent.speed = DataManager.Instance.globalConfig.findWeaponSpeed;
+            }
+        }
     }
 
     public void Update(AIAgent agent)
     {
-        if (agent.weapon.HasWeapon())
-        {
-            agent.stateMachine.ChangeState(AIStateID.Attack);
-        }
+        //if (agent.weapon.HasWeapon())
+        //{
+        //    agent.stateMachine.ChangeState(AIStateID.Attack);
+        //}
 
         if (agent.weapon.CountWeapon() == 2)
         {
-            agent.stateMachine.ChangeState(AIStateID.Attack);
+            agent.stateMachine.ChangeState(AIStateID.FindTarget);
         }
         else
         {
@@ -32,6 +38,7 @@ public class AIFindWeaponState : AIState
             if (pickup)
             {
                 agent.navMeshAgent.destination = pickup.transform.position;
+                agent.navMeshAgent.speed = DataManager.Instance.globalConfig.findWeaponSpeed;
             }
         }
     }

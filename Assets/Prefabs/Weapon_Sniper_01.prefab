@@ -103,6 +103,7 @@ MonoBehaviour:
   forceBullet: 4
   ammoCount: 10
   clipSize: 10
+  ammoTotal: 30
   damage: 100
   BulletCasingPrefab: {fileID: 3525363408539371240, guid: 646dbef2eecbba041bde7b716db6d7e2, type: 3}
   GunSlider: {fileID: 6064191098306144064}
@@ -110,7 +111,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1025
   overrideAnimator: {fileID: 9100000, guid: c4b2b3f0050f5054e82a4517a7e026ad, type: 2}
-  characterAiming: {fileID: 0}
 --- !u!114 &-4924447125473106102
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -247,6 +247,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1af51bbb9ac38f42bd401fe326125b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  showWeaponRaycast: 0
 --- !u!1 &4515388013139790551
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,25 +1,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//[ExecuteInEditMode]
+[ExecuteInEditMode]
 public class AISensor : MonoBehaviour
 {
     public bool debugGizmos = false;
     public float distance = 10f;
     public float angle = 30f;
     public float height = 1.0f;
-    public int scanFrequency = 30;
     public Color color = Color.red;
     public LayerMask layerMask;
     public LayerMask occlusionLayer;
+    //public int scanFrequency = 30;
     
-    [SerializeField]
     private Collider[] colliders = new Collider[50];
     private Mesh mesh;
     private int count;
-    private float scanInterval;
-    private float scanTimer;
-
+    //private float scanInterval;
+    //private float scanTimer;
     private List<GameObject> objects = new List<GameObject>();
     public List<GameObject> Objects
     {
@@ -33,17 +31,18 @@ public class AISensor : MonoBehaviour
 
     void Start()
     {        
-        scanInterval = 1.0f / scanFrequency;
+        //scanInterval = 1.0f / scanFrequency;
     }
 
     void Update()
     {
-        scanTimer -= Time.deltaTime;
-        if (scanTimer < 0)
-        {
-            scanTimer += scanInterval;
-            Scan();
-        }
+        Scan();
+        //scanTimer -= Time.deltaTime;
+        //if (scanTimer < 0)
+        //{
+        //    Scan();
+        //    scanTimer += scanInterval;
+        //}
     }
 
     private void Scan()
@@ -176,7 +175,7 @@ public class AISensor : MonoBehaviour
     private void OnValidate()
     {
         mesh = CreateMesh();
-        scanInterval = 1.0f / scanFrequency;
+        //scanInterval = 1.0f / scanFrequency;
     }
 
     private void OnDrawGizmos()

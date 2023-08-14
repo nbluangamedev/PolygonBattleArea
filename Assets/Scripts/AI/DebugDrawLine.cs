@@ -2,8 +2,12 @@ using UnityEngine;
 
 public class DebugDrawLine : MonoBehaviour
 {
+    public bool showWeaponRaycast = false;
     private void OnDrawGizmos()
     {
-        Debug.DrawLine(transform.position, transform.position + transform.forward * 50);
+        if (showWeaponRaycast)
+        {
+            Debug.DrawLine(transform.position, transform.position + transform.forward * 50);
+        }
     }
 }

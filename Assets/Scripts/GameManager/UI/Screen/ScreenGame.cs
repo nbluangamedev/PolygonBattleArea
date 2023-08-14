@@ -5,6 +5,8 @@ using UnityEngine;
 public class ScreenGame : BaseScreen
 {
     [SerializeField] private TextMeshProUGUI ammoText;
+    [SerializeField] private TextMeshProUGUI ammoTotalText;
+    [SerializeField] private TextMeshProUGUI healthText;
     public GameObject scopeOverlay;
     public GameObject crossHair;
 
@@ -17,6 +19,7 @@ public class ScreenGame : BaseScreen
             ListenerManager.Instance.Register(ListenType.UPDATE_AMMO, OnUpdateAmmo);
             ListenerManager.Instance.Register(ListenType.SCOPE, OnUpdateScope);
             ListenerManager.Instance.Register(ListenType.ACTIVECROSSHAIR, OnUpdateDeactiveCrossHair);
+            ListenerManager.Instance.Register(ListenType.UPDATE_HEALTH, OnUpdateHealth);
         }
     }
 
@@ -27,6 +30,16 @@ public class ScreenGame : BaseScreen
             ListenerManager.Instance.Unregister(ListenType.UPDATE_AMMO, OnUpdateAmmo);
             ListenerManager.Instance.Unregister(ListenType.SCOPE, OnUpdateScope);
             ListenerManager.Instance.Unregister(ListenType.ACTIVECROSSHAIR, OnUpdateDeactiveCrossHair);
+            ListenerManager.Instance.Unregister(ListenType.UPDATE_HEALTH, OnUpdateHealth);
+        }
+    }
+
+    private void OnUpdateHealth(object value)
+    {
+        if(value is PlayerHealth currentHealth)
+        {
+            float health = Mathf.Max(currentHealth.CurrentHealth, 0.0f);
+            healthText.text = "Health: " + health.ToString();
         }
     }
 
@@ -36,7 +49,8 @@ public class ScreenGame : BaseScreen
         {
             if (weapon.equipWeaponBy == EquipWeaponBy.Player)
             {
-                ammoText.text = weapon.ammoCount.ToString();
+                ammoText.text = "Ammo: " + weapon.ammoCount.ToString();
+                ammoTotalText.text = "Total Ammo: " + weapon.ammoTotal.ToString();
             }
         }
     }

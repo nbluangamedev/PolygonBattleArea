@@ -8,7 +8,8 @@ public enum ListenType
     UPDATE_AMMO,
     SCOPE,
     UNSCOPE,
-    ACTIVECROSSHAIR
+    ACTIVECROSSHAIR,
+    UPDATE_HEALTH
 }
 
 public enum UIType
@@ -27,7 +28,9 @@ public enum AIStateID
     Idle,
     FindWeapon,
     Attack,
-    FindTarget
+    FindTarget,
+    FindHealth,
+    FindAmmo
 }
 
 public enum SocketID

@@ -15,7 +15,7 @@ public class ActiveWeapon : MonoBehaviour
     public Transform[] weaponSlots;
 
     private RaycastWeapon[] equippedWeapon = new RaycastWeapon[2];
-    private int activeWeaponIndex;
+    private int activeWeaponIndex = -1;
 
     private void Start()
     {
@@ -41,9 +41,14 @@ public class ActiveWeapon : MonoBehaviour
                 weapon.StartFiring();
             }
 
-            if (Input.GetButtonUp("Fire1") || !canFire)
+            if (Input.GetButtonUp("Fire1") || !canFire || weapon.IsEmptyAmmo())
             {
                 weapon.StopFiring();
+            }
+
+            if (weapon.IsEmptyAmmo())
+            {
+                StartCoroutine(HolsterWeapon((int)weapon.weaponSlot));
             }
 
             weapon.UpdateWeapon(Time.deltaTime, crossHairTarget.position);
@@ -248,5 +253,18 @@ public class ActiveWeapon : MonoBehaviour
             }
         }
         isChangingWeapon = false;
+    }
+
+    public void RefillAmmo(int ammoAmount)
+    {
+        RaycastWeapon weapon = GetActiveWeapon();
+        if (weapon)
+        {
+            weapon.ammoTotal += ammoAmount;
+            if (ListenerManager.HasInstance)
+            {
+                ListenerManager.Instance.BroadCast(ListenType.UPDATE_AMMO, weapon);
+            }
+        }
     }
 }

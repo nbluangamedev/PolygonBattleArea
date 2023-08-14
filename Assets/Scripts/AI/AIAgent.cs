@@ -4,7 +4,6 @@ using UnityEngine.AI;
 public class AIAgent : MonoBehaviour
 {
     public AIStateID initState;
-
     [HideInInspector] public AIStateMachine stateMachine;
     [HideInInspector] public NavMeshAgent navMeshAgent;
     [HideInInspector] public Ragdoll ragdoll;
@@ -24,7 +23,7 @@ public class AIAgent : MonoBehaviour
         weapon = GetComponent<AIWeapon>();
         sensor = GetComponent<AISensor>();
         targeting = GetComponent<AITargetingSystem>();
-        if (playerTransform == null)
+        if (!playerTransform)
         {
             playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         }
@@ -36,6 +35,8 @@ public class AIAgent : MonoBehaviour
         stateMachine.RegisterState(new AIFindWeaponState());
         stateMachine.RegisterState(new AIAttackState());
         stateMachine.RegisterState(new AIFindTargetState());
+        stateMachine.RegisterState(new AIFindHealthState());
+        stateMachine.RegisterState(new AIFindAmmoState());
         stateMachine.ChangeState(initState);
     }
 

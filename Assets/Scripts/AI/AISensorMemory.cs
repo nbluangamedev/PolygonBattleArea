@@ -23,7 +23,7 @@ public class AIMemory
 public class AISensorMemory
 {
     public List<AIMemory> memories = new List<AIMemory>();
-    GameObject[] characters;
+    private GameObject[] characters;
 
     public AISensorMemory(int maxPlayers)
     {
@@ -63,7 +63,7 @@ public class AISensorMemory
     }
 
     public void ForgetMemories(float olderThan)
-    {
+    {        
         memories.RemoveAll(m => m.Age > olderThan);
         memories.RemoveAll(m => !m.gameObject);
         memories.RemoveAll(m => m.gameObject.GetComponent<Health>().IsDead());

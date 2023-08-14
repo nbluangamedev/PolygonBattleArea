@@ -3,14 +3,24 @@ using UnityEngine;
 
 public class AIWeapon : MonoBehaviour
 {
-    public RaycastWeapon currentWeapon
+    public RaycastWeapon AICurrentWeapon
+    {
+        get
+        {            
+            return aiWeapons[currentWeaponIndex];
+        }
+    }
+
+    public WeaponSlot currentWeaponSlot
     {
         get
         {
-            return weapons[currentWeaponIndex];
+            return (WeaponSlot)currentWeaponIndex;
         }
     }
-    private RaycastWeapon[] weapons = new RaycastWeapon[2];
+
+    [SerializeField]
+    public RaycastWeapon[] aiWeapons = new RaycastWeapon[2];
     private int currentWeaponIndex = 0;
 
     private WeaponState weaponState = WeaponState.Holstered;
@@ -37,12 +47,7 @@ public class AIWeapon : MonoBehaviour
     public bool IsReloading()
     {
         return weaponState == WeaponState.Reloading;
-    }
-
-    public WeaponSlot currentWeaponSlot
-    {
-        get { return (WeaponSlot)currentWeaponIndex; }
-    }
+    }    
 
     private void Awake()
     {
@@ -59,15 +64,15 @@ public class AIWeapon : MonoBehaviour
 
     private void Update()
     {
-        if (currentTarget && currentWeapon && IsActive())
+        if (currentTarget && AICurrentWeapon && IsActive())
         {
             Vector3 target = currentTarget.position + weaponIK.targetOffset;
-            if (currentWeapon.weaponName.Equals("Sniper"))
+            if (AICurrentWeapon.weaponName.Equals("Sniper"))
             {
                 target += Random.insideUnitSphere * inAccuracySniper;
             }
             target += Random.insideUnitSphere * inAccuracy;
-            currentWeapon.UpdateWeapon(Time.deltaTime, target);
+            AICurrentWeapon.UpdateWeapon(Time.deltaTime, target);
         }
     }
 
@@ -75,25 +80,17 @@ public class AIWeapon : MonoBehaviour
     {
         if (enable)
         {
-            int ammo = currentWeapon.ammoCount;
-            currentWeapon.StartFiring();
-            if (currentWeapon.weaponName.Equals("Sniper"))
-            {
-                if (ammo > currentWeapon.ammoCount)
-                {
-                    animator.Play("sniperPullBolt");
-                }
-            }
+            AICurrentWeapon.StartFiring();
         }
         else
         {
-            currentWeapon.StopFiring();
+            AICurrentWeapon.StopFiring();
         }
     }
 
     public void Equip(RaycastWeapon weapon)
     {
-        weapons[(int)weapon.weaponSlot] = weapon;
+        aiWeapons[(int)weapon.weaponSlot] = weapon;
 
         if (weapon.weaponSlot == WeaponSlot.Primary)
         {
@@ -113,7 +110,7 @@ public class AIWeapon : MonoBehaviour
     private IEnumerator EquipWeapon()
     {
         weaponState = WeaponState.Activating;
-        animator.runtimeAnimatorController = currentWeapon.overrideAnimator;
+        animator.runtimeAnimatorController = AICurrentWeapon.overrideAnimator;
         animator.SetBool("equip", true);
         yield return new WaitForSeconds(.5f);
         while (animator.GetCurrentAnimatorStateInfo(1).normalizedTime < 1.0f)
@@ -121,16 +118,16 @@ public class AIWeapon : MonoBehaviour
             yield return null;
         }
         weaponIK.enabled = true;
-        weaponIK.SetAimTransform(currentWeapon.raycastOrigin);
+        weaponIK.SetAimTransform(AICurrentWeapon.raycastOrigin);
         weaponState = WeaponState.Active;
     }
 
     public int CountWeapon()
     {
         int count = 0;
-        foreach (var weapon in weapons)
+        foreach (var weapon in aiWeapons)
         {
-            if (weapon != null)
+            if (weapon)
             {
                 count++;
             }
@@ -205,17 +202,30 @@ public class AIWeapon : MonoBehaviour
 
     public bool HasWeapon()
     {
-        return currentWeapon != null;
+        int count = 0;
+        foreach (RaycastWeapon weapon in aiWeapons)
+        {
+            if (weapon)
+            {
+                count++;
+            }
+        }
+
+        if (count != 0)
+        {
+            return true;
+        }
+        else return false;
     }
 
     public void DropWeapon()
     {
-        if (currentWeapon)
+        if (AICurrentWeapon)
         {
-            currentWeapon.transform.SetParent(null);
-            currentWeapon.gameObject.GetComponent<BoxCollider>().enabled = true;
-            currentWeapon.gameObject.AddComponent<Rigidbody>();
-            weapons[currentWeaponIndex] = null;
+            AICurrentWeapon.transform.SetParent(null);
+            AICurrentWeapon.gameObject.GetComponent<BoxCollider>().enabled = true;
+            AICurrentWeapon.gameObject.AddComponent<Rigidbody>();
+            aiWeapons[currentWeaponIndex] = null;
         }
     }
 
@@ -252,33 +262,32 @@ public class AIWeapon : MonoBehaviour
 
     private void EquipWeaponEvent()
     {
-        if ((int)currentWeapon.weaponSlot == 0)
+        if ((int)AICurrentWeapon.weaponSlot == 0)
         {
-            socketController.Attach(currentWeapon.transform, SocketID.RightHandRifle);
+            socketController.Attach(AICurrentWeapon.transform, SocketID.RightHandRifle);
         }
         else
         {
-            socketController.Attach(currentWeapon.transform, SocketID.RightHandPistol);
+            socketController.Attach(AICurrentWeapon.transform, SocketID.RightHandPistol);
         }
     }
+
     private void HolsterWeaponEvent()
     {
-        if ((int)currentWeapon.weaponSlot == 0)
+        if ((int)AICurrentWeapon.weaponSlot == 0)
         {
-            socketController.Attach(currentWeapon.transform, SocketID.Spine);
-
+            socketController.Attach(AICurrentWeapon.transform, SocketID.Spine);
         }
         else
         {
-            socketController.Attach(currentWeapon.transform, SocketID.Hip);
-
+            socketController.Attach(AICurrentWeapon.transform, SocketID.Hip);
         }
     }
 
     private void DetachMagazine()
     {
         var leftHand = animator.GetBoneTransform(HumanBodyBones.LeftHand);
-        RaycastWeapon weapon = currentWeapon;
+        RaycastWeapon weapon = AICurrentWeapon;
         magazineHand = Instantiate(weapon.magazine, leftHand, true);
         weapon.magazine.SetActive(false);
     }
@@ -297,12 +306,32 @@ public class AIWeapon : MonoBehaviour
     {
         magazineHand.SetActive(true);
     }
+
     private void AttachMagazine()
     {
-        RaycastWeapon weapon = currentWeapon;
+        RaycastWeapon weapon = AICurrentWeapon;
         weapon.magazine.SetActive(true);
         Destroy(magazineHand);
-        weapon.ammoCount = weapon.clipSize;
+        weapon.RefillAmmo();
         animator.ResetTrigger("reload_Weapon");
+    }
+
+    public void RefillAmmo(int ammoAmount)
+    {
+        RaycastWeapon weapon = AICurrentWeapon;
+        if (weapon)
+        {
+            weapon.ammoTotal += ammoAmount;
+        }
+    }
+
+    public bool IsLowAmmo()
+    {
+        var weapon = AICurrentWeapon;
+        if (weapon)
+        {
+            return weapon.IsEmptyAmmo();
+        }
+        return false;
     }
 }

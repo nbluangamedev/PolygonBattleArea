@@ -19,6 +19,7 @@ public class GlobalConfig : ScriptableObject
     public float maxHealth = 100f;
     public float blinkDuration = 0.1f;
     public float timeDestroyAI = 2f;
+    public float lowHealth = 20f;
 
     [Header("Weapon")]
     public float inAccuracy = 0.4f;
@@ -55,6 +56,7 @@ public class GlobalConfig : ScriptableObject
     //---------------------------WEAPON--------------------------//
     [Header("WEAPON")]
     public int lossOfAccuracyPerShot = 1;
+    public int ammoAmount = 30;
 
     [Header("Weapon Recoil")]
     public float duration;

@@ -3,7 +3,7 @@ using UnityEngine;
 //[ExecuteInEditMode]
 public class AITargetingSystem : MonoBehaviour
 {
-    public float memorySpan = 3.0f;
+    public float memorySpan = 2.0f;
     public float distanceWeight = 1.0f;
     public float angleWeight = 1.0f;
     public float ageWeight = 1.0f;
@@ -60,8 +60,8 @@ public class AITargetingSystem : MonoBehaviour
 
     private void Update()
     {
-        memory.UpdateSenses(sensor);
-        memory.ForgetMemories(memorySpan);
+        memory.UpdateSenses(sensor);        
+        memory.ForgetMemories(memorySpan);        
 
         EvaluateScores();
     }

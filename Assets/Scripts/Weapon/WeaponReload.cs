@@ -19,15 +19,18 @@ public class WeaponReload : MonoBehaviour
 
     private void Update()
     {
+        RaycastWeapon weapon = activeWeapon.GetActiveWeapon();
         bool canReload = !characterLocomotion.isCrouching;
 
-        RaycastWeapon weapon = activeWeapon.GetActiveWeapon();
-        if (weapon && canReload)
+        if (weapon)
         {
-            if (Input.GetKeyDown(KeyCode.R) || weapon.ammoCount <= 0)
+            if (canReload && !weapon.IsEmptyAmmo())
             {
-                isReloading = true;
-                rigController.SetTrigger("reload_Weapon");
+                if (Input.GetKeyDown(KeyCode.R) || weapon.ShouldReload())
+                {
+                    isReloading = true;
+                    rigController.SetTrigger("reload_Weapon");
+                }
             }
         }
     }
@@ -77,7 +80,7 @@ public class WeaponReload : MonoBehaviour
         RaycastWeapon weapon = activeWeapon.GetActiveWeapon();
         weapon.magazine.SetActive(true);
         Destroy(magazineHand);
-        weapon.ammoCount = weapon.clipSize;
+        weapon.RefillAmmo();
         rigController.ResetTrigger("reload_Weapon");
         if (ListenerManager.HasInstance)
         {
