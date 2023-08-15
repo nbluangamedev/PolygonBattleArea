@@ -1,14 +1,14 @@
 using UnityEngine;
 
-//[ExecuteInEditMode]
+[ExecuteInEditMode]
 public class AITargetingSystem : MonoBehaviour
 {
-    public float memorySpan = 2.0f;
+    public float memorySpan = 1.0f;
     public float distanceWeight = 1.0f;
     public float angleWeight = 1.0f;
     public float ageWeight = 1.0f;
 
-    private AISensorMemory memory = new AISensorMemory(10);
+    private AISensorMemory memory = new(10);
     private AISensor sensor;
     private AIMemory bestMemory;
 
@@ -51,7 +51,6 @@ public class AITargetingSystem : MonoBehaviour
             return bestMemory.distance;
         }
     }
-
 
     private void Start()
     {

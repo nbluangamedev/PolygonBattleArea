@@ -1,8 +1,10 @@
-using System.Collections;
 using UnityEngine;
 
 public class AIFindAmmoState : AIState
 {
+    private GameObject pickup;
+    private GameObject[] pickups = new GameObject[5];
+
     public AIStateID GetID()
     {
         return AIStateID.FindAmmo;
@@ -11,31 +13,30 @@ public class AIFindAmmoState : AIState
     public void Enter(AIAgent agent)
     {
         Debug.Log("Find ammo");
-        AmmoPickup ammo = FindClosetAmmo(agent);
-        if (ammo)
+        pickup = null;
+
+        if (DataManager.HasInstance)
         {
-            agent.navMeshAgent.destination = ammo.transform.position;
             agent.navMeshAgent.speed = DataManager.Instance.globalConfig.findWeaponSpeed;
         }
     }
 
     public void Update(AIAgent agent)
     {
-        if (!agent.weapon.IsLowAmmo())
+        //Pickup
+        if (!pickup)
         {
-            agent.stateMachine.ChangeState(AIStateID.FindTarget);
+            pickup = FindPickup(agent);
+
+            if (pickup)
+            {
+                CollectPickup(agent, pickup);
+            }
         }
 
-        if (agent.weapon.IsLowAmmo())
+        if (!agent.aiHealth.IsLowHealth())
         {
             agent.stateMachine.ChangeState(AIStateID.FindTarget);
-        }
-
-        AmmoPickup ammo = FindClosetAmmo(agent);
-        if (ammo)
-        {
-            agent.navMeshAgent.destination = ammo.transform.position;
-            agent.navMeshAgent.speed = DataManager.Instance.globalConfig.findWeaponSpeed;
         }
     }
 
@@ -44,20 +45,36 @@ public class AIFindAmmoState : AIState
 
     }
 
-    private AmmoPickup FindClosetAmmo(AIAgent agent)
+    private GameObject FindPickup(AIAgent agent)
     {
-        AmmoPickup[] ammos = Object.FindObjectsOfType<AmmoPickup>();
-        AmmoPickup closetAmmo = null;
-        float closetDistance = float.MaxValue;
-        foreach (AmmoPickup ammo in ammos)
+        int count = agent.sensor.Filter(pickups, "Pickup", "Ammo");
+        if (count > 0)
         {
-            float distanceToAmmo = Vector3.Distance(agent.transform.position, ammo.transform.position);
-            if (distanceToAmmo < closetDistance)
+            float bestAngle = float.MaxValue;
+            GameObject bestPickup = pickups[0];
+            for (int i = 0; i < count; ++i)
             {
-                closetDistance = distanceToAmmo;
-                closetAmmo = ammo;
+                GameObject pickup = pickups[i];
+                float pickupAngle = Vector3.Angle(agent.transform.forward, pickup.transform.position - agent.transform.position);
+                if (pickupAngle < bestAngle)
+                {
+                    bestAngle = pickupAngle;
+                    bestPickup = pickup;
+                }
             }
+            return bestPickup;
         }
-        return closetAmmo;
+        else if (count <= 0)
+        {
+            Debug.Log("Wander find pickup ammo");
+            WorldBounds worldBounds = GameObject.FindObjectOfType<WorldBounds>();
+            agent.navMeshAgent.destination = worldBounds.RandomPosition();
+        }
+        return null;
+    }
+
+    private void CollectPickup(AIAgent agent, GameObject pickup)
+    {
+        agent.navMeshAgent.destination = pickup.transform.position;
     }
 }

@@ -32,17 +32,17 @@ public class AISensorMemory
 
     public void UpdateSenses(AISensor sensor)
     {
-        int targets = sensor.Filter(characters, "Player");
+        int targets = sensor.Filter(characters, "Character", "Player");
         for (int i = 0; i < targets; ++i)
         {
             GameObject target = characters[i];
-            RefreshMemory(sensor.gameObject, target);
+            PushMemory(sensor.gameObject, target);
         }
     }
 
-    public void RefreshMemory(GameObject agent, GameObject target)
+    public void PushMemory(GameObject agent, GameObject target)
     {
-        AIMemory memory = FetchMemory(target);
+        AIMemory memory = FilterMemory(target);
         memory.gameObject = target;
         memory.position = target.transform.position;
         memory.direction = target.transform.position - agent.transform.position;
@@ -51,10 +51,10 @@ public class AISensorMemory
         memory.lastSeen = Time.time;
     }
 
-    public AIMemory FetchMemory(GameObject gameObject)
+    public AIMemory FilterMemory(GameObject gameObject)
     {
         AIMemory memory = memories.Find(x => x.gameObject == gameObject);
-        if(memory == null)
+        if (memory == null)
         {
             memory = new AIMemory();
             memories.Add(memory);
@@ -63,7 +63,7 @@ public class AISensorMemory
     }
 
     public void ForgetMemories(float olderThan)
-    {        
+    {
         memories.RemoveAll(m => m.Age > olderThan);
         memories.RemoveAll(m => !m.gameObject);
         memories.RemoveAll(m => m.gameObject.GetComponent<Health>().IsDead());

@@ -333,9 +333,9 @@ MonoBehaviour:
   recoil: {fileID: 0}
   magazine: {fileID: 1388283467867362, guid: 2d4668c24a87f7d4eb030615f34a3335, type: 3}
   forceBullet: 3.5
-  ammoCount: 2
-  clipSize: 2
-  ammoTotal: 2
+  ammoCount: 8
+  clipSize: 8
+  ammoTotal: 24
   damage: 15
   BulletCasingPrefab: {fileID: 1076261940137426, guid: 96631445180422140bb3de3e846561d6, type: 3}
   GunSlider: {fileID: 2886826341630675307}

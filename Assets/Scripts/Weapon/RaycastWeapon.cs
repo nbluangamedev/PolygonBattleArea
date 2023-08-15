@@ -42,10 +42,11 @@ public class RaycastWeapon : MonoBehaviour
         }
 
         recoil = GetComponent<WeaponRecoil>();
-        if (equipWeaponBy == EquipWeaponBy.Player)
+
+        if (this.equipWeaponBy == EquipWeaponBy.Player)
         {
-            characterAiming = GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterAiming>();
-        }
+            characterAiming = GameObject.FindObjectOfType<CharacterAiming>();
+        }        
     }
 
     public void StartFiring()
@@ -77,7 +78,7 @@ public class RaycastWeapon : MonoBehaviour
 
     public void UpdateFiring(float deltaTime, Vector3 target)
     {
-        //accumulatedTime += deltaTime;
+        accumulatedTime += deltaTime;
         float fireInterval = 1.0f / fireRate;
         while (accumulatedTime >= 0.0f)
         {
@@ -94,13 +95,13 @@ public class RaycastWeapon : MonoBehaviour
 
     private void RaycastSegment(Vector3 start, Vector3 end, Bullet bullet)
     {
+        Vector3 direction = end - start;
+        float distance = direction.magnitude;
+        ray.origin = start;
+        ray.direction = direction;
+
         if (weaponName != "Shotgun")
         {
-            Vector3 direction = end - start;
-            float distance = direction.magnitude;
-            ray.origin = start;
-            ray.direction = direction;
-
             if (Physics.Raycast(ray, out hitInfo, distance, layerMask))
             {
                 hitEffect.transform.position = hitInfo.point;
@@ -110,7 +111,7 @@ public class RaycastWeapon : MonoBehaviour
                 bullet.transform.position = hitInfo.point;
                 bullet.time = maxLifetime;
 
-                var rb = hitInfo.collider.GetComponent<Rigidbody>();
+                Rigidbody rb = hitInfo.collider.GetComponent<Rigidbody>();
                 if (rb)
                 {
                     rb.AddForceAtPosition(ray.direction * forceBullet, hitInfo.point, ForceMode.Impulse);
@@ -120,6 +121,11 @@ public class RaycastWeapon : MonoBehaviour
                 if (hitBox)
                 {
                     hitBox.OnHit(this, ray.direction);
+                }
+
+                if (bullet.tracer)
+                {
+                    bullet.tracer.transform.position = end;
                 }
             }
             else
@@ -135,12 +141,7 @@ public class RaycastWeapon : MonoBehaviour
                 BulletRotationPrecision.x += Random.Range(-lossOfAccuracyPerShot, lossOfAccuracyPerShot);
                 BulletRotationPrecision.y += Random.Range(-lossOfAccuracyPerShot, lossOfAccuracyPerShot);
                 BulletRotationPrecision.z += Random.Range(-lossOfAccuracyPerShot, lossOfAccuracyPerShot);
-
-                Vector3 direction = BulletRotationPrecision - start;
-                float distance = direction.magnitude;
-                ray.origin = start;
-                ray.direction = direction;
-
+                
                 if (Physics.Raycast(ray, out hitInfo, distance, layerMask))
                 {
                     hitEffect.transform.position = hitInfo.point;
@@ -150,7 +151,7 @@ public class RaycastWeapon : MonoBehaviour
                     bullet.transform.position = hitInfo.point;
                     bullet.time = maxLifetime;
 
-                    var rb = hitInfo.collider.GetComponent<Rigidbody>();
+                    Rigidbody rb = hitInfo.collider.GetComponent<Rigidbody>();
                     if (rb && !layerMask.Equals("Default"))
                     {
                         rb.AddForceAtPosition(ray.direction * forceBullet, hitInfo.point, ForceMode.Impulse);
@@ -160,6 +161,11 @@ public class RaycastWeapon : MonoBehaviour
                     if (hitBox)
                     {
                         hitBox.OnHit(this, ray.direction);
+                    }
+
+                    if (bullet.tracer)
+                    {
+                        bullet.tracer.transform.position = end;
                     }
                 }
                 else
@@ -206,7 +212,7 @@ public class RaycastWeapon : MonoBehaviour
 
         EmitBulletCasing();
 
-        if (this.equipWeaponBy == EquipWeaponBy.Player && this.weaponName.Equals("Sniper") && ammoCount > 0)
+        if (this.equipWeaponBy == EquipWeaponBy.Player && this.weaponName.Equals("Sniper") && !IsEmptyAmmo())
         {
             if (characterAiming.isAiming)
             {
@@ -287,5 +293,9 @@ public class RaycastWeapon : MonoBehaviour
         int ammoRefill = Mathf.Min(deltaAmmo, ammoTotal);
         ammoCount += ammoRefill;
         ammoTotal -= ammoRefill;
+        if(ammoTotal < 0)
+        {
+            ammoTotal = 0;
+        }
     }
 }

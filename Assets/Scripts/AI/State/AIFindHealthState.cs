@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class AIFindHealthState : AIState
 {
+    private GameObject pickup;
+    private GameObject[] pickups = new GameObject[5];
+
     public AIStateID GetID()
     {
         return AIStateID.FindHealth;
@@ -9,32 +12,31 @@ public class AIFindHealthState : AIState
 
     public void Enter(AIAgent agent)
     {
-        Debug.Log("Find health");
-        HealthPickup health = FindClosetHealth(agent);
-        if (health)
+        Debug.Log("Find weapon");
+        pickup = null;
+
+        if (DataManager.HasInstance)
         {
-            agent.navMeshAgent.destination = health.transform.position;
             agent.navMeshAgent.speed = DataManager.Instance.globalConfig.findWeaponSpeed;
         }
     }
 
     public void Update(AIAgent agent)
     {
-        if (!agent.aiHealth.IsLowHealth())
+        //Pickup
+        if (!pickup)
         {
-            agent.stateMachine.ChangeState(AIStateID.FindTarget);
+            pickup = FindPickup(agent);
+
+            if (pickup)
+            {
+                CollectPickup(agent, pickup);
+            }
         }
 
-        if (agent.aiHealth.IsLowHealth())
+        if (!agent.weapon.IsLowAmmo())
         {
             agent.stateMachine.ChangeState(AIStateID.FindTarget);
-        }
-
-        HealthPickup health = FindClosetHealth(agent);
-        if (health)
-        {
-            agent.navMeshAgent.destination = health.transform.position;
-            agent.navMeshAgent.speed = DataManager.Instance.globalConfig.findWeaponSpeed;
         }
     }
 
@@ -43,20 +45,36 @@ public class AIFindHealthState : AIState
 
     }
 
-    private HealthPickup FindClosetHealth(AIAgent agent)
+    private GameObject FindPickup(AIAgent agent)
     {
-        HealthPickup[] healths = Object.FindObjectsOfType<HealthPickup>();
-        HealthPickup closetHealth = null;
-        float closetDistance = float.MaxValue;
-        foreach (HealthPickup health in healths)
+        int count = agent.sensor.Filter(pickups, "Pickup", "Health");
+        if (count > 0)
         {
-            float distanceToHealth = Vector3.Distance(agent.transform.position, health.transform.position);
-            if (distanceToHealth < closetDistance)
+            float bestAngle = float.MaxValue;
+            GameObject bestPickup = pickups[0];
+            for (int i = 0; i < count; ++i)
             {
-                closetDistance = distanceToHealth;
-                closetHealth = health;
+                GameObject pickup = pickups[i];
+                float pickupAngle = Vector3.Angle(agent.transform.forward, pickup.transform.position - agent.transform.position);
+                if (pickupAngle < bestAngle)
+                {
+                    bestAngle = pickupAngle;
+                    bestPickup = pickup;
+                }
             }
+            return bestPickup;
         }
-        return closetHealth;
+        else if (count <= 0)
+        {
+            Debug.Log("Wander find pickup health");
+            WorldBounds worldBounds = GameObject.FindObjectOfType<WorldBounds>();
+            agent.navMeshAgent.destination = worldBounds.RandomPosition();
+        }
+        return null;
+    }
+
+    private void CollectPickup(AIAgent agent, GameObject pickup)
+    {
+        agent.navMeshAgent.destination = pickup.transform.position;
     }
 }

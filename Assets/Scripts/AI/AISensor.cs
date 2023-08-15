@@ -11,13 +11,16 @@ public class AISensor : MonoBehaviour
     public Color color = Color.red;
     public LayerMask layerMask;
     public LayerMask occlusionLayer;
-    //public int scanFrequency = 30;
-    
+    public int scanFrequency = 30;
+
+    [SerializeField]
     private Collider[] colliders = new Collider[50];
     private Mesh mesh;
     private int count;
-    //private float scanInterval;
-    //private float scanTimer;
+    private float scanInterval;
+    private float scanTimer;
+
+    [SerializeField]
     private List<GameObject> objects = new List<GameObject>();
     public List<GameObject> Objects
     {
@@ -28,21 +31,21 @@ public class AISensor : MonoBehaviour
         }
     }
 
-
     void Start()
-    {        
-        //scanInterval = 1.0f / scanFrequency;
+    {
+        scanInterval = 1.0f / scanFrequency;
     }
 
     void Update()
     {
-        Scan();
-        //scanTimer -= Time.deltaTime;
-        //if (scanTimer < 0)
-        //{
-        //    Scan();
-        //    scanTimer += scanInterval;
-        //}
+        //Scan();
+        mesh = CreateMesh();
+        scanTimer -= Time.deltaTime;
+        if (scanTimer < 0)
+        {
+            Scan();
+            scanTimer += scanInterval;
+        }
     }
 
     private void Scan()
@@ -73,14 +76,14 @@ public class AISensor : MonoBehaviour
 
         direction.y = 0;
         float deltaAngle = Vector3.Angle(direction, transform.forward);
-        if (deltaAngle > angle) 
-        { 
-            return false; 
+        if (deltaAngle > angle)
+        {
+            return false;
         }
 
         origin.y += height / 2;
         destination.y = origin.y;
-        if(Physics.Linecast(origin, destination, occlusionLayer))
+        if (Physics.Linecast(origin, destination, occlusionLayer))
         {
             return false;
         }
@@ -174,8 +177,8 @@ public class AISensor : MonoBehaviour
 
     private void OnValidate()
     {
-        mesh = CreateMesh();
-        //scanInterval = 1.0f / scanFrequency;
+        //mesh = CreateMesh();
+        scanInterval = 1.0f / scanFrequency;
     }
 
     private void OnDrawGizmos()
@@ -196,13 +199,18 @@ public class AISensor : MonoBehaviour
         }
     }
 
-    public int Filter(GameObject[] buffer, string layerName)
+    public int Filter(GameObject[] buffer, string layerName, string tagName = null)
     {
         int layer = LayerMask.NameToLayer(layerName);
         int count = 0;
         foreach (var obj in Objects)
         {
-            if(obj.layer == layer)
+            if (tagName != null && !obj.CompareTag(tagName))
+            {
+                continue;
+            }
+
+            if (obj.layer == layer)
             {
                 buffer[count++] = obj;
             }
@@ -212,7 +220,6 @@ public class AISensor : MonoBehaviour
                 break;          //buffer is full
             }
         }
-
         return count;
     }
 }

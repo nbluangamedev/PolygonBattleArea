@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class AIFindTargetState : AIState
@@ -19,12 +20,14 @@ public class AIFindTargetState : AIState
     public void Update(AIAgent agent)
     {
         //Wander
-        if (!agent.navMeshAgent.hasPath)
+        if (!agent.navMeshAgent.hasPath && !agent.navMeshAgent.pathPending)
         {
+            Debug.Log("wander find target");
             WorldBounds worldBounds = GameObject.FindObjectOfType<WorldBounds>();
             agent.navMeshAgent.destination = worldBounds.RandomPosition();
             return;
         }
+
 
         if (agent.targeting.HasTarget)
         {

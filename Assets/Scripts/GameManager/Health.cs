@@ -55,7 +55,7 @@ public class Health : MonoBehaviour
             rigidBody.collisionDetectionMode = CollisionDetectionMode.Continuous;
             HitBox hitBox = rigidBody.gameObject.AddComponent<HitBox>();
             hitBox.health = this;
-            hitBox.rb = rigidBody;
+            hitBox.rb = rigidBody;      //???
             if (hitBox.gameObject != gameObject)
             {
                 hitBox.gameObject.layer = LayerMask.NameToLayer("HitBox");

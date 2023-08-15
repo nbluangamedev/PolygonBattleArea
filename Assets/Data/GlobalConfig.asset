@@ -49,7 +49,7 @@ MonoBehaviour:
   scopeOverlay: {fileID: 2287727143583154844, guid: 1b010632b5954a44db5e72a3b00da538, type: 3}
   playerMaxHealth: 100
   lossOfAccuracyPerShot: 1
-  ammoAmount: 10
+  ammoAmount: 30
   duration: 0.2
   amountInPool: 30
   loadingOverLapTime: 1

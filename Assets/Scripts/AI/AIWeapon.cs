@@ -6,7 +6,7 @@ public class AIWeapon : MonoBehaviour
     public RaycastWeapon AICurrentWeapon
     {
         get
-        {            
+        {
             return aiWeapons[currentWeaponIndex];
         }
     }
@@ -47,7 +47,7 @@ public class AIWeapon : MonoBehaviour
     public bool IsReloading()
     {
         return weaponState == WeaponState.Reloading;
-    }    
+    }
 
     private void Awake()
     {
@@ -90,6 +90,7 @@ public class AIWeapon : MonoBehaviour
 
     public void Equip(RaycastWeapon weapon)
     {
+        //currentWeaponIndex = (int)weapon.weaponSlot;
         aiWeapons[(int)weapon.weaponSlot] = weapon;
 
         if (weapon.weaponSlot == WeaponSlot.Primary)
@@ -104,7 +105,15 @@ public class AIWeapon : MonoBehaviour
 
     public void ActivateWeapon()
     {
-        StartCoroutine(EquipWeapon());
+        foreach (var weapon in aiWeapons)
+        {
+            if (weapon)
+            {
+                currentWeaponIndex = (int)weapon.weaponSlot;
+                StartCoroutine(EquipWeapon());
+                break;
+            }
+        }
     }
 
     private IEnumerator EquipWeapon()
@@ -302,6 +311,7 @@ public class AIWeapon : MonoBehaviour
         Destroy(droppedMagazine, 5f);
         droppedMagazine.hideFlags = HideFlags.HideInHierarchy;
     }
+
     private void RefillMagazine()
     {
         magazineHand.SetActive(true);
