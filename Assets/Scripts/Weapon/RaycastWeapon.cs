@@ -78,7 +78,7 @@ public class RaycastWeapon : MonoBehaviour
 
     public void UpdateFiring(float deltaTime, Vector3 target)
     {
-        accumulatedTime += deltaTime;
+        //accumulatedTime += deltaTime;
         float fireInterval = 1.0f / fireRate;
         while (accumulatedTime >= 0.0f)
         {
@@ -95,13 +95,13 @@ public class RaycastWeapon : MonoBehaviour
 
     private void RaycastSegment(Vector3 start, Vector3 end, Bullet bullet)
     {
-        Vector3 direction = end - start;
-        float distance = direction.magnitude;
-        ray.origin = start;
-        ray.direction = direction;
-
         if (weaponName != "Shotgun")
         {
+            Vector3 direction = end - start;
+            float distance = direction.magnitude;
+            ray.origin = start;
+            ray.direction = direction;
+
             if (Physics.Raycast(ray, out hitInfo, distance, layerMask))
             {
                 hitEffect.transform.position = hitInfo.point;
@@ -141,7 +141,12 @@ public class RaycastWeapon : MonoBehaviour
                 BulletRotationPrecision.x += Random.Range(-lossOfAccuracyPerShot, lossOfAccuracyPerShot);
                 BulletRotationPrecision.y += Random.Range(-lossOfAccuracyPerShot, lossOfAccuracyPerShot);
                 BulletRotationPrecision.z += Random.Range(-lossOfAccuracyPerShot, lossOfAccuracyPerShot);
-                
+
+                Vector3 direction = BulletRotationPrecision - start;
+                float distance = direction.magnitude;
+                ray.origin = start;
+                ray.direction = direction;
+
                 if (Physics.Raycast(ray, out hitInfo, distance, layerMask))
                 {
                     hitEffect.transform.position = hitInfo.point;
@@ -174,7 +179,6 @@ public class RaycastWeapon : MonoBehaviour
                 }
             }
         }
-
     }
 
     private void SimulateBullets(float deltaTime)

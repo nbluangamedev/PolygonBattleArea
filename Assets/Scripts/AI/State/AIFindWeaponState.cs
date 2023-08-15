@@ -4,6 +4,7 @@ public class AIFindWeaponState : AIState
 {
     private GameObject pickup;
     private GameObject[] pickups = new GameObject[3];
+    WorldBounds worldBounds;
 
     public AIStateID GetID()
     {
@@ -19,6 +20,7 @@ public class AIFindWeaponState : AIState
         {
             agent.navMeshAgent.speed = DataManager.Instance.globalConfig.findWeaponSpeed;
         }
+        worldBounds = GameObject.FindObjectOfType<WorldBounds>();
     }
 
     public void Update(AIAgent agent)
@@ -34,7 +36,7 @@ public class AIFindWeaponState : AIState
             }
         }
 
-        if (agent.weapon.CountWeapon() == 1)
+        if (agent.weapon.CountWeapon() >= 1)
         {
             agent.stateMachine.ChangeState(AIStateID.FindTarget);
         }
@@ -70,8 +72,11 @@ public class AIFindWeaponState : AIState
         else if (count <= 0)
         {
             Debug.Log("Wander find pickup weapon");
-            WorldBounds worldBounds = GameObject.FindObjectOfType<WorldBounds>();
-            agent.navMeshAgent.destination = worldBounds.RandomPosition();
+            if (!agent.navMeshAgent.hasPath && !agent.navMeshAgent.pathPending)
+            {                
+                agent.navMeshAgent.destination = worldBounds.RandomPosition();
+                Debug.Log(agent.navMeshAgent.destination);
+            }
         }
         return null;
     }

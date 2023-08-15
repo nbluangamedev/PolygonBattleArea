@@ -67,7 +67,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b3d386ba5cd94485973aee1479b272e, type: 3}
   m_Name: Hidden
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
   settings:
     passTag: Hidden
     Event: 300
@@ -75,7 +75,7 @@ MonoBehaviour:
       RenderQueueType: 0
       LayerMask:
         serializedVersion: 2
-        m_Bits: 704
+        m_Bits: 8896
       PassNames: []
     overrideMaterial: {fileID: 2100000, guid: 1081a6baae4db6849bfad32ebd35f144, type: 2}
     overrideMaterialPassIndex: 0
@@ -114,7 +114,7 @@ MonoBehaviour:
       RenderQueueType: 0
       LayerMask:
         serializedVersion: 2
-        m_Bits: 704
+        m_Bits: 8896
       PassNames: []
     overrideMaterial: {fileID: 0}
     overrideMaterialPassIndex: 0

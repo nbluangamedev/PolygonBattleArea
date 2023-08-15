@@ -3,6 +3,7 @@ using UnityEngine;
 public class DebugDrawLine : MonoBehaviour
 {
     public bool showWeaponRaycast = false;
+
     private void OnDrawGizmos()
     {
         if (showWeaponRaycast)

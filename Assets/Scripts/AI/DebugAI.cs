@@ -10,12 +10,7 @@ public class DebugAI : MonoBehaviour
     public Color desiredVelocityColor;
     public Color pathColor;
 
-    private NavMeshAgent agent;
-
-    void Start()
-    {
-        agent = GetComponent<NavMeshAgent>();
-    }
+    public NavMeshAgent agent;
 
     private void OnDrawGizmos()
     {
