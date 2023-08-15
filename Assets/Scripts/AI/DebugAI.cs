@@ -6,11 +6,17 @@ public class DebugAI : MonoBehaviour
     public bool isShowVelocity;
     public bool isShowDesiredVelocity;
     public bool isShowPath;
+
     public Color velocityColor;
     public Color desiredVelocityColor;
     public Color pathColor;
 
     public NavMeshAgent agent;
+
+    private void Start()
+    {
+        agent = GetComponent<NavMeshAgent>();
+    }
 
     private void OnDrawGizmos()
     {
@@ -26,7 +32,7 @@ public class DebugAI : MonoBehaviour
             Gizmos.DrawLine(transform.position, transform.position + agent.desiredVelocity);
         }
 
-        if (isShowPath)
+        if (isShowPath && agent)
         {
             Gizmos.color = pathColor;
             NavMeshPath agentPath = agent.path;

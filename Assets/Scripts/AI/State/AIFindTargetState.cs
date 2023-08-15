@@ -18,19 +18,23 @@ public class AIFindTargetState : AIState
             agent.navMeshAgent.speed = DataManager.Instance.globalConfig.findTargetSpeed;
         }
         worldBounds = GameObject.FindObjectOfType<WorldBounds>();
-        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+        //playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     public void Update(AIAgent agent)
     {
-        if (agent.navMeshAgent.hasPath)
+        //if (agent.navMeshAgent.hasPath)
+        //{
+        //    Debug.Log("haspath");
+        //    if (!agent.targeting.HasTarget)
+        //    {
+        //        if (playerTransform)
+        //            agent.navMeshAgent.destination = playerTransform.position;
+        //    }
+        //}
+        if(agent.navMeshAgent.hasPath)
         {
-            Debug.Log("haspath");
-            if (!agent.targeting.HasTarget)
-            {
-                if (playerTransform)
-                    agent.navMeshAgent.destination = playerTransform.position;
-            }
+
         }
 
         //Wander
@@ -40,7 +44,6 @@ public class AIFindTargetState : AIState
             agent.navMeshAgent.destination = worldBounds.RandomPosition();
             return;
         }
-
 
         if (agent.targeting.HasTarget)
         {

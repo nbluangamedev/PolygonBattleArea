@@ -36,6 +36,14 @@ public class AIFindWeaponState : AIState
             }
         }
 
+        Debug.Log("Wander find pickup weapon");
+        if (!agent.navMeshAgent.hasPath && !agent.navMeshAgent.pathPending)
+        {
+            agent.navMeshAgent.destination = worldBounds.RandomPosition();
+            Debug.Log(agent.navMeshAgent.destination);
+            return;
+        }
+
         if (agent.weapon.CountWeapon() >= 1)
         {
             agent.stateMachine.ChangeState(AIStateID.FindTarget);
@@ -69,15 +77,15 @@ public class AIFindWeaponState : AIState
             }
             return bestPickup;
         }
-        else if (count <= 0)
-        {
-            Debug.Log("Wander find pickup weapon");
-            if (!agent.navMeshAgent.hasPath && !agent.navMeshAgent.pathPending)
-            {                
-                agent.navMeshAgent.destination = worldBounds.RandomPosition();
-                Debug.Log(agent.navMeshAgent.destination);
-            }
-        }
+        //else if (count <= 0)
+        //{
+        //    Debug.Log("Wander find pickup weapon");
+        //    if (!agent.navMeshAgent.hasPath && !agent.navMeshAgent.pathPending)
+        //    {                
+        //        agent.navMeshAgent.destination = worldBounds.RandomPosition();
+        //        Debug.Log(agent.navMeshAgent.destination);                
+        //    }
+        //}
         return null;
     }
 
