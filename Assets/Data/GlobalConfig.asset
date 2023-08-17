@@ -19,7 +19,18 @@ MonoBehaviour:
   closeRange: 7
   findWeaponSpeed: 7
   findTargetSpeed: 5
-  attackSpeed: 3
+  attackMoveSpeed: 3
+  patrolRadius: 10
+  patrolSpeed: 7
+  patrolAcceleration: 8
+  patrolTurnSpeed: 520
+  patrolWaitTime: 1
+  fleeRange: 30
+  attackRadius: 20
+  findTargetAcceleration: 20
+  findTargetTurnSpeed: 720
+  findTargetWaitTime: 1
+  findTargetRadius: 20
   maxHealth: 100
   blinkDuration: 0.1
   timeDestroyAI: 2
@@ -42,10 +53,10 @@ MonoBehaviour:
   aimFOV: 25
   defaultMask:
     serializedVersion: 2
-    m_Bits: 2039
+    m_Bits: 1527
   weaponMask:
     serializedVersion: 2
-    m_Bits: 1975
+    m_Bits: 1463
   scopeOverlay: {fileID: 2287727143583154844, guid: 1b010632b5954a44db5e72a3b00da538, type: 3}
   playerMaxHealth: 100
   lossOfAccuracyPerShot: 1

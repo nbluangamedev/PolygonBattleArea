@@ -3,28 +3,27 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class AITargetingSystem : MonoBehaviour
 {
-    public float memorySpan = 1.0f;
+    public float memorySpan = 3.0f;
     public float distanceWeight = 1.0f;
     public float angleWeight = 1.0f;
     public float ageWeight = 1.0f;
 
     private AISensorMemory memory = new(10);
     private AISensor sensor;
-    private AIMemory bestMemory;
+    private AIMemory bestMemory = null;
 
     public bool HasTarget
-    {
-        get
-        {
-            return (bestMemory != null);
-        }
-    }
+    { get { return (bestMemory != null); } }
 
     public GameObject Target
     {
         get
         {
-            return bestMemory.gameObject;
+            if (HasTarget)
+            {
+                return bestMemory.gameObject;
+            }
+            else { return null; }
         }
     }
 
@@ -32,7 +31,11 @@ public class AITargetingSystem : MonoBehaviour
     {
         get
         {
-            return bestMemory.gameObject.transform.position;
+            if (HasTarget)
+            {
+                return bestMemory.gameObject.transform.position;
+            }
+            else { return Vector3.zero; }
         }
     }
 
@@ -40,7 +43,14 @@ public class AITargetingSystem : MonoBehaviour
     {
         get
         {
-            return bestMemory.Age < 0.5f;       //seconds
+            if (HasTarget)
+            {
+                return bestMemory.Age < 0.5f;       //seconds
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 
@@ -48,7 +58,14 @@ public class AITargetingSystem : MonoBehaviour
     {
         get
         {
-            return bestMemory.distance;
+            if (HasTarget)
+            {
+                return bestMemory.distance;
+            }
+            else
+            {
+                return Mathf.Infinity;
+            }
         }
     }
 
@@ -59,22 +76,24 @@ public class AITargetingSystem : MonoBehaviour
 
     private void Update()
     {
-        memory.UpdateSenses(sensor);        
-        memory.ForgetMemories(memorySpan);        
-
+        memory.UpdateSenses(sensor);
+        memory.ForgetMemories(memorySpan);
         EvaluateScores();
     }
 
     private void EvaluateScores()
     {
         bestMemory = null;
-        foreach (var memory in memory.memories)
+        foreach (AIMemory memory in memory.memories)
         {
-            memory.score = CalculateScore(memory);
-            if (bestMemory == null || memory.score > bestMemory.score)
+            if(memory.gameObject!=this.gameObject)
             {
-                bestMemory = memory;
-            }
+                memory.score = CalculateScore(memory);
+                if (bestMemory == null || memory.score > bestMemory.score)
+                {
+                    bestMemory = memory;
+                }
+            }            
         }
     }
 
@@ -88,18 +107,19 @@ public class AITargetingSystem : MonoBehaviour
         float distanceScore = Normalize(memory.distance, sensor.distance) * distanceWeight;
         float angleScore = Normalize(memory.angle, sensor.angle) * angleWeight;
         float ageScore = Normalize(memory.Age, memorySpan) * ageWeight;
-        return distanceScore + angleScore + ageScore;
+        float score = distanceScore + angleScore + ageScore;
+        return score;
     }
 
     private void OnDrawGizmos()
     {
         float maxScore = float.MinValue;
-        foreach (var memory in memory.memories)
+        foreach (AIMemory memory in memory.memories)
         {
             maxScore = Mathf.Max(maxScore, memory.score);
         }
 
-        foreach (var memory in memory.memories)
+        foreach (AIMemory memory in memory.memories)
         {
             Color color = Color.red;
             if (memory == bestMemory)
@@ -108,6 +128,7 @@ public class AITargetingSystem : MonoBehaviour
             }
             color.a = memory.score / maxScore;
             Gizmos.color = color;
+
             Gizmos.DrawSphere(memory.position, .2f);
         }
     }

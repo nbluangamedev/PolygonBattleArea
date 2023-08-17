@@ -1,11 +1,8 @@
 using UnityEngine;
-using UnityEngine.AI;
 
 public class AIChasePlayerState : AIState
 {
-    private float timer = 0f;
-    private float maxTime;
-    private float maxDistance;
+    private float attackRadius;
 
     public AIStateID GetID()
     {
@@ -16,43 +13,36 @@ public class AIChasePlayerState : AIState
     {
         if (DataManager.HasInstance)
         {
-            maxDistance = DataManager.Instance.globalConfig.maxDistance;
-            maxTime = DataManager.Instance.globalConfig.maxTime;
+            attackRadius = DataManager.Instance.globalConfig.attackRadius;
         }
+
+        agent.playerSeen = true;
+        agent.navMeshAgent.isStopped = false;
+
+        agent.navMeshAgent.stoppingDistance = attackRadius;
     }
 
     public void Update(AIAgent agent)
     {
-        if (!agent.enabled)
+        if (agent.targeting.HasTarget)
         {
-            return;
-        }
-
-        timer -= Time.deltaTime;
-
-        if (!agent.navMeshAgent.hasPath)
-        {
-            agent.navMeshAgent.destination = agent.playerTransform.position;
-        }
-
-        if (timer < 0f)
-        {
-            Vector3 direction = agent.playerTransform.position - agent.navMeshAgent.destination;
-            direction.y = 0;
-
-            if (direction.sqrMagnitude > maxDistance * maxDistance)
+            float distance = Vector3.Distance(agent.targeting.TargetPosition, agent.transform.position);
+            if (distance < attackRadius)
             {
-                if (agent.navMeshAgent.pathStatus != NavMeshPathStatus.PathPartial)
-                {
-                    agent.navMeshAgent.destination = agent.playerTransform.position;
-                }
+                agent.stateMachine.ChangeState(AIStateID.Attack);
             }
-            timer = maxTime;
+            else
+            {
+                agent.navMeshAgent.destination = agent.targeting.TargetPosition;
+            }
         }
+        else agent.stateMachine.ChangeState(AIStateID.WaypointPatrol);
     }
 
     public void Exit(AIAgent agent)
     {
-
+        agent.navMeshAgent.stoppingDistance = 0.0f;
+        agent.playerSeen = false;
+        agent.navMeshAgent.isStopped = false;
     }
 }

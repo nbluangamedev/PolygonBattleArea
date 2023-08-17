@@ -5,13 +5,15 @@ using UnityEngine;
 public class AISensor : MonoBehaviour
 {
     public bool debugGizmos = false;
+    public Color meshColor;
+
     public float distance = 10f;
     public float angle = 30f;
     public float height = 1.0f;
-    public Color color = Color.red;
-    public LayerMask layerMask;
+    public LayerMask sensorLayer;
     public LayerMask occlusionLayer;
     public int scanFrequency = 30;
+    public bool isScanning;
 
     [SerializeField]
     private Collider[] colliders = new Collider[50];
@@ -21,7 +23,7 @@ public class AISensor : MonoBehaviour
     private float scanTimer;
 
     [SerializeField]
-    private List<GameObject> objects = new List<GameObject>();
+    private List<GameObject> objects = new();
     public List<GameObject> Objects
     {
         get
@@ -38,22 +40,22 @@ public class AISensor : MonoBehaviour
 
     void Update()
     {
-        //Scan();
-        mesh = CreateMesh();
         scanTimer -= Time.deltaTime;
         if (scanTimer < 0)
         {
-            Scan();
             scanTimer += scanInterval;
+            Scan();
+            isScanning = true;
         }
+        else isScanning = false;
     }
 
     private void Scan()
     {
-        count = Physics.OverlapSphereNonAlloc(transform.position, distance, colliders, layerMask, QueryTriggerInteraction.Collide);
+        count = Physics.OverlapSphereNonAlloc(transform.position, distance, colliders, sensorLayer, QueryTriggerInteraction.Collide);
 
         objects.Clear();
-        for (int i = 0; i < count; ++i)
+        for (int i = 0; i < count; i++)
         {
             GameObject obj = colliders[i].gameObject;
             if (IsInSight(obj))
@@ -69,7 +71,7 @@ public class AISensor : MonoBehaviour
         Vector3 destination = obj.transform.position;
         Vector3 direction = destination - origin;
 
-        if (direction.y < 0 || direction.y > height)
+        if (direction.y < -0.1f || direction.y > height)
         {
             return false;
         }
@@ -94,10 +96,8 @@ public class AISensor : MonoBehaviour
     private Mesh CreateMesh()
     {
         Mesh mesh = new Mesh();
-
         int segment = 10;
-
-        int numTriangle = (segment * 4) + 2 + 2;
+        int numTriangle = (segment * 4) + 2 + 2;    //each segments has 4 verices and 2 up and 2 downside
         int numVertices = numTriangle * 3;
 
         Vector3[] vertices = new Vector3[numVertices];
@@ -133,7 +133,7 @@ public class AISensor : MonoBehaviour
 
         float currentAngle = -angle;
         float deltaAngle = (angle * 2) / segment;
-        for (int i = 0; i < segment; ++i)
+        for (int i = 0; i < segment; i++)
         {
             bottomLeft = Quaternion.Euler(0, currentAngle, 0) * Vector3.forward * distance;
             bottomRight = Quaternion.Euler(0, currentAngle + deltaAngle, 0) * Vector3.forward * distance;
@@ -163,7 +163,7 @@ public class AISensor : MonoBehaviour
             currentAngle += deltaAngle;
         }
 
-        for (int i = 0; i < numVertices; ++i)
+        for (int i = 0; i < numVertices; i++)
         {
             triangles[i] = i;
         }
@@ -177,7 +177,7 @@ public class AISensor : MonoBehaviour
 
     private void OnValidate()
     {
-        //mesh = CreateMesh();
+        mesh = CreateMesh();
         scanInterval = 1.0f / scanFrequency;
     }
 
@@ -187,9 +187,17 @@ public class AISensor : MonoBehaviour
         {
             if (mesh)
             {
-                Gizmos.color = color;
+                Gizmos.color = meshColor;
                 Gizmos.DrawMesh(mesh, transform.position, transform.rotation);
             }
+
+            //for (int i = 0; i < colliders.Length; ++i)
+            //{
+            //    if (colliders[i] != null)
+            //    {
+            //        Gizmos.DrawSphere(colliders[i].transform.position, 0.2f);
+            //    }
+            //}
 
             Gizmos.color = Color.green;
             foreach (var obj in Objects)
@@ -212,7 +220,8 @@ public class AISensor : MonoBehaviour
 
             if (obj.layer == layer)
             {
-                buffer[count++] = obj;
+                buffer[count] = obj;
+                ++count;
             }
 
             if (buffer.Length == count)

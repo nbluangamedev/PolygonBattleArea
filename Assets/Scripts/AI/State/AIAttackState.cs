@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class AIAttackState : AIState
 {
-    private float closeRange;
     private float stoppingDistance;
-    private float attackSpeed;
+    private float attackMoveSpeed;
+    private float attackRadius;
 
     public AIStateID GetID()
     {
@@ -16,38 +16,53 @@ public class AIAttackState : AIState
         Debug.Log("Attack state");
         if (DataManager.HasInstance)
         {
-            closeRange = DataManager.Instance.globalConfig.closeRange;
             stoppingDistance = DataManager.Instance.globalConfig.stoppingDistance;
-            attackSpeed = DataManager.Instance.globalConfig.attackSpeed;
+            attackMoveSpeed = DataManager.Instance.globalConfig.attackMoveSpeed;
+            attackRadius = DataManager.Instance.globalConfig.attackRadius;
         }
 
+        agent.FaceTarget();
         agent.weapon.ActivateWeapon();
         agent.navMeshAgent.stoppingDistance = stoppingDistance;
-        agent.navMeshAgent.speed = attackSpeed;
+        agent.navMeshAgent.speed = attackMoveSpeed;
 
+        agent.navMeshAgent.isStopped = true;
     }
 
     public void Update(AIAgent agent)
     {
+        if (agent.aiHealth.IsDead())
+        {
+            agent.stateMachine.ChangeState(AIStateID.Death);
+        }
+
         if (!agent.targeting.HasTarget)
         {
             agent.stateMachine.ChangeState(AIStateID.FindTarget);
-            return;
         }
 
-        agent.weapon.SetTarget(agent.targeting.Target.transform);
-        agent.navMeshAgent.destination = agent.targeting.TargetPosition;
-        ReloadWeapon(agent);
-        SelectWeapon(agent);
-        UpdateFiring(agent);
-        UpdateLowHealth(agent);
-        UpdateLowAmmo(agent);
+        if (agent.targeting.HasTarget && agent.targeting.TargetDistance <= attackRadius)
+        {
+            agent.weapon.SetTarget(agent.targeting.Target.transform);
+            agent.navMeshAgent.destination = agent.targeting.TargetPosition;
+            ReloadWeapon(agent);
+            SelectWeapon(agent);
+            UpdateFiring(agent);
+            UpdateLowHealth(agent);
+            UpdateLowAmmo(agent);
+        }
+        else if(agent.targeting.HasTarget && agent.targeting.TargetDistance > attackRadius)
+        {
+            agent.stateMachine.ChangeState(AIStateID.ChasePlayer);
+        }
+        else agent.stateMachine.ChangeState(AIStateID.FindTarget);
     }
 
     public void Exit(AIAgent agent)
     {
         agent.weapon.DeActivateWeapon();
         agent.navMeshAgent.stoppingDistance = 0.0f;
+        agent.navMeshAgent.isStopped = false;
     }
 
     private void UpdateFiring(AIAgent agent)
@@ -101,11 +116,11 @@ public class AIAttackState : AIState
         bool hasWeapon = agent.weapon.CountWeapon() == 2;
         if (hasWeapon)
         {
-            foreach(var weaponTMP in agent.weapon.aiWeapons)
-            if (!weaponTMP.IsEmptyAmmo())
-            {
-                return weaponTMP.weaponSlot;
-            }
+            foreach (var weaponTMP in agent.weapon.aiWeapons)
+                if (!weaponTMP.IsEmptyAmmo())
+                {
+                    return weaponTMP.weaponSlot;
+                }
             return agent.weapon.AICurrentWeapon.weaponSlot;
         }
         return agent.weapon.AICurrentWeapon.weaponSlot;

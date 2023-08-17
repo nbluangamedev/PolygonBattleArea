@@ -13,7 +13,19 @@ public class GlobalConfig : ScriptableObject
     public float closeRange = 7.0f;
     public float findWeaponSpeed = 7f;
     public float findTargetSpeed = 5f;
-    public float attackSpeed = 3f;
+    public float attackMoveSpeed = 3.0f;
+    public float patrolRadius = 10f;
+    public float patrolSpeed = 7.0f;
+    public float patrolAcceleration = 8f;
+    public float patrolTurnSpeed = 520f;
+    public float patrolWaitTime = 1f;
+    public float fleeRange = 30f;
+    public float attackRadius = 20f;
+    public float findTargetAcceleration = 20f;
+    public float findTargetTurnSpeed = 720f;
+    public float findTargetWaitTime = 1f;
+    public float findTargetRadius = 20f;
+
 
     [Header("Health")]
     public float maxHealth = 100f;

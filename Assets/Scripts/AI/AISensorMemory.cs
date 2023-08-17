@@ -1,15 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[ExecuteInEditMode]
 public class AIMemory
 {
     public float Age
-    {
-        get
-        {
-            return Time.time - lastSeen;
-        }
-    }
+    { get { return Time.time - lastSeen; } }
 
     public GameObject gameObject;
     public Vector3 position;
@@ -22,7 +18,7 @@ public class AIMemory
 
 public class AISensorMemory
 {
-    public List<AIMemory> memories = new List<AIMemory>();
+    public List<AIMemory> memories = new();
     private GameObject[] characters;
 
     public AISensorMemory(int maxPlayers)
@@ -32,7 +28,7 @@ public class AISensorMemory
 
     public void UpdateSenses(AISensor sensor)
     {
-        int targets = sensor.Filter(characters, "Character", "Player");
+        int targets = sensor.Filter(characters, "Character");
         for (int i = 0; i < targets; ++i)
         {
             GameObject target = characters[i];

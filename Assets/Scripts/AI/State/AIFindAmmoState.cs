@@ -3,7 +3,7 @@ using UnityEngine;
 public class AIFindAmmoState : AIState
 {
     private GameObject pickup;
-    private GameObject[] pickups = new GameObject[5];
+    private GameObject[] pickups = new GameObject[3];
 
     public AIStateID GetID()
     {

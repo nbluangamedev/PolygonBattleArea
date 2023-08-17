@@ -14,14 +14,19 @@ public class AIDeathState : AIState
 
     public void Enter(AIAgent agent)
     {
+        if (agent.navMeshAgent != null)
+        {
+            agent.navMeshAgent.isStopped = true;
+        }
+
         if (DataManager.HasInstance)
         {
             dieForce = DataManager.Instance.globalConfig.enemyDieForce;
         }
+
         agent.weapon.SetTarget(null);
         agent.navMeshAgent.enabled = false;
         agent.ragdoll.ActiveRagdoll();
-        //direction.y = 2f;
         agent.ragdoll.ApplyForce(direction * dieForce, rigidbody);
         agent.weapon.DropWeapon();
         agent.healthBar.Deactive();

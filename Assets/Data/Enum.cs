@@ -26,11 +26,14 @@ public enum AIStateID
     ChasePlayer,
     Death,
     Idle,
+    Patrol,
     FindWeapon,
     Attack,
+    Flee,
     FindTarget,
     FindHealth,
-    FindAmmo
+    FindAmmo,
+    WaypointPatrol
 }
 
 public enum SocketID

@@ -1,9 +1,6 @@
-using UnityEngine;
-
 public class AIIdleState : AIState
 {
-    private Vector3 playerDirection;
-    private float maxSightDistance;
+    private float maxHealth;
 
     public AIStateID GetID()
     {
@@ -14,38 +11,43 @@ public class AIIdleState : AIState
     {
         if (DataManager.HasInstance)
         {
-            maxSightDistance = DataManager.Instance.globalConfig.maxDistance;
+            maxHealth = DataManager.Instance.globalConfig.maxHealth;
         }
 
         agent.weapon.DeActivateWeapon();
         agent.navMeshAgent.ResetPath();
+
+        agent.navMeshAgent.isStopped = true;
     }
 
     public void Update(AIAgent agent)
     {
-        if (agent.playerTransform.GetComponent<Health>().IsDead())
+        if (agent.aiHealth.IsDead())
         {
-            return;
+            agent.stateMachine.ChangeState(AIStateID.Death);
         }
 
-        playerDirection = agent.transform.position - agent.playerTransform.position;
-        if (playerDirection.magnitude >= maxSightDistance)
-        {
-            return;
-        }
-
-        Vector3 agentDirection = agent.transform.forward;
-        playerDirection.Normalize();
-
-        float dotProduct = Vector3.Dot(playerDirection, agentDirection);
-        if (dotProduct >= 0.0f)
+        if (agent.targeting.HasTarget)
         {
             agent.stateMachine.ChangeState(AIStateID.ChasePlayer);
+        }
+
+        if (agent.aiHealth.CurrentHealth < maxHealth)
+        {
+            agent.FaceTarget();
+            if (agent.targeting.HasTarget)
+            {
+                agent.stateMachine.ChangeState(AIStateID.ChasePlayer);
+            }
+            else
+            {
+                agent.stateMachine.ChangeState(AIStateID.FindHealth);
+            }
         }
     }
 
     public void Exit(AIAgent agent)
     {
-
+        agent.navMeshAgent.isStopped = false;
     }
 }

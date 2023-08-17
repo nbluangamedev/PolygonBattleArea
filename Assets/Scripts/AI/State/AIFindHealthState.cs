@@ -3,7 +3,7 @@ using UnityEngine;
 public class AIFindHealthState : AIState
 {
     private GameObject pickup;
-    private GameObject[] pickups = new GameObject[5];
+    private GameObject[] pickups = new GameObject[3];
 
     public AIStateID GetID()
     {
@@ -23,6 +23,11 @@ public class AIFindHealthState : AIState
 
     public void Update(AIAgent agent)
     {
+        if (agent.aiHealth.IsDead())
+        {
+            agent.stateMachine.ChangeState(AIStateID.Death);
+        }
+
         //Pickup
         if (!pickup)
         {
@@ -67,8 +72,6 @@ public class AIFindHealthState : AIState
         else if (count <= 0)
         {
             Debug.Log("Wander find pickup health");
-            WorldBounds worldBounds = GameObject.FindObjectOfType<WorldBounds>();
-            agent.navMeshAgent.destination = worldBounds.RandomPosition();
         }
         return null;
     }
