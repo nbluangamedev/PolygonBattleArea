@@ -17,9 +17,9 @@ public class AIChasePlayerState : AIState
         }
 
         agent.playerSeen = true;
+        agent.navMeshAgent.stoppingDistance = attackRadius;
         agent.navMeshAgent.isStopped = false;
 
-        agent.navMeshAgent.stoppingDistance = attackRadius;
     }
 
     public void Update(AIAgent agent)

@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Net.NetworkInformation;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class AIPatrolState : AIState
 {
@@ -11,7 +7,7 @@ public class AIPatrolState : AIState
 
     float timer;
     float maxTime;
-    float maxHealth;
+    float aiMaxHealth;
 
     public AIStateID GetID()
     {
@@ -21,7 +17,7 @@ public class AIPatrolState : AIState
     public void Enter(AIAgent agent)
     {
         //randomPointOnNavMesh = agent.RandomPointOnNavMesh();
-        maxHealth = DataManager.Instance.globalConfig.maxHealth;
+        aiMaxHealth = DataManager.Instance.globalConfig.aiMaxHealth;
 
         agent.navMeshAgent.isStopped = false;
 
@@ -62,7 +58,7 @@ public class AIPatrolState : AIState
         }
         else agent.stateMachine.ChangeState(AIStateID.FindWeapon);
 
-        if (agent.aiHealth.CurrentHealth < maxHealth)
+        if (agent.aiHealth.CurrentHealth < aiMaxHealth)
         {
             agent.FaceTarget();
             if (agent.targeting.HasTarget)

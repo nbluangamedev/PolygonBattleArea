@@ -1,7 +1,5 @@
 public class AIIdleState : AIState
 {
-    private float maxHealth;
-
     public AIStateID GetID()
     {
         return AIStateID.Idle;
@@ -9,14 +7,8 @@ public class AIIdleState : AIState
 
     public void Enter(AIAgent agent)
     {
-        if (DataManager.HasInstance)
-        {
-            maxHealth = DataManager.Instance.globalConfig.maxHealth;
-        }
-
         agent.weapon.DeActivateWeapon();
         agent.navMeshAgent.ResetPath();
-
         agent.navMeshAgent.isStopped = true;
     }
 
@@ -32,11 +24,11 @@ public class AIIdleState : AIState
             agent.stateMachine.ChangeState(AIStateID.ChasePlayer);
         }
 
-        if (agent.aiHealth.CurrentHealth < maxHealth)
+        if (agent.aiHealth.IsLowHealth())
         {
-            agent.FaceTarget();
             if (agent.targeting.HasTarget)
             {
+                agent.FaceTarget();
                 agent.stateMachine.ChangeState(AIStateID.ChasePlayer);
             }
             else

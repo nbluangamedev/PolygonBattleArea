@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class AIAttackState : AIState
 {
-    private float stoppingDistance;
-    private float attackMoveSpeed;
     private float attackRadius;
 
     public AIStateID GetID()
@@ -16,16 +14,13 @@ public class AIAttackState : AIState
         Debug.Log("Attack state");
         if (DataManager.HasInstance)
         {
-            stoppingDistance = DataManager.Instance.globalConfig.stoppingDistance;
-            attackMoveSpeed = DataManager.Instance.globalConfig.attackMoveSpeed;
+            agent.navMeshAgent.stoppingDistance = DataManager.Instance.globalConfig.attackStoppingDistance;
+            agent.navMeshAgent.speed = DataManager.Instance.globalConfig.attackMoveSpeed;
             attackRadius = DataManager.Instance.globalConfig.attackRadius;
         }
 
         agent.FaceTarget();
         agent.weapon.ActivateWeapon();
-        agent.navMeshAgent.stoppingDistance = stoppingDistance;
-        agent.navMeshAgent.speed = attackMoveSpeed;
-
         agent.navMeshAgent.isStopped = true;
     }
 

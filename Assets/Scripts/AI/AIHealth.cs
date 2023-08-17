@@ -14,7 +14,7 @@ public class AIHealth : Health
     {
         if (DataManager.HasInstance)
         {
-            maxHealth = DataManager.Instance.globalConfig.maxHealth;
+            maxHealth = DataManager.Instance.globalConfig.aiMaxHealth;
             blinkDuration = DataManager.Instance.globalConfig.blinkDuration;
             timeDestroyAI = DataManager.Instance.globalConfig.timeDestroyAI;
         }

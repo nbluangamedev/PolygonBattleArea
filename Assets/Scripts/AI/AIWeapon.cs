@@ -90,7 +90,6 @@ public class AIWeapon : MonoBehaviour
 
     public void Equip(RaycastWeapon weapon)
     {
-        //currentWeaponIndex = (int)weapon.weaponSlot;
         aiWeapons[(int)weapon.weaponSlot] = weapon;
 
         if (weapon.weaponSlot == WeaponSlot.Primary)

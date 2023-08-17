@@ -12,6 +12,7 @@ public class AIFleeState : AIState
 
     public void Enter(AIAgent agent)
     {
+        Debug.Log("Flee");
         if (DataManager.HasInstance)
         {
             fleeRange = DataManager.Instance.globalConfig.fleeRange;

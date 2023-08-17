@@ -2,10 +2,6 @@ using UnityEngine;
 
 public class AIWaypointBasedPatrolState : AIState
 {
-    public Waypoint currentWaypoint;
-    public float direction;
-    float maxHealth;
-
     public AIStateID GetID()
     {
         return AIStateID.WaypointPatrol;
@@ -15,13 +11,10 @@ public class AIWaypointBasedPatrolState : AIState
     {
         if (DataManager.HasInstance)
         {
-            maxHealth = DataManager.Instance.globalConfig.maxHealth;
+            agent.navMeshAgent.speed = DataManager.Instance.globalConfig.patrolSpeed;
         }
 
-        currentWaypoint = agent.waypoints.GetComponentInChildren<Waypoint>();
-        direction = Mathf.RoundToInt(Random.Range(0f, 1f));
-        agent.navMeshAgent.SetDestination(currentWaypoint.GetPosition());
-
+        agent.navMeshAgent.SetDestination(agent.currentWaypoint.GetPosition());
     }
 
     public void Update(AIAgent agent)
@@ -31,15 +24,19 @@ public class AIWaypointBasedPatrolState : AIState
             agent.stateMachine.ChangeState(AIStateID.Death);
         }
 
+        if (agent.aiHealth.IsLowHealth())
+        {
+            agent.stateMachine.ChangeState(AIStateID.FindHealth);
+        }
+
+        if (agent.weapon.IsLowAmmo())
+        {
+            agent.stateMachine.ChangeState(AIStateID.FindAmmo);
+        }
+
         if (agent.weapon.HasWeapon())
         {
             agent.stateMachine.ChangeState(AIStateID.FindTarget);
-            //if (agent.targeting.HasTarget)
-            //{
-            //    agent.FaceTarget();
-            //    agent.stateMachine.ChangeState(AIStateID.Attack);
-            //}
-            //else WaypointPatrol(agent);
         }
         else
         {
@@ -47,59 +44,20 @@ public class AIWaypointBasedPatrolState : AIState
             agent.stateMachine.ChangeState(AIStateID.FindWeapon);
         }
 
-        WaypointPatrol(agent);
+        if (agent.targeting.HasTarget)
+        {
+            if (agent.weapon.HasWeapon())
+            {
+                agent.stateMachine.ChangeState(AIStateID.Attack);
+            }
+            else agent.stateMachine.ChangeState(AIStateID.FindWeapon);
+        }
+
+        agent.PatrolBasedWaypoint();
     }
 
     public void Exit(AIAgent agent)
     {
 
-    }
-
-    private void WaypointPatrol(AIAgent agent)
-    {
-        if (agent.navMeshAgent.remainingDistance <= agent.navMeshAgent.stoppingDistance + 0.1f)
-        {
-            bool shouldBranch = false;
-
-            if (currentWaypoint.branches != null && currentWaypoint.branches.Count > 0)
-            {
-                shouldBranch = Random.Range(0f, 1f) <= currentWaypoint.branchProbability;
-            }
-
-            if (shouldBranch)
-            {
-                currentWaypoint = currentWaypoint.branches[Random.Range(0, currentWaypoint.branches.Count - 1)];
-            }
-            else
-            {
-                if (direction == 0)
-                {
-                    if (currentWaypoint.nextWaypoint != null)
-                    {
-                        currentWaypoint = currentWaypoint.nextWaypoint;
-                    }
-                    else
-                    {
-                        currentWaypoint = currentWaypoint.prevWaypoint;
-                        direction = 1;
-                    }
-                }
-
-                if (direction == 1)
-                {
-                    if (currentWaypoint.prevWaypoint != null)
-                    {
-                        currentWaypoint = currentWaypoint.prevWaypoint;
-                    }
-                    else
-                    {
-                        currentWaypoint = currentWaypoint.nextWaypoint;
-                        direction = 0;
-                    }
-                }
-
-                agent.navMeshAgent.SetDestination(currentWaypoint.GetPosition());
-            }
-        }
     }
 }

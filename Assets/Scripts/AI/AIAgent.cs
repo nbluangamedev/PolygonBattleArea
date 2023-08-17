@@ -14,10 +14,13 @@ public class AIAgent : MonoBehaviour
     [HideInInspector] public AITargetingSystem targeting;
     [HideInInspector] public Transform playerTransform;
     [HideInInspector] public RandomPointOnNavMesh randomPointOnNavMesh;
+    [HideInInspector] public Waypoint currentWaypoint;
     [SerializeField] private AIStateID currentState;
 
-    public GameObject waypoints;
     public bool playerSeen = false;
+    public GameObject waypoints;
+
+    private float activeWaypoint;
 
     private void Start()
     {
@@ -26,6 +29,9 @@ public class AIAgent : MonoBehaviour
             playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         }
         else Debug.LogError("No player object with Player tag found!");
+
+        currentWaypoint = waypoints.GetComponentInChildren<Waypoint>();
+        activeWaypoint = Mathf.RoundToInt(Random.Range(0f, 1f));
 
         healthBar = GetComponentInChildren<UIHealthBar>();
         navMeshAgent = GetComponent<NavMeshAgent>();
@@ -74,6 +80,85 @@ public class AIAgent : MonoBehaviour
         Vector3 direction = (targeting.TargetPosition - navMeshAgent.transform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
         transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, Time.time * 720f);
+    }
+
+    public void PatrolBasedWaypoint()
+    {
+        if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance + 0.1f)
+        {
+            bool shouldBranch = false;
+
+            if (currentWaypoint.branches != null && currentWaypoint.branches.Count > 0)
+            {
+                shouldBranch = Random.Range(0f, 1f) <= currentWaypoint.branchProbability;
+            }
+
+            if (shouldBranch)
+            {
+                currentWaypoint = currentWaypoint.branches[Random.Range(0, currentWaypoint.branches.Count - 1)];
+            }
+            else
+            {
+                if (activeWaypoint == 0)
+                {
+                    if (currentWaypoint.nextWaypoint != null)
+                    {
+                        currentWaypoint = currentWaypoint.nextWaypoint;
+                    }
+                    else
+                    {
+                        currentWaypoint = currentWaypoint.prevWaypoint;
+                        activeWaypoint = 1;
+                    }
+                }
+
+                if (activeWaypoint == 1)
+                {
+                    if (currentWaypoint.prevWaypoint != null)
+                    {
+                        currentWaypoint = currentWaypoint.prevWaypoint;
+                    }
+                    else
+                    {
+                        currentWaypoint = currentWaypoint.nextWaypoint;
+                        activeWaypoint = 0;
+                    }
+                }
+
+                navMeshAgent.SetDestination(currentWaypoint.GetPosition());
+            }
+        }
+    }
+
+    public GameObject FindPickup(GameObject[] pickups, string layerName, string tagName)
+    {
+        int count = sensor.Filter(pickups, layerName, tagName);
+        if (count > 0)
+        {
+            float bestAngle = float.MaxValue;
+            GameObject bestPickup = pickups[0];
+            for (int i = 0; i < count; ++i)
+            {
+                GameObject pickup = pickups[i];
+                float pickupAngle = Vector3.Angle(transform.forward, pickup.transform.position - transform.position);
+                if (pickupAngle < bestAngle)
+                {
+                    bestAngle = pickupAngle;
+                    bestPickup = pickup;
+                }
+            }
+            return bestPickup;
+        }
+        else if (count <= 0)
+        {
+            PatrolBasedWaypoint();
+        }
+        return null;
+    }
+
+    public void CollectPickup(GameObject pickup)
+    {
+        navMeshAgent.destination = pickup.transform.position;
     }
 
     //public void FacePlayer()
