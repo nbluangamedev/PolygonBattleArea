@@ -9,7 +9,6 @@ public class AIFindTargetState : AIState
 
     public void Enter(AIAgent agent)
     {
-        Debug.Log("Find target");
         if (DataManager.HasInstance)
         {
             agent.navMeshAgent.speed = DataManager.Instance.globalConfig.findTargetSpeed;
@@ -23,8 +22,13 @@ public class AIFindTargetState : AIState
 
     public void Update(AIAgent agent)
     {
+        agent.UpdateIsDeath();
+        //agent.UpdateLowAmmo();
+        //agent.UpdateLowHealth();
+
         if (agent.targeting.HasTarget)
         {
+            //agent.playerSeen = true;
             agent.stateMachine.ChangeState(AIStateID.Attack);
         }
         else agent.PatrolBasedWaypoint();

@@ -15,6 +15,7 @@ public class RaycastWeapon : MonoBehaviour
     public string weaponName;
     public Transform raycastOrigin;
     public WeaponRecoil recoil;
+    public int lossOfAccuracyPerShot;
     public GameObject magazine;
     public float forceBullet = 2f;
     public int ammoCount;
@@ -31,27 +32,22 @@ public class RaycastWeapon : MonoBehaviour
     private RaycastHit hitInfo;
     private float accumulatedTime;
     private float maxLifetime = 2.0f;
-    private int lossOfAccuracyPerShot;
     private CharacterAiming characterAiming;
 
     private void Awake()
     {
-        if (DataManager.HasInstance)
-        {
-            lossOfAccuracyPerShot = DataManager.Instance.globalConfig.lossOfAccuracyPerShot;
-        }
-
         recoil = GetComponent<WeaponRecoil>();
 
         if (this.equipWeaponBy == EquipWeaponBy.Player)
         {
             characterAiming = GameObject.FindObjectOfType<CharacterAiming>();
-        }        
+        }
     }
 
     public void StartFiring()
     {
         isFiring = true;
+
         if (accumulatedTime > 0f)
         {
             accumulatedTime = 0f;
@@ -78,7 +74,7 @@ public class RaycastWeapon : MonoBehaviour
 
     public void UpdateFiring(float deltaTime, Vector3 target)
     {
-        accumulatedTime += deltaTime;
+        //accumulatedTime += deltaTime;
         float fireInterval = 1.0f / fireRate;
         while (accumulatedTime >= 0.0f)
         {
@@ -95,13 +91,13 @@ public class RaycastWeapon : MonoBehaviour
 
     private void RaycastSegment(Vector3 start, Vector3 end, Bullet bullet)
     {
-        Vector3 direction = end - start;
-        float distance = direction.magnitude;
-        ray.origin = start;
-        ray.direction = direction;
-
         if (weaponName != "Shotgun")
         {
+            Vector3 direction = end - start;
+            float distance = direction.magnitude;
+            ray.origin = start;
+            ray.direction = direction;
+
             if (Physics.Raycast(ray, out hitInfo, distance, layerMask))
             {
                 hitEffect.transform.position = hitInfo.point;
@@ -137,11 +133,16 @@ public class RaycastWeapon : MonoBehaviour
         {
             for (int i = 0; i < 6; i++)
             {
-                var BulletRotationPrecision = end;
+                Vector3 BulletRotationPrecision = end;
                 BulletRotationPrecision.x += Random.Range(-lossOfAccuracyPerShot, lossOfAccuracyPerShot);
                 BulletRotationPrecision.y += Random.Range(-lossOfAccuracyPerShot, lossOfAccuracyPerShot);
                 BulletRotationPrecision.z += Random.Range(-lossOfAccuracyPerShot, lossOfAccuracyPerShot);
-                
+
+                Vector3 direction = BulletRotationPrecision - start;
+                float distance = direction.magnitude;
+                ray.origin = start;
+                ray.direction = direction;
+
                 if (Physics.Raycast(ray, out hitInfo, distance, layerMask))
                 {
                     hitEffect.transform.position = hitInfo.point;
@@ -152,7 +153,7 @@ public class RaycastWeapon : MonoBehaviour
                     bullet.time = maxLifetime;
 
                     Rigidbody rb = hitInfo.collider.GetComponent<Rigidbody>();
-                    if (rb && !layerMask.Equals("Default"))
+                    if (rb)
                     {
                         rb.AddForceAtPosition(ray.direction * forceBullet, hitInfo.point, ForceMode.Impulse);
                     }
@@ -174,7 +175,6 @@ public class RaycastWeapon : MonoBehaviour
                 }
             }
         }
-
     }
 
     private void SimulateBullets(float deltaTime)
@@ -244,7 +244,6 @@ public class RaycastWeapon : MonoBehaviour
 
     public void EmitBulletCasing()
     {
-        //Spawn Bullet Casing
         if (BulletCasingPrefab != null)
         {
             var bulletcasing = Instantiate(BulletCasingPrefab, GunSlider.position, transform.rotation);
@@ -293,7 +292,7 @@ public class RaycastWeapon : MonoBehaviour
         int ammoRefill = Mathf.Min(deltaAmmo, ammoTotal);
         ammoCount += ammoRefill;
         ammoTotal -= ammoRefill;
-        if(ammoTotal < 0)
+        if (ammoTotal < 0)
         {
             ammoTotal = 0;
         }

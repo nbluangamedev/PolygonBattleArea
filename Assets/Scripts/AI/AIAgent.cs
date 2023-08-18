@@ -17,7 +17,7 @@ public class AIAgent : MonoBehaviour
     [HideInInspector] public Waypoint currentWaypoint;
     [SerializeField] private AIStateID currentState;
 
-    public bool playerSeen = false;
+    //public bool playerSeen = false;
     public GameObject waypoints;
 
     private float activeWaypoint;
@@ -62,16 +62,15 @@ public class AIAgent : MonoBehaviour
 
     public bool FindThePlayerWithTargetingSystem()
     {
-        //Finding Player by using Targeting System
         if (targeting.HasTarget)
         {
             if (targeting.Target.CompareTag("Player"))
             {
-                playerSeen = true;
+                //playerSeen = true;
                 return true;
             }
         }
-        playerSeen = false;
+        //playerSeen = false;
         return false;
     }
 
@@ -161,24 +160,46 @@ public class AIAgent : MonoBehaviour
         navMeshAgent.destination = pickup.transform.position;
     }
 
-    //public void FacePlayer()
-    //{
-    //    Vector3 direction = (playerTransform.position - navMeshAgent.transform.position).normalized;
-    //    Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
-    //    transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, Time.time * 720f);
-    //}       
+    public void UpdateLowHealth()
+    {
+        if (aiHealth.IsLowHealth())
+        {
+            stateMachine.ChangeState(AIStateID.FindHealth);
+        }
+    }
 
-    //public bool FindThePlayer()
-    //{
-    //    //Finding Player by using only Sensor
-    //    for (int i = 0; i < sensor.Objects.Count; i++)
-    //    {
-    //        if (sensor.Objects[i].CompareTag("Player"))
-    //        {
-    //            playerSeen = true;
-    //            return true;
-    //        }
-    //    }
-    //    return false;
-    //}
+    public void UpdateLowAmmo()
+    {
+        if (weapon.IsLowAmmo())
+        {
+            stateMachine.ChangeState(AIStateID.FindAmmo);
+        }
+    }
+
+    public void UpdateIsDeath()
+    {
+        if (aiHealth.IsDead())
+        {
+            stateMachine.ChangeState(AIStateID.Death);
+        }
+    }
+
+    public void SelectWeapon()
+    {
+        var bestWeapon = ChooseWeapon();
+        if (bestWeapon != weapon.currentWeaponSlot)
+        {
+            weapon.SwitchWeapon(bestWeapon);
+        }
+    }
+
+    private WeaponSlot ChooseWeapon()
+    {
+        foreach (var weaponTMP in weapon.aiWeapons)
+            if (!weaponTMP.IsEmptyAmmo())
+            {
+                return weaponTMP.weaponSlot;
+            }
+        return weapon.currentWeaponSlot;
+    }
 }

@@ -4,6 +4,7 @@ public class AIFindAmmoState : AIState
 {
     private GameObject pickup;
     private GameObject[] pickups = new GameObject[3];
+    private float timer;
 
     public AIStateID GetID()
     {
@@ -12,35 +13,37 @@ public class AIFindAmmoState : AIState
 
     public void Enter(AIAgent agent)
     {
-        //Debug.Log("Find ammo");
         if (DataManager.HasInstance)
         {
             agent.navMeshAgent.speed = DataManager.Instance.globalConfig.findWeaponSpeed;
         }
         pickup = null;
+        timer = 0;
     }
 
     public void Update(AIAgent agent)
     {
-        if (agent.aiHealth.IsDead())
-        {
-            agent.stateMachine.ChangeState(AIStateID.Death);
-        }
+        agent.UpdateIsDeath();
 
-        //Pickup
         if (!pickup)
         {
-            pickup = agent.FindPickup(pickups, "Pickup", "Ammo");
-            //pickup = FindPickup(agent);
-
-            if (pickup)
+            timer += Time.deltaTime;
+            if (timer < 30f)
             {
-                agent.CollectPickup(pickup);
-                //CollectPickup(agent, pickup);
+                pickup = agent.FindPickup(pickups, "Pickup", "Ammo");
+                if (pickup)
+                {
+                    agent.CollectPickup(pickup);
+                }
+            }
+            else
+            {
+                timer = 0;
+                agent.stateMachine.ChangeState(AIStateID.FindWeapon);
             }
         }
 
-        if (!agent.aiHealth.IsLowHealth())
+        if (!agent.weapon.IsLowAmmo())
         {
             agent.stateMachine.ChangeState(AIStateID.FindTarget);
         }
@@ -50,35 +53,4 @@ public class AIFindAmmoState : AIState
     {
 
     }
-
-    //private GameObject FindPickup(AIAgent agent)
-    //{
-    //    int count = agent.sensor.Filter(pickups, "Pickup", "Ammo");
-    //    if (count > 0)
-    //    {
-    //        float bestAngle = float.MaxValue;
-    //        GameObject bestPickup = pickups[0];
-    //        for (int i = 0; i < count; ++i)
-    //        {
-    //            GameObject pickup = pickups[i];
-    //            float pickupAngle = Vector3.Angle(agent.transform.forward, pickup.transform.position - agent.transform.position);
-    //            if (pickupAngle < bestAngle)
-    //            {
-    //                bestAngle = pickupAngle;
-    //                bestPickup = pickup;
-    //            }
-    //        }
-    //        return bestPickup;
-    //    }
-    //    else if (count <= 0)
-    //    {
-    //        agent.PatrolBasedWaypoint();
-    //    }
-    //    return null;
-    //}
-
-    //private void CollectPickup(AIAgent agent, GameObject pickup)
-    //{
-    //    agent.navMeshAgent.destination = pickup.transform.position;
-    //}
 }

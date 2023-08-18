@@ -19,17 +19,16 @@ public class AIWeapon : MonoBehaviour
         }
     }
 
-    [SerializeField]
-    public RaycastWeapon[] aiWeapons = new RaycastWeapon[2];
-    private int currentWeaponIndex = 0;
+    public float inAccuracy;
+    public float inAccuracySniper;
 
+    [SerializeField] public RaycastWeapon[] aiWeapons = new RaycastWeapon[2];
+    private int currentWeaponIndex = 0;
     private WeaponState weaponState = WeaponState.Holstered;
     private Animator animator;
     private MeshSocketController socketController;
     private WeaponIK weaponIK;
-    private Transform currentTarget;
-    private float inAccuracy;
-    private float inAccuracySniper;
+    [SerializeField] private Transform currentTarget;
     private GameObject magazineHand;
 
     public float dropForce = 1.5f;
@@ -51,15 +50,21 @@ public class AIWeapon : MonoBehaviour
 
     private void Awake()
     {
-        if (DataManager.HasInstance)
-        {
-            inAccuracy = DataManager.Instance.globalConfig.inAccuracy;
-            inAccuracySniper = DataManager.Instance.globalConfig.inAccuracySniper;
-        }
-
         animator = GetComponent<Animator>();
         weaponIK = GetComponent<WeaponIK>();
         socketController = GetComponent<MeshSocketController>();
+    }
+
+    private void Start()
+    {
+        foreach (var weapon in aiWeapons)
+        {
+            if (weapon)
+            {
+                currentWeaponIndex = (int)weapon.weaponSlot;
+                break;
+            }
+        }
     }
 
     private void Update()
@@ -67,13 +72,24 @@ public class AIWeapon : MonoBehaviour
         if (currentTarget && AICurrentWeapon && IsActive())
         {
             Vector3 target = currentTarget.position + weaponIK.targetOffset;
+
             if (AICurrentWeapon.weaponName.Equals("Sniper"))
             {
                 target += Random.insideUnitSphere * inAccuracySniper;
             }
-            target += Random.insideUnitSphere * inAccuracy;
+            else
+            {
+                target += Random.insideUnitSphere * inAccuracy;
+            }
             AICurrentWeapon.UpdateWeapon(Time.deltaTime, target);
+            //Debug.Log("AI target position: " + target);
         }
+    }
+
+    public void SetTarget(Transform target)
+    {
+        weaponIK.SetTargetTransform(target);
+        currentTarget = target;
     }
 
     public void SetFiring(bool enable)
@@ -88,8 +104,65 @@ public class AIWeapon : MonoBehaviour
         }
     }
 
+    public int CountWeapon()
+    {
+        int count = 0;
+        foreach (var weapon in aiWeapons)
+        {
+            if (weapon)
+            {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public bool HasWeapon()
+    {
+        int count = 0;
+        foreach (RaycastWeapon weapon in aiWeapons)
+        {
+            if (weapon)
+            {
+                count++;
+            }
+        }
+
+        if (count != 0)
+        {
+            return true;
+        }
+        else return false;
+    }
+
+    public void DropWeapon(int weaponDropSlot)
+    {
+        if (aiWeapons[weaponDropSlot])
+        {
+            RaycastWeapon currentWeapon = aiWeapons[weaponDropSlot];
+            if (currentWeapon)
+            {
+                currentWeapon.transform.SetParent(null);
+                currentWeapon.gameObject.GetComponent<BoxCollider>().enabled = true;
+                foreach (Transform child in currentWeapon.transform)
+                {
+                    child.gameObject.layer = LayerMask.NameToLayer("Default");
+                }
+                currentWeapon.gameObject.AddComponent<Rigidbody>();
+                aiWeapons[weaponDropSlot] = null;
+                Destroy(currentWeapon, 5f);
+            }
+        }
+    }
+
     public void Equip(RaycastWeapon weapon)
     {
+        int weaponPickupSlot = (int)weapon.weaponSlot;
+        if (aiWeapons[weaponPickupSlot])
+        {
+            DropWeapon(weaponPickupSlot);
+        }
+
         aiWeapons[(int)weapon.weaponSlot] = weapon;
 
         if (weapon.weaponSlot == WeaponSlot.Primary)
@@ -128,19 +201,6 @@ public class AIWeapon : MonoBehaviour
         weaponIK.enabled = true;
         weaponIK.SetAimTransform(AICurrentWeapon.raycastOrigin);
         weaponState = WeaponState.Active;
-    }
-
-    public int CountWeapon()
-    {
-        int count = 0;
-        foreach (var weapon in aiWeapons)
-        {
-            if (weapon)
-            {
-                count++;
-            }
-        }
-        return count;
     }
 
     public void SwitchWeapon(WeaponSlot slot)
@@ -206,41 +266,6 @@ public class AIWeapon : MonoBehaviour
         }
         weaponIK.enabled = true;
         weaponState = WeaponState.Active;
-    }
-
-    public bool HasWeapon()
-    {
-        int count = 0;
-        foreach (RaycastWeapon weapon in aiWeapons)
-        {
-            if (weapon)
-            {
-                count++;
-            }
-        }
-
-        if (count != 0)
-        {
-            return true;
-        }
-        else return false;
-    }
-
-    public void DropWeapon()
-    {
-        if (AICurrentWeapon)
-        {
-            AICurrentWeapon.transform.SetParent(null);
-            AICurrentWeapon.gameObject.GetComponent<BoxCollider>().enabled = true;
-            AICurrentWeapon.gameObject.AddComponent<Rigidbody>();
-            aiWeapons[currentWeaponIndex] = null;
-        }
-    }
-
-    public void SetTarget(Transform target)
-    {
-        weaponIK.SetTargetTransform(target);
-        currentTarget = target;
     }
 
     public void OnAnimationEvent(string eventName)

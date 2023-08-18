@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AmmoPickup : MonoBehaviour
@@ -10,7 +8,7 @@ public class AmmoPickup : MonoBehaviour
     {
         if (DataManager.HasInstance)
         {
-            ammoAmount = DataManager.Instance.globalConfig.ammoAmount;
+            ammoAmount = DataManager.Instance.globalConfig.ammoPickupAmount;
         }
     }
 

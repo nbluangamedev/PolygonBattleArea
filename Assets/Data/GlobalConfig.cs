@@ -44,10 +44,6 @@ public class GlobalConfig : ScriptableObject
     public float timeDestroyAI = 2f;
     public float lowHealth = 40f;
 
-    [Header("Weapon")]
-    public float inAccuracy = 0.4f;
-    public float inAccuracySniper = 2f;
-
     //--------------------------PLAYER-------------------------//
     [Header("PLAYER")]
     [Header("Locomotion")]
@@ -76,8 +72,7 @@ public class GlobalConfig : ScriptableObject
 
     //---------------------------WEAPON--------------------------//
     [Header("WEAPON")]
-    public int lossOfAccuracyPerShot = 1;
-    public int ammoAmount = 30;
+    public int ammoPickupAmount = 30;
 
     [Header("Weapon Recoil")]
     public float duration;

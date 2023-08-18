@@ -14,11 +14,6 @@ public class AIDeathState : AIState
 
     public void Enter(AIAgent agent)
     {
-        if (agent.navMeshAgent != null)
-        {
-            agent.navMeshAgent.isStopped = true;
-        }
-
         if (DataManager.HasInstance)
         {
             dieForce = DataManager.Instance.globalConfig.enemyDieForce;
@@ -28,7 +23,7 @@ public class AIDeathState : AIState
         agent.navMeshAgent.enabled = false;
         agent.ragdoll.ActiveRagdoll();
         agent.ragdoll.ApplyForce(direction * dieForce, rigidbody);
-        agent.weapon.DropWeapon();
+        agent.weapon.DropWeapon((int)agent.weapon.currentWeaponSlot);
         agent.healthBar.Deactive();
         agent.aiHealth.DestroyWhenDeath();
     }

@@ -132,9 +132,9 @@ public class ActiveWeapon : MonoBehaviour
         }
     }
 
-    public void DropWeapon(int dropWeaponSlot)
+    public void DropWeapon(int weaponDropSlot)
     {
-        RaycastWeapon currentWeapon = GetWeapon(dropWeaponSlot);
+        RaycastWeapon currentWeapon = GetWeapon(weaponDropSlot);
         if (currentWeapon)
         {
             currentWeapon.transform.SetParent(null);
@@ -144,7 +144,7 @@ public class ActiveWeapon : MonoBehaviour
                 child.gameObject.layer = LayerMask.NameToLayer("Default");
             }
             currentWeapon.gameObject.AddComponent<Rigidbody>();
-            equippedWeapon[dropWeaponSlot] = null;
+            equippedWeapon[weaponDropSlot] = null;
             Destroy(currentWeapon, 5f);
         }
     }

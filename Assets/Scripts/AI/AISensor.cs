@@ -13,7 +13,7 @@ public class AISensor : MonoBehaviour
     public LayerMask sensorLayer;
     public LayerMask occlusionLayer;
     public int scanFrequency = 30;
-    public bool isScanning;
+    public bool isScanning = false;
 
     [SerializeField]
     private Collider[] colliders = new Collider[50];
@@ -190,14 +190,6 @@ public class AISensor : MonoBehaviour
                 Gizmos.color = meshColor;
                 Gizmos.DrawMesh(mesh, transform.position, transform.rotation);
             }
-
-            //for (int i = 0; i < colliders.Length; ++i)
-            //{
-            //    if (colliders[i] != null)
-            //    {
-            //        Gizmos.DrawSphere(colliders[i].transform.position, 0.2f);
-            //    }
-            //}
 
             Gizmos.color = Color.green;
             foreach (var obj in Objects)

@@ -16,7 +16,7 @@ public class AIChasePlayerState : AIState
             attackRadius = DataManager.Instance.globalConfig.attackRadius;
         }
 
-        agent.playerSeen = true;
+        //agent.playerSeen = true;
         agent.navMeshAgent.stoppingDistance = attackRadius;
         agent.navMeshAgent.isStopped = false;
 
@@ -24,6 +24,8 @@ public class AIChasePlayerState : AIState
 
     public void Update(AIAgent agent)
     {
+        agent.UpdateIsDeath();
+
         if (agent.targeting.HasTarget)
         {
             float distance = Vector3.Distance(agent.targeting.TargetPosition, agent.transform.position);
@@ -42,7 +44,7 @@ public class AIChasePlayerState : AIState
     public void Exit(AIAgent agent)
     {
         agent.navMeshAgent.stoppingDistance = 0.0f;
-        agent.playerSeen = false;
+        //agent.playerSeen = false;
         agent.navMeshAgent.isStopped = false;
     }
 }

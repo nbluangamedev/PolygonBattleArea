@@ -14,24 +14,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxTime: 1
   maxDistance: 3
-  enemyDieForce: 5
-  stoppingDistance: 15
   closeRange: 7
-  findWeaponSpeed: 7
-  findTargetSpeed: 5
+  enemyDieForce: 5
+  findWeaponSpeed: 5
+  attackStoppingDistance: 20
   attackMoveSpeed: 3
+  attackRadius: 20
+  findTargetSpeed: 5
+  findTargetAcceleration: 20
+  findTargetTurnSpeed: 720
+  findTargetWaitTime: 1
+  findTargetRadius: 20
   patrolRadius: 10
   patrolSpeed: 7
   patrolAcceleration: 8
   patrolTurnSpeed: 520
   patrolWaitTime: 1
   fleeRange: 30
-  attackRadius: 20
-  findTargetAcceleration: 20
-  findTargetTurnSpeed: 720
-  findTargetWaitTime: 1
-  findTargetRadius: 20
-  maxHealth: 100
+  aiMaxHealth: 100
   blinkDuration: 0.1
   timeDestroyAI: 2
   lowHealth: 50
@@ -58,9 +58,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1463
   scopeOverlay: {fileID: 2287727143583154844, guid: 1b010632b5954a44db5e72a3b00da538, type: 3}
-  playerMaxHealth: 100
+  playerMaxHealth: 1000000
   lossOfAccuracyPerShot: 1
   ammoAmount: 30
-  duration: 0.2
+  duration: 0.1
   amountInPool: 30
   loadingOverLapTime: 1

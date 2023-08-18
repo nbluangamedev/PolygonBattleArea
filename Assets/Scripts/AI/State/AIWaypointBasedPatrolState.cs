@@ -19,20 +19,9 @@ public class AIWaypointBasedPatrolState : AIState
 
     public void Update(AIAgent agent)
     {
-        if (agent.aiHealth.IsDead())
-        {
-            agent.stateMachine.ChangeState(AIStateID.Death);
-        }
-
-        if (agent.aiHealth.IsLowHealth())
-        {
-            agent.stateMachine.ChangeState(AIStateID.FindHealth);
-        }
-
-        if (agent.weapon.IsLowAmmo())
-        {
-            agent.stateMachine.ChangeState(AIStateID.FindAmmo);
-        }
+        agent.UpdateIsDeath();
+        agent.UpdateLowAmmo();
+        agent.UpdateLowHealth();
 
         if (agent.weapon.HasWeapon())
         {
@@ -40,7 +29,6 @@ public class AIWaypointBasedPatrolState : AIState
         }
         else
         {
-            agent.playerSeen = false;
             agent.stateMachine.ChangeState(AIStateID.FindWeapon);
         }
 

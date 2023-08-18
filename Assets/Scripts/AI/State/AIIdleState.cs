@@ -14,10 +14,7 @@ public class AIIdleState : AIState
 
     public void Update(AIAgent agent)
     {
-        if (agent.aiHealth.IsDead())
-        {
-            agent.stateMachine.ChangeState(AIStateID.Death);
-        }
+        agent.UpdateIsDeath();
 
         if (agent.targeting.HasTarget)
         {
