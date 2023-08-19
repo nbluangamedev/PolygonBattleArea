@@ -32,7 +32,7 @@ public class ActiveWeapon : MonoBehaviour
     {
         RaycastWeapon weapon = GetWeapon(activeWeaponIndex);
         bool notSprinting = rigController.GetCurrentAnimatorStateInfo(2).shortNameHash == Animator.StringToHash("notSprinting");
-        canFire = !isHolstered && notSprinting && !weaponReload.isReloading;
+        canFire = !isHolstered && notSprinting && !weaponReload.isReloading && !isChangingWeapon ;
 
         if (weapon)
         {
@@ -44,11 +44,6 @@ public class ActiveWeapon : MonoBehaviour
             if (Input.GetButtonUp("Fire1") || !canFire || weapon.IsEmptyAmmo())
             {
                 weapon.StopFiring();
-            }
-
-            if (weapon.IsEmptyAmmo())
-            {
-                StartCoroutine(HolsterWeapon((int)weapon.weaponSlot));
             }
 
             weapon.UpdateWeapon(Time.deltaTime, crossHairTarget.position);

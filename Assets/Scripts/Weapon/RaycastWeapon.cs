@@ -184,22 +184,131 @@ public class RaycastWeapon : MonoBehaviour
         }
     }
 
+    private void RaycastSegmentEnemyBullet(Vector3 start, Vector3 end, EnemyBullet bullet)
+    {
+        if (weaponName != "Shotgun")
+        {
+            Vector3 direction = end - start;
+            float distance = direction.magnitude;
+            ray.origin = start;
+            ray.direction = direction;
+
+            if (Physics.Raycast(ray, out hitInfo, distance, layerMask))
+            {
+                hitEffect.transform.position = hitInfo.point;
+                hitEffect.transform.forward = hitInfo.normal;
+                hitEffect.Emit(1);
+
+                bullet.transform.position = hitInfo.point;
+                bullet.time = maxLifetime;
+
+                Rigidbody rb = hitInfo.collider.GetComponent<Rigidbody>();
+                if (rb)
+                {
+                    rb.AddForceAtPosition(ray.direction * forceBullet, hitInfo.point, ForceMode.Impulse);
+                }
+
+                HitBox hitBox = hitInfo.collider.GetComponent<HitBox>();
+                if (hitBox)
+                {
+                    hitBox.OnHit(this, ray.direction);
+                }
+
+                if (bullet.tracer)
+                {
+                    bullet.tracer.transform.position = end;
+                }
+            }
+            else
+            {
+                bullet.transform.position = end;
+            }
+        }
+        else
+        {
+            for (int i = 0; i < 6; i++)
+            {
+                Vector3 BulletRotationPrecision = end;
+                BulletRotationPrecision.x += Random.Range(-lossOfAccuracyPerShot, lossOfAccuracyPerShot);
+                BulletRotationPrecision.y += Random.Range(-lossOfAccuracyPerShot, lossOfAccuracyPerShot);
+                BulletRotationPrecision.z += Random.Range(-lossOfAccuracyPerShot, lossOfAccuracyPerShot);
+
+                Vector3 direction = BulletRotationPrecision - start;
+                float distance = direction.magnitude;
+                ray.origin = start;
+                ray.direction = direction;
+
+                if (Physics.Raycast(ray, out hitInfo, distance, layerMask))
+                {
+                    hitEffect.transform.position = hitInfo.point;
+                    hitEffect.transform.forward = hitInfo.normal;
+                    hitEffect.Emit(1);
+
+                    bullet.transform.position = hitInfo.point;
+                    bullet.time = maxLifetime;
+
+                    Rigidbody rb = hitInfo.collider.GetComponent<Rigidbody>();
+                    if (rb)
+                    {
+                        rb.AddForceAtPosition(ray.direction * forceBullet, hitInfo.point, ForceMode.Impulse);
+                    }
+
+                    HitBox hitBox = hitInfo.collider.GetComponent<HitBox>();
+                    if (hitBox)
+                    {
+                        hitBox.OnHit(this, ray.direction);
+                    }
+
+                    if (bullet.tracer)
+                    {
+                        bullet.tracer.transform.position = end;
+                    }
+                }
+                else
+                {
+                    bullet.transform.position = end;
+                }
+            }
+        }
+    }
+
     private void SimulateBullets(float deltaTime)
     {
-        ObjectPool.Instance.pooledBulletObjects.ForEach(bullet =>
+        if (equipWeaponBy == EquipWeaponBy.Player)
         {
-            Vector3 p0 = GetPosition(bullet);
-            bullet.time += deltaTime;
-            Vector3 p1 = GetPosition(bullet);
-            RaycastSegment(p0, p1, bullet);
-        });
+            ObjectPool.Instance.pooledBulletObjects.ForEach(bullet =>
+            {
+                Vector3 p0 = GetPosition(bullet);
+                bullet.time += deltaTime;
+                Vector3 p1 = GetPosition(bullet);
+                RaycastSegment(p0, p1, bullet);
+            });
+        }
+        else
+        {
+            ObjectPool.Instance.pooledEnemyBulletObjects.ForEach(bullet =>
+            {
+                Vector3 p0 = GetPositionEnemyBullet(bullet);
+                bullet.time += deltaTime;
+                Vector3 p1 = GetPositionEnemyBullet(bullet);
+                RaycastSegmentEnemyBullet(p0, p1, bullet);
+            });
+        }
     }
 
     private void FireBullet(Vector3 target)
     {
         Vector3 velocity = (target - raycastOrigin.position).normalized * bulletSpeed;
-        Bullet bullet = ObjectPool.Instance.GetPoolBulletObject();
-        bullet.Active(raycastOrigin.position, velocity);
+        if (equipWeaponBy == EquipWeaponBy.Player)
+        {
+            Bullet bullet = ObjectPool.Instance.GetPoolBulletObject();
+            bullet.Active(raycastOrigin.position, velocity);
+        }
+        else
+        {
+            EnemyBullet bullet = ObjectPool.Instance.GetPoolEnemyBulletObject();
+            bullet.Active(raycastOrigin.position, velocity);
+        }
 
         if (IsEmptyAmmo())
         {
@@ -252,6 +361,13 @@ public class RaycastWeapon : MonoBehaviour
     }
 
     private Vector3 GetPosition(Bullet bullet)
+    {
+        //p + v*t + 0.5*g*t*t
+        Vector3 gravity = Vector3.down * bulletDrop;
+        return (bullet.initialPosition) + (bullet.initialVelocity * bullet.time) + (0.5f * gravity * bullet.time * bullet.time);
+    }
+
+    private Vector3 GetPositionEnemyBullet(EnemyBullet bullet)
     {
         //p + v*t + 0.5*g*t*t
         Vector3 gravity = Vector3.down * bulletDrop;

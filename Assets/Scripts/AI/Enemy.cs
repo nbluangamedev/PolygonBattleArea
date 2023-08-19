@@ -3,6 +3,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     public GameObject agentPrefabs;
+    //luu ragdoll, trang thai default gan truoc khi active
 
     private bool isActive = false;
     public bool IsActive => isActive;

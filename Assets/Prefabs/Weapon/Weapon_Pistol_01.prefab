@@ -364,7 +364,7 @@ GameObject:
   - component: {fileID: 4245193159445016210}
   - component: {fileID: 1126023541969594337}
   - component: {fileID: 6464117932992169678}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Weapon_Pistol_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -415,6 +415,8 @@ MonoBehaviour:
   weaponName: Pistol
   raycastOrigin: {fileID: 3172744936664121336}
   recoil: {fileID: 0}
+  recoilForce: 1.5
+  recoilForceRotation: 1.5
   lossOfAccuracyPerShot: 0
   magazine: {fileID: 2054690038695303234}
   forceBullet: 1.5
