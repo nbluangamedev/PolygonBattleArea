@@ -24,7 +24,7 @@ public class WeaponPickup : MonoBehaviour
         {
             RaycastWeapon newWeapon = Instantiate(weaponPrefab);
             newWeapon.equipWeaponBy = EquipWeaponBy.AI;
-            newWeapon.recoil.enabled = false;
+            //newWeapon.recoil.enabled = false;
             aiWeapon.Equip(newWeapon);
             Destroy(gameObject);
         }

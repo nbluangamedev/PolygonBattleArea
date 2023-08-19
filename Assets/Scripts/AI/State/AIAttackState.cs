@@ -3,6 +3,8 @@ using UnityEngine;
 public class AIAttackState : AIState
 {
     private float attackRadius;
+    private bool canSwitchWeapon;
+    private bool isWeaponRemain;
 
     public AIStateID GetID()
     {
@@ -18,9 +20,10 @@ public class AIAttackState : AIState
             attackRadius = DataManager.Instance.globalConfig.attackRadius;
         }
 
-        //agent.FaceTarget();
         agent.weapon.ActivateWeapon();
         agent.navMeshAgent.isStopped = true;
+        canSwitchWeapon = agent.weapon.CountWeapon() == 2;
+        isWeaponRemain = agent.CheckWeaponRemain(canSwitchWeapon);
     }
 
     public void Update(AIAgent agent)
@@ -35,9 +38,21 @@ public class AIAttackState : AIState
 
         if (agent.weapon.HasWeapon())
         {
+            if (agent.weapon.IsLowAmmo())
+            {
+                isWeaponRemain = agent.CheckWeaponRemain(canSwitchWeapon);
+                if (isWeaponRemain)
+                {
+                    agent.SwitchWeapon();
+                }
+                else
+                {
+                    agent.stateMachine.ChangeState(AIStateID.FindAmmo);
+                }
+            }
+
             if (agent.targeting.HasTarget && agent.targeting.TargetDistance <= attackRadius)
             {
-                //agent.playerSeen = true;
                 agent.FaceTarget();
                 agent.weapon.SetTarget(agent.targeting.Target.transform);
                 agent.navMeshAgent.destination = agent.targeting.TargetPosition;
@@ -50,21 +65,13 @@ public class AIAttackState : AIState
                 agent.stateMachine.ChangeState(AIStateID.ChasePlayer);
             }
         }
-        
-        //if (agent.weapon.IsLowAmmo())
-        //{
-        //    if (agent.weapon.CountWeapon() == 2)
-        //    {
-        //        agent.SelectWeapon();
-        //    }
-        //}
 
-        agent.UpdateLowAmmo();
     }
 
     public void Exit(AIAgent agent)
     {
         agent.weapon.DeActivateWeapon();
+        agent.navMeshAgent.stoppingDistance = 0.0f;
         agent.navMeshAgent.isStopped = false;
     }
 

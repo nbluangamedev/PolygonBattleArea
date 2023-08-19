@@ -16,7 +16,6 @@ public class AIChasePlayerState : AIState
             attackRadius = DataManager.Instance.globalConfig.attackRadius;
         }
 
-        //agent.playerSeen = true;
         agent.navMeshAgent.stoppingDistance = attackRadius;
         agent.navMeshAgent.isStopped = false;
 
@@ -44,7 +43,6 @@ public class AIChasePlayerState : AIState
     public void Exit(AIAgent agent)
     {
         agent.navMeshAgent.stoppingDistance = 0.0f;
-        //agent.playerSeen = false;
         agent.navMeshAgent.isStopped = false;
     }
 }

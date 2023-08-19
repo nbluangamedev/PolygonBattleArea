@@ -17,7 +17,6 @@ public class AIAgent : MonoBehaviour
     [HideInInspector] public Waypoint currentWaypoint;
     [SerializeField] private AIStateID currentState;
 
-    //public bool playerSeen = false;
     public GameObject waypoints;
 
     private float activeWaypoint;
@@ -30,6 +29,10 @@ public class AIAgent : MonoBehaviour
         }
         else Debug.LogError("No player object with Player tag found!");
 
+        if (!waypoints)
+        {
+            waypoints = GameObject.FindGameObjectWithTag("Waypoint");
+        }
         currentWaypoint = waypoints.GetComponentInChildren<Waypoint>();
         activeWaypoint = Mathf.RoundToInt(Random.Range(0f, 1f));
 
@@ -184,22 +187,28 @@ public class AIAgent : MonoBehaviour
         }
     }
 
-    public void SelectWeapon()
+    public bool CheckWeaponRemain(bool canSwitchWeapon)
     {
-        var bestWeapon = ChooseWeapon();
-        if (bestWeapon != weapon.currentWeaponSlot)
+        int count = 0;
+        if (canSwitchWeapon)
         {
-            weapon.SwitchWeapon(bestWeapon);
+            for (int i = 0; i < 2; i++)
+            {
+                if (weapon.aiWeapons[i].IsEmptyAmmo())
+                    count++;
+            }
         }
+        else return false;
+
+        if (count == 2)
+            return false;
+        return true;
     }
 
-    private WeaponSlot ChooseWeapon()
+    public void SwitchWeapon()
     {
-        foreach (var weaponTMP in weapon.aiWeapons)
-            if (!weaponTMP.IsEmptyAmmo())
-            {
-                return weaponTMP.weaponSlot;
-            }
-        return weapon.currentWeaponSlot;
+        int currentSlot = (int)weapon.currentWeaponSlot;
+        int switchSlot = 1 - currentSlot;
+        weapon.SwitchWeapon((WeaponSlot)switchSlot);
     }
 }

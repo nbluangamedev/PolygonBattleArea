@@ -78,7 +78,8 @@ public class GlobalConfig : ScriptableObject
     public float duration;
 
     [Header("Bullet")]
-    public int amountInPool = 30;
+    public int amountBulletInPool = 30;
+    public int amountEnemyInPool = 30;
 
     //----------------------------UI---------------------------//
     [Header("UI")]

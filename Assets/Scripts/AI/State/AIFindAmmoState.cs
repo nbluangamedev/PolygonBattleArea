@@ -16,7 +16,7 @@ public class AIFindAmmoState : AIState
         if (DataManager.HasInstance)
         {
             agent.navMeshAgent.speed = DataManager.Instance.globalConfig.findWeaponSpeed;
-        }
+        }        
         pickup = null;
         timer = 0;
     }
@@ -28,7 +28,8 @@ public class AIFindAmmoState : AIState
         if (!pickup)
         {
             timer += Time.deltaTime;
-            if (timer < 30f)
+            Debug.Log("timer find ammo " + timer);
+            if (timer < 10f)
             {
                 pickup = agent.FindPickup(pickups, "Pickup", "Ammo");
                 if (pickup)

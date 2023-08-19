@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class AIFindWeaponState : AIState
@@ -42,14 +43,11 @@ public class AIFindWeaponState : AIState
             else
             {
                 timer = 0;
-                if (agent.weapon.HasWeapon())
-                {
-                    agent.stateMachine.ChangeState(AIStateID.FindAmmo);
-                }
+                agent.stateMachine.ChangeState(AIStateID.FindAmmo);
             }
         }
 
-        if (agent.weapon.CountWeapon() > 0)
+        if (agent.weapon.CountWeapon() > 0 && !agent.weapon.IsLowAmmo())
         {
             agent.stateMachine.ChangeState(AIStateID.FindTarget);
         }

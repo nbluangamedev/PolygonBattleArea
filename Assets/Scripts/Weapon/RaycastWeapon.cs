@@ -15,6 +15,10 @@ public class RaycastWeapon : MonoBehaviour
     public string weaponName;
     public Transform raycastOrigin;
     public WeaponRecoil recoil;
+
+    public float recoilForce = 1.5f;
+    public float recoilForceRotation = 1.5f;
+
     public int lossOfAccuracyPerShot;
     public GameObject magazine;
     public float forceBullet = 2f;
@@ -36,10 +40,9 @@ public class RaycastWeapon : MonoBehaviour
 
     private void Awake()
     {
-        recoil = GetComponent<WeaponRecoil>();
-
         if (this.equipWeaponBy == EquipWeaponBy.Player)
         {
+            recoil = GetComponent<WeaponRecoil>();
             characterAiming = GameObject.FindObjectOfType<CharacterAiming>();
         }
     }
@@ -52,7 +55,11 @@ public class RaycastWeapon : MonoBehaviour
         {
             accumulatedTime = 0f;
         }
-        recoil.Reset();
+
+        if (recoil)
+        {
+            recoil.Reset();
+        }
     }
 
     public void StopFiring()
@@ -179,7 +186,7 @@ public class RaycastWeapon : MonoBehaviour
 
     private void SimulateBullets(float deltaTime)
     {
-        ObjectPool.Instance.pooledObjects.ForEach(bullet =>
+        ObjectPool.Instance.pooledBulletObjects.ForEach(bullet =>
         {
             Vector3 p0 = GetPosition(bullet);
             bullet.time += deltaTime;
@@ -191,7 +198,7 @@ public class RaycastWeapon : MonoBehaviour
     private void FireBullet(Vector3 target)
     {
         Vector3 velocity = (target - raycastOrigin.position).normalized * bulletSpeed;
-        Bullet bullet = ObjectPool.Instance.GetPoolObject();
+        Bullet bullet = ObjectPool.Instance.GetPoolBulletObject();
         bullet.Active(raycastOrigin.position, velocity);
 
         if (IsEmptyAmmo())
@@ -212,21 +219,30 @@ public class RaycastWeapon : MonoBehaviour
 
         EmitBulletCasing();
 
-        if (this.equipWeaponBy == EquipWeaponBy.Player && this.weaponName.Equals("Sniper") && !IsEmptyAmmo())
+        if (recoil)
         {
-            if (characterAiming.isAiming)
+            if (this.weaponName.Equals("Sniper") && !IsEmptyAmmo())
             {
-                StartCoroutine(ActivateOnScope());
+                if (characterAiming.isAiming)
+                {
+                    StartCoroutine(ActivateOnScope());
+                }
+                else
+                {
+                    if (recoil.rigController)
+                    {
+                        recoil.rigController.Play("sniperPullBolt");
+                    }
+                }
             }
-            else recoil.rigController.Play("sniperPullBolt");
-        }
 
-        recoil.GenerateRecoil(weaponName);
+            recoil.GenerateRecoil(weaponName);
+        }
     }
 
     private void DestroyBullets()
     {
-        foreach (Bullet bullet in ObjectPool.Instance.pooledObjects)
+        foreach (Bullet bullet in ObjectPool.Instance.pooledBulletObjects)
         {
             if (bullet.time >= maxLifetime)
             {
