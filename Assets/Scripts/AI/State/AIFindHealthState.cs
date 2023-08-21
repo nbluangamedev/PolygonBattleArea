@@ -21,7 +21,6 @@ public class AIFindHealthState : AIState
 
     public void Update(AIAgent agent)
     {
-        //agent.playerSeen = false;
         agent.UpdateIsDeath();
 
         if (!pickup)

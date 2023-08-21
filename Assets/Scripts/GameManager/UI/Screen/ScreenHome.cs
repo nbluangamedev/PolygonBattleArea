@@ -1,5 +1,10 @@
 public class ScreenHome : BaseScreen
 {
+    public override void Init()
+    {
+        base.Init();
+    }
+
     public override void Show(object data)
     {
         base.Show(data);
@@ -10,11 +15,11 @@ public class ScreenHome : BaseScreen
         base.Hide();
     }
 
-    public void StartGame()
+    public void CharacterSelection()
     {
         if (UIManager.HasInstance)
         {
-            UIManager.Instance.ShowNotify<NotifyLoadingGame>();
+            UIManager.Instance.ShowNotify<NotifyLoadingCharacterSelection>();
         }
         this.Hide();
     }

@@ -9,6 +9,7 @@ TagManager:
   - Weapon
   - AIAgent
   - Waypoint
+  - WeaponCamera
   layers:
   - Default
   - TransparentFX

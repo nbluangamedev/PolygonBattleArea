@@ -23,18 +23,11 @@ public class AIAttackState : AIState
         agent.weapon.ActivateWeapon();
         agent.navMeshAgent.isStopped = true;
         canSwitchWeapon = agent.weapon.CountWeapon() == 2;
-        isWeaponRemain = agent.CheckWeaponRemain(canSwitchWeapon);
     }
 
     public void Update(AIAgent agent)
     {
         agent.UpdateIsDeath();
-        agent.UpdateLowHealth();
-
-        if (!agent.targeting.HasTarget)
-        {
-            agent.stateMachine.ChangeState(AIStateID.FindTarget);
-        }
 
         if (agent.weapon.HasWeapon())
         {
@@ -51,6 +44,11 @@ public class AIAttackState : AIState
                 }
             }
 
+            if (!agent.targeting.HasTarget)
+            {
+                agent.stateMachine.ChangeState(AIStateID.FindTarget);
+            }
+
             if (agent.targeting.HasTarget && agent.targeting.TargetDistance <= attackRadius)
             {
                 agent.FaceTarget();
@@ -58,6 +56,7 @@ public class AIAttackState : AIState
                 agent.navMeshAgent.destination = agent.targeting.TargetPosition;
                 ReloadWeapon(agent);
                 UpdateFiring(agent);
+                agent.UpdateLowHealth();
             }
             else if (agent.targeting.HasTarget && agent.targeting.TargetDistance > attackRadius)
             {
@@ -65,12 +64,16 @@ public class AIAttackState : AIState
                 agent.stateMachine.ChangeState(AIStateID.ChasePlayer);
             }
         }
+        else agent.stateMachine.ChangeState(AIStateID.FindWeapon);
 
     }
 
     public void Exit(AIAgent agent)
     {
-        agent.weapon.DeActivateWeapon();
+        if (agent.weapon.HasWeapon())
+        {
+            agent.weapon.DeActivateWeapon();
+        }
         agent.navMeshAgent.stoppingDistance = 0.0f;
         agent.navMeshAgent.isStopped = false;
     }

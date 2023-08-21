@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class CharacterAiming : MonoBehaviour
 {
-    public Cinemachine.AxisState xAxis;
-    public Cinemachine.AxisState yAxis;
+    public AxisState xAxis;
+    public AxisState yAxis;
     public bool isAiming = false;
     public Transform cameraLookAt;
 
@@ -30,7 +30,7 @@ public class CharacterAiming : MonoBehaviour
     {
         if (CameraManager.HasInstance)
         {
-            weaponCamera = CameraManager.Instance.weaponCamera;
+            weaponCamera = CameraManager.Instance.weaponCamera.GetComponent<CinemachineVirtualCamera>();
         }
 
         if (DataManager.HasInstance)
@@ -50,81 +50,87 @@ public class CharacterAiming : MonoBehaviour
         mainCamera = Camera.main;
         animator = GetComponent<Animator>();
         activeWeapon = GetComponent<ActiveWeapon>();
+
+        weaponCamera.Follow = cameraLookAt;
+        weaponCamera.LookAt = cameraLookAt;
     }
 
     private void Update()
     {
         var weapon = activeWeapon.GetActiveWeapon();
-        bool canAim = !activeWeapon.isHolstered && !activeWeapon.weaponReload.isReloading;
-
-        if (isAiming)
+        if (weapon)
         {
-            if (Input.GetKeyDown(KeyCode.R) || weapon.ammoCount <= 0)
-            {
-                UnScopeAndAim(weapon);
-            }
+            bool canAim = !activeWeapon.isHolstered && !activeWeapon.weaponReload.isReloading && weapon.ammoCount >= 1;
 
-            if (Input.GetKeyDown(KeyCode.X))
+            if (isAiming)
             {
-                UnScopeAndAim(weapon);
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                if (activeWeapon.isChangingWeapon)
+                if (Input.GetKeyDown(KeyCode.R) || weapon.ammoCount <= 0)
                 {
                     UnScopeAndAim(weapon);
                 }
-            }
 
-            if (Input.GetKeyDown(KeyCode.Alpha2))
-            {
-                if (activeWeapon.isChangingWeapon)
+                if (Input.GetKeyDown(KeyCode.X))
                 {
                     UnScopeAndAim(weapon);
                 }
-            }
 
-            if (Input.GetKeyDown(KeyCode.Q))
-            {
-                isAiming = !isAiming;
-                if (activeWeapon.isChangingWeapon)
+                if (Input.GetKeyDown(KeyCode.Alpha1))
                 {
-                    UnScopeAndAim(weapon);
-                }
-            }
-        }
-
-        if (weapon && canAim)
-        {
-            if (Input.GetMouseButtonDown(1))
-            {
-                isAiming = !isAiming;
-
-                if (weapon.weaponName.Equals("Sniper"))
-                {
-                    if (isAiming)
+                    if (activeWeapon.isChangingWeapon)
                     {
-                        StartCoroutine(OnScope());
+                        UnScopeAndAim(weapon);
+                    }
+                }
+
+                if (Input.GetKeyDown(KeyCode.Alpha2))
+                {
+                    if (activeWeapon.isChangingWeapon)
+                    {
+                        UnScopeAndAim(weapon);
+                    }
+                }
+
+                if (Input.GetKeyDown(KeyCode.Q))
+                {
+                    isAiming = !isAiming;
+                    if (activeWeapon.isChangingWeapon)
+                    {
+                        UnScopeAndAim(weapon);
+                    }
+                }
+            }
+
+            if (weapon && canAim)
+            {
+                if (Input.GetMouseButtonDown(1))
+                {
+                    isAiming = !isAiming;
+
+                    if (weapon.weaponName.Equals("Sniper"))
+                    {
+                        if (isAiming)
+                        {
+                            StartCoroutine(OnScope());
+                        }
+                        else
+                        {
+                            StartCoroutine(UnScope());
+                        }
+                    }
+                    if (weapon.weaponName.Equals("Shotgun"))
+                    {
+                        return;
                     }
                     else
                     {
-                        StartCoroutine(UnScope());
-                    }
-                }
-                if (weapon.weaponName.Equals("Shotgun"))
-                {
-                    return;
-                }
-                else
-                {
-                    if (isAiming)
-                    {
-                        Aiming(weapon);
-                    }
-                    else
-                    {
-                        UnAiming(weapon);
+                        if (isAiming)
+                        {
+                            Aiming(weapon);
+                        }
+                        else
+                        {
+                            UnAiming(weapon);
+                        }
                     }
                 }
             }
@@ -170,6 +176,7 @@ public class CharacterAiming : MonoBehaviour
     {
         isAiming = false;
         yield return new WaitForSeconds(0.1f);
+        //yield return null;
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.BroadCast(ListenType.SCOPE, false);
@@ -184,6 +191,7 @@ public class CharacterAiming : MonoBehaviour
     {
         isAiming = true;
         yield return new WaitForSeconds(0.1f);
+        //yield return null;
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.BroadCast(ListenType.SCOPE, true);

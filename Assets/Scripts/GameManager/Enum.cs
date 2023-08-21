@@ -9,7 +9,9 @@ public enum ListenType
     SCOPE,
     UNSCOPE,
     ACTIVECROSSHAIR,
-    UPDATE_HEALTH
+    UPDATE_HEALTH,
+    CHARACTER_SELECTION,
+    SELECTED_CHARACTER
 }
 
 public enum UIType
@@ -26,10 +28,8 @@ public enum AIStateID
     ChasePlayer,
     Death,
     Idle,
-    Patrol,
     FindWeapon,
     Attack,
-    Flee,
     FindTarget,
     FindHealth,
     FindAmmo,

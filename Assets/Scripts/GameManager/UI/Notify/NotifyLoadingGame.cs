@@ -41,7 +41,7 @@ public class NotifyLoadingGame : BaseNotify
                 loadingPercentText.SetText($"LOADING SCENES: {loadingSlider.value * 100}%");
                 if (UIManager.HasInstance)
                 {
-                    UIManager.Instance.ShowOverlap<OverlapFade>();
+                    UIManager.Instance.ShowOverlap<OverlapFadeLoadingGame>();
                 }
                 yield return new WaitForSeconds(1f);
                 asyncOperation.allowSceneActivation = true;

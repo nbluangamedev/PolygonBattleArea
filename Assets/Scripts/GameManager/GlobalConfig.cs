@@ -43,6 +43,7 @@ public class GlobalConfig : ScriptableObject
     public float blinkDuration = 0.1f;
     public float timeDestroyAI = 2f;
     public float lowHealth = 40f;
+    public float healthPickupAmount = 50f;
 
     //--------------------------PLAYER-------------------------//
     [Header("PLAYER")]
@@ -69,6 +70,9 @@ public class GlobalConfig : ScriptableObject
 
     [Header("Health")]
     public float playerMaxHealth = 100f;
+
+    [Header("Character Selection")]
+    public float speedRotateCharacter = 5f;
 
     //---------------------------WEAPON--------------------------//
     [Header("WEAPON")]

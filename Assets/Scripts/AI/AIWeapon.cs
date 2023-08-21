@@ -69,12 +69,12 @@ public class AIWeapon : MonoBehaviour
             if (AICurrentWeapon.weaponName.Equals("Sniper"))
             {
                 target += Random.insideUnitSphere * inAccuracySniper;
-                WeaponRecoil(AICurrentWeapon.weaponName);
+                //WeaponRecoil(AICurrentWeapon.weaponName);
             }
             else
             {
                 target += Random.insideUnitSphere * inAccuracy;
-                WeaponRecoil(AICurrentWeapon.weaponName);
+                //WeaponRecoil(AICurrentWeapon.weaponName);
             }
             AICurrentWeapon.UpdateWeapon(Time.deltaTime, target);
         }
@@ -98,10 +98,10 @@ public class AIWeapon : MonoBehaviour
         }
     }
 
-    public void WeaponRecoil(string weaponName)
-    {
-        animator.Play("weapon_Recoil_" + weaponName);
-    }
+    //public void WeaponRecoil(string weaponName)
+    //{
+    //    animator.Play("weapon_Recoil_" + weaponName);
+    //}
 
     public bool HasWeapon()
     {
@@ -170,22 +170,25 @@ public class AIWeapon : MonoBehaviour
                 }
                 currentWeapon.gameObject.AddComponent<Rigidbody>();
                 aiWeapons[weaponDropSlot] = null;
-                Destroy(currentWeapon, 5f);
+                Destroy(currentWeapon.gameObject, 5f);
             }
         }
     }
 
     public void ActivateWeapon()
     {
-        foreach (var weapon in aiWeapons)
-        {
-            if (weapon)
-            {
-                currentWeaponIndex = (int)weapon.weaponSlot;
-                StartCoroutine(EquipWeapon());
-                break;
-            }
-        }
+        RaycastWeapon weapon = AICurrentWeapon;
+        if (weapon) StartCoroutine(EquipWeapon());
+
+        //foreach (var weapon in aiWeapons)
+        //{
+        //    if (weapon)
+        //    {
+        //        currentWeaponIndex = (int)weapon.weaponSlot;
+        //        StartCoroutine(EquipWeapon());
+        //        break;
+        //    }
+        //}
     }
 
     private IEnumerator EquipWeapon()
@@ -193,13 +196,13 @@ public class AIWeapon : MonoBehaviour
         weaponState = WeaponState.Activating;
         animator.runtimeAnimatorController = AICurrentWeapon.overrideAnimator;
         weaponIK.enabled = true;
+        weaponIK.SetAimTransform(AICurrentWeapon.raycastOrigin);
+        yield return new WaitForSeconds(.1f);
         animator.SetBool("equip", true);
-        yield return new WaitForSeconds(.5f);
         while (animator.GetCurrentAnimatorStateInfo(1).normalizedTime < 1.0f)
         {
             yield return null;
         }
-        weaponIK.SetAimTransform(AICurrentWeapon.raycastOrigin);
         weaponState = WeaponState.Active;
     }
 

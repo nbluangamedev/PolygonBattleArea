@@ -6,12 +6,8 @@ public class CameraManager : BaseManager<CameraManager>
     public CinemachineVirtualCamera killCam;
     public CinemachineVirtualCamera weaponCamera;
     public Camera minimap;
-    private Transform player;
 
-    private void Start()
-    {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
-    }
+    private Transform player;
 
     public void EnableKillCam()
     {
@@ -20,13 +16,16 @@ public class CameraManager : BaseManager<CameraManager>
 
     private void LateUpdate()
     {
+        if (!player)
+        {
+            player = GameObject.FindGameObjectWithTag("Player").transform;
+        }
+
         if (player)
         {
             Vector3 newPosition = player.position;
             newPosition.y = minimap.transform.position.y;
-            minimap.transform.position = newPosition;
-
-            minimap.transform.rotation = Quaternion.Euler(90f, player.eulerAngles.y, 0f);
+            minimap.transform.SetPositionAndRotation(newPosition, Quaternion.Euler(90f, player.eulerAngles.y, 0f));
         }
     }
 }

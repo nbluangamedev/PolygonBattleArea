@@ -40,10 +40,10 @@ public class RaycastWeapon : MonoBehaviour
 
     private void Awake()
     {
-        if (this.equipWeaponBy == EquipWeaponBy.Player)
+        if (equipWeaponBy == EquipWeaponBy.Player)
         {
             recoil = GetComponent<WeaponRecoil>();
-            characterAiming = GameObject.FindObjectOfType<CharacterAiming>();
+            characterAiming = FindObjectOfType<CharacterAiming>();
         }
     }
 
@@ -328,20 +328,17 @@ public class RaycastWeapon : MonoBehaviour
 
         EmitBulletCasing();
 
-        if (recoil)
+        if (equipWeaponBy == EquipWeaponBy.Player)
         {
-            if (this.weaponName.Equals("Sniper") && !IsEmptyAmmo())
+            if (weaponName.Equals("Sniper") && !IsEmptyAmmo())
             {
-                if (characterAiming.isAiming)
+                if (characterAiming.isAiming && ammoCount >= 1)
                 {
                     StartCoroutine(ActivateOnScope());
                 }
                 else
                 {
-                    if (recoil.rigController)
-                    {
-                        recoil.rigController.Play("sniperPullBolt");
-                    }
+                    recoil.rigController.Play("sniperPullBolt");
                 }
             }
 
@@ -392,20 +389,16 @@ public class RaycastWeapon : MonoBehaviour
         {
             ListenerManager.Instance.BroadCast(ListenType.SCOPE, false);
             ListenerManager.Instance.BroadCast(ListenType.ACTIVECROSSHAIR, false);
-            characterAiming.UnScopeAndAim(this);
-            characterAiming.isAiming = true;
         }
+        characterAiming.UnScopeAndAim(this);
 
-        while (recoil.rigController.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
+        while (recoil.rigController.GetCurrentAnimatorStateInfo(1).normalizedTime < .9f)
         {
             yield return null;
         }
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(.1f);
 
-        if (characterAiming.isAiming)
-        {
-            StartCoroutine(characterAiming.OnScope());
-        }
+        StartCoroutine(characterAiming.OnScope());
     }
 
     public bool ShouldReload()

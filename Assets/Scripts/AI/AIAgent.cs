@@ -12,8 +12,6 @@ public class AIAgent : MonoBehaviour
     [HideInInspector] public AIWeapon weapon;
     [HideInInspector] public AISensor sensor;
     [HideInInspector] public AITargetingSystem targeting;
-    [HideInInspector] public Transform playerTransform;
-    [HideInInspector] public RandomPointOnNavMesh randomPointOnNavMesh;
     [HideInInspector] public Waypoint currentWaypoint;
     [SerializeField] private AIStateID currentState;
 
@@ -23,18 +21,12 @@ public class AIAgent : MonoBehaviour
 
     private void Start()
     {
-        if (!playerTransform)
-        {
-            playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
-        }
-        else Debug.LogError("No player object with Player tag found!");
-
         if (!waypoints)
         {
             waypoints = GameObject.FindGameObjectWithTag("Waypoint");
         }
-        currentWaypoint = waypoints.GetComponentInChildren<Waypoint>();
-        activeWaypoint = Mathf.RoundToInt(Random.Range(0f, 1f));
+
+        currentWaypoint = waypoints.GetComponentInChildren<Waypoint>();        
 
         healthBar = GetComponentInChildren<UIHealthBar>();
         navMeshAgent = GetComponent<NavMeshAgent>();
@@ -59,22 +51,9 @@ public class AIAgent : MonoBehaviour
 
     private void Update()
     {
+        activeWaypoint = Mathf.RoundToInt(Random.Range(0f, 1f));
         stateMachine.Update();
         currentState = stateMachine.currentState;
-    }
-
-    public bool FindThePlayerWithTargetingSystem()
-    {
-        if (targeting.HasTarget)
-        {
-            if (targeting.Target.CompareTag("Player"))
-            {
-                //playerSeen = true;
-                return true;
-            }
-        }
-        //playerSeen = false;
-        return false;
     }
 
     public void FaceTarget()
@@ -86,7 +65,7 @@ public class AIAgent : MonoBehaviour
 
     public void PatrolBasedWaypoint()
     {
-        if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance + 0.1f)
+        if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance + .1f)
         {
             bool shouldBranch = false;
 

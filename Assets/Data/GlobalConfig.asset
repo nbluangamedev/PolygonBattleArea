@@ -15,7 +15,7 @@ MonoBehaviour:
   maxTime: 1
   maxDistance: 3
   closeRange: 7
-  enemyDieForce: 5
+  enemyDieForce: 10
   findWeaponSpeed: 5
   attackStoppingDistance: 20
   attackMoveSpeed: 3
@@ -35,8 +35,6 @@ MonoBehaviour:
   blinkDuration: 0.1
   timeDestroyAI: 2
   lowHealth: 50
-  inAccuracy: 0.5
-  inAccuracySniper: 1
   gravity: 20
   groundSpeed: 1
   stepDown: 0.1
@@ -58,9 +56,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1463
   scopeOverlay: {fileID: 2287727143583154844, guid: 1b010632b5954a44db5e72a3b00da538, type: 3}
-  playerMaxHealth: 1000000
-  lossOfAccuracyPerShot: 1
-  ammoAmount: 30
+  playerMaxHealth: 300
+  ammoPickupAmount: 30
   duration: 0.1
-  amountInPool: 30
+  amountBulletInPool: 30
+  amountEnemyBulletInPool: 30
+  amountEnemyInPool: 30
   loadingOverLapTime: 1

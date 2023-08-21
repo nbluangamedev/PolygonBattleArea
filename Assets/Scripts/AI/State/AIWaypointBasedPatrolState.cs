@@ -32,15 +32,6 @@ public class AIWaypointBasedPatrolState : AIState
             agent.stateMachine.ChangeState(AIStateID.FindWeapon);
         }
 
-        if (agent.targeting.HasTarget)
-        {
-            if (agent.weapon.HasWeapon())
-            {
-                agent.stateMachine.ChangeState(AIStateID.Attack);
-            }
-            else agent.stateMachine.ChangeState(AIStateID.FindWeapon);
-        }
-
         agent.PatrolBasedWaypoint();
     }
 

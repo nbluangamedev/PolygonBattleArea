@@ -13,6 +13,13 @@ public class OpenSceneEditor : EditorWindow
         EditorSceneManager.OpenScene(string.Format(_scenePath, "Loading"), OpenSceneMode.Single);
     }
 
+    [MenuItem("OpenScene/CharacterSelection", false, 1)]
+    public static void CharacterSelection()
+    {
+        EditorSceneManager.SaveScene(SceneManager.GetActiveScene());
+        EditorSceneManager.OpenScene(string.Format(_scenePath, "CharacterSelection"), OpenSceneMode.Single);
+    }
+
     [MenuItem("OpenScene/Medium", false, 1)]
     public static void Level1()
     {
