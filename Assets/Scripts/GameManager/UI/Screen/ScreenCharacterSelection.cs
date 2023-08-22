@@ -31,7 +31,15 @@ public class ScreenCharacterSelection : BaseScreen
         }
     }
 
-    public void StartGame()
+    public void SelectedMap(int value)
+    {
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.BroadCast(ListenType.SELECTED_MAP, value);
+        }
+    }
+
+    public void PlayGame()
     {
         if (UIManager.HasInstance)
         {

@@ -12,6 +12,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a88454a4673b254ca8b8a880b1ef1b1, type: 3}
   m_Name: GlobalConfig
   m_EditorClassIdentifier: 
+  gravity: 20
+  groundSpeed: 1
+  stepDown: 0.1
+  jumpHeight: 2
+  jumpDamp: 0.5
+  airControl: 2.5
+  pushPower: 2
+  animationSmoothTime: 0.15
+  defaultRecoil: 1
+  aimRecoil: 0.3
+  turnSpeed: 15
+  normalFOV: 60
+  scopedFOV: 10
+  aimFOV: 25
+  defaultMask:
+    serializedVersion: 2
+    m_Bits: 3575
+  weaponMask:
+    serializedVersion: 2
+    m_Bits: 3575
+  scopeOverlay: {fileID: 2287727143583154844, guid: 1b010632b5954a44db5e72a3b00da538, type: 3}
+  playerMaxHealth: 300
+  speedRotateCharacter: 5
+  ammoPickupAmount: 30
+  duration: 0.1
+  amountBulletInPool: 30
+  amountEnemyBulletInPool: 30
+  amountEnemyInPool: 30
+  loadingOverLapTime: 1
+  loadingOverLapTimeCharacterSelection: 1
   maxTime: 1
   maxDistance: 3
   closeRange: 7
@@ -35,31 +65,4 @@ MonoBehaviour:
   blinkDuration: 0.1
   timeDestroyAI: 2
   lowHealth: 50
-  gravity: 20
-  groundSpeed: 1
-  stepDown: 0.1
-  jumpHeight: 2
-  jumpDamp: 0.5
-  airControl: 2.5
-  pushPower: 2
-  animationSmoothTime: 0.15
-  defaultRecoil: 1
-  aimRecoil: 0.3
-  turnSpeed: 15
-  normalFOV: 60
-  scopedFOV: 10
-  aimFOV: 25
-  defaultMask:
-    serializedVersion: 2
-    m_Bits: 1527
-  weaponMask:
-    serializedVersion: 2
-    m_Bits: 1463
-  scopeOverlay: {fileID: 2287727143583154844, guid: 1b010632b5954a44db5e72a3b00da538, type: 3}
-  playerMaxHealth: 300
-  ammoPickupAmount: 30
-  duration: 0.1
-  amountBulletInPool: 30
-  amountEnemyBulletInPool: 30
-  amountEnemyInPool: 30
-  loadingOverLapTime: 1
+  healthPickupAmount: 50

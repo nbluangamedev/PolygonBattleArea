@@ -30,7 +30,7 @@ public class OverlapFadeCharacterSelection : BaseOverlap
         SetAlpha(0);
         Sequence seq = DOTween.Sequence();
         seq.Append(this.imgFade.DOFade(1f, fadeTime));
-        seq.Append(this.imgFade.DOFade(0, fadeTime));
+        //seq.Append(this.imgFade.DOFade(0, fadeTime));
         seq.OnComplete(() =>
         {
             onFinish?.Invoke();

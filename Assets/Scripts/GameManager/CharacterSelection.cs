@@ -5,6 +5,7 @@ public class CharacterSelection : MonoBehaviour
     public GameObject[] characters;
 
     private int selectedCharacter = 0;
+    private int selectedMap = 0;
     private int check;
     private float speedRotateCharacter;
 
@@ -68,5 +69,5 @@ public class CharacterSelection : MonoBehaviour
                 }
             }
         }
-    }
+    }    
 }

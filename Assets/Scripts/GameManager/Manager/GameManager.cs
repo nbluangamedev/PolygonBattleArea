@@ -4,17 +4,24 @@ using UnityEngine.SceneManagement;
 public class GameManager : BaseManager<GameManager>
 {
     private int selectedCharacter;
+    private int selectedMap;
 
     public int SelectedCharacter
     {
         get { return selectedCharacter; }
     }
 
+    public int SelectedMap
+    {
+        get { return selectedMap; }
+    }
+
     private void Start()
     {
         if (ListenerManager.HasInstance)
         {
-            ListenerManager.Instance.Register(ListenType.SELECTED_CHARACTER, UpdateSelectdCharacter);
+            ListenerManager.Instance.Register(ListenType.SELECTED_CHARACTER, UpdateSelectedCharacter);
+            ListenerManager.Instance.Register(ListenType.SELECTED_MAP, UpdateSelectedMap);
         }
 
         if (UIManager.HasInstance)
@@ -24,7 +31,7 @@ public class GameManager : BaseManager<GameManager>
             if (scr != null)
             {
                 scr.AnimationLoaddingText();
-                scr.DoAnimationLoadingProgress(2, () =>
+                scr.DoAnimationLoadingProgress(1, () =>
                 {
                     UIManager.Instance.ShowScreen<ScreenHome>();
                     scr.Hide();
@@ -37,7 +44,8 @@ public class GameManager : BaseManager<GameManager>
     {
         if (ListenerManager.HasInstance)
         {
-            ListenerManager.Instance.Unregister(ListenType.SELECTED_CHARACTER, UpdateSelectdCharacter);
+            ListenerManager.Instance.Unregister(ListenType.SELECTED_CHARACTER, UpdateSelectedCharacter);
+            ListenerManager.Instance.Unregister(ListenType.SELECTED_MAP, UpdateSelectedMap);
         }
     }
 
@@ -46,11 +54,19 @@ public class GameManager : BaseManager<GameManager>
         SceneManager.LoadScene(sceneName);
     }
 
-    private void UpdateSelectdCharacter(object select)
+    private void UpdateSelectedCharacter(object select)
     {
         if (select is int value)
         {
             selectedCharacter = value;
+        }
+    }
+
+    private void UpdateSelectedMap(object select)
+    {
+        if (select is int value)
+        {
+            selectedMap = value;
         }
     }
 }
