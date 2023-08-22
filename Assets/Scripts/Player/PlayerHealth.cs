@@ -70,9 +70,14 @@ public class PlayerHealth : Health
             activeWeapon.DropWeapon((int)activeWeapon.GetActiveWeapon().weaponSlot);
         }
         ragdoll.ActiveRagdoll();
-        ragdoll.ApplyForce(direction, ridigBody);
+        ragdoll.ApplyForce(direction, ridigBody);        
         locomotion.enabled = false;
         aiming.enabled = false;
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.BroadCast(ListenType.SCOPE, false);
+            ListenerManager.Instance.BroadCast(ListenType.ACTIVECROSSHAIR, false);
+        }
         if (CameraManager.HasInstance)
         {
             CameraManager.Instance.EnableKillCam();

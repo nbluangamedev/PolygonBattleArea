@@ -12,7 +12,10 @@ public class ScreenGame : BaseScreen
     public override void Init()
     {
         base.Init();
-
+        if (DataManager.HasInstance)
+        {
+            healthText.text = DataManager.Instance.globalConfig.playerMaxHealth.ToString();
+        }
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.Register(ListenType.UPDATE_AMMO, OnUpdateAmmo);
@@ -35,7 +38,7 @@ public class ScreenGame : BaseScreen
 
     private void OnUpdateHealth(object value)
     {
-        if(value is PlayerHealth currentHealth)
+        if (value is PlayerHealth currentHealth)
         {
             float health = Mathf.Max(currentHealth.CurrentHealth, 0.0f);
             healthText.text = "Health: " + health.ToString();
