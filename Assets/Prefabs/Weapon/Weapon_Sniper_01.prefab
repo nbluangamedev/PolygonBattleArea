@@ -48,7 +48,7 @@ GameObject:
   - component: {fileID: -4924447125473106102}
   - component: {fileID: 2019497701751307170}
   - component: {fileID: -6131057237178109509}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Weapon_Sniper_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99,6 +99,8 @@ MonoBehaviour:
   weaponName: Sniper
   raycastOrigin: {fileID: 3172744936664121336}
   recoil: {fileID: 0}
+  recoilForce: 1.5
+  recoilForceRotation: 1.5
   lossOfAccuracyPerShot: 0
   magazine: {fileID: 6069767782647701680}
   forceBullet: 4

@@ -310,7 +310,7 @@ public class RaycastWeapon : MonoBehaviour
             bullet.Active(raycastOrigin.position, velocity);
         }
 
-        if (IsEmptyAmmo())
+        if (ammoCount <= 0)
         {
             return;
         }

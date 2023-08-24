@@ -24,15 +24,27 @@ public class WeaponReload : MonoBehaviour
 
         if (weapon)
         {
-            if (canReload && !weapon.IsEmptyAmmo())
+            if (canReload)
             {
-                if (Input.GetKeyDown(KeyCode.R) || weapon.ShouldReload())
+                if(Input.GetKeyDown(KeyCode.R) || weapon.ShouldReload())
                 {
                     isReloading = true;
                     rigController.SetTrigger("reload_Weapon");
                 }
             }
         }
+
+        //if (weapon)
+        //{
+        //    if (canReload && !weapon.IsEmptyAmmo())
+        //    {
+        //        if (Input.GetKeyDown(KeyCode.R) || weapon.ShouldReload())
+        //        {
+        //            isReloading = true;
+        //            rigController.SetTrigger("reload_Weapon");
+        //        }
+        //    }
+        //}
     }
 
     private void OnAnimationEvent(string eventName)

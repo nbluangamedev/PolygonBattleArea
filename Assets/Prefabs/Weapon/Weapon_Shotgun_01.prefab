@@ -280,7 +280,7 @@ GameObject:
   - component: {fileID: -4924447125473106102}
   - component: {fileID: 2019497701751307170}
   - component: {fileID: 4604090417289358407}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Weapon_Shotgun_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -331,6 +331,8 @@ MonoBehaviour:
   weaponName: Shotgun
   raycastOrigin: {fileID: 3172744936664121336}
   recoil: {fileID: 0}
+  recoilForce: 1.5
+  recoilForceRotation: 1.5
   lossOfAccuracyPerShot: 1
   magazine: {fileID: 1388283467867362, guid: 2d4668c24a87f7d4eb030615f34a3335, type: 3}
   forceBullet: 3.5

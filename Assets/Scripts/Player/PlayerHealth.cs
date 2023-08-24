@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using System.Collections;
+using Cinemachine;
 
 public class PlayerHealth : Health
 {
@@ -64,6 +65,12 @@ public class PlayerHealth : Health
 
     protected override void OnDeath(Vector3 direction, Rigidbody ridigBody)
     {
+        aiming.enabled = false;
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.BroadCast(ListenType.SCOPE, false);
+            ListenerManager.Instance.BroadCast(ListenType.ACTIVECROSSHAIR, false);
+        }
         RaycastWeapon weapon = activeWeapon.GetActiveWeapon();
         if (weapon)
         {
@@ -72,12 +79,6 @@ public class PlayerHealth : Health
         ragdoll.ActiveRagdoll();
         ragdoll.ApplyForce(direction, ridigBody);        
         locomotion.enabled = false;
-        aiming.enabled = false;
-        if (ListenerManager.HasInstance)
-        {
-            ListenerManager.Instance.BroadCast(ListenType.SCOPE, false);
-            ListenerManager.Instance.BroadCast(ListenType.ACTIVECROSSHAIR, false);
-        }
         if (CameraManager.HasInstance)
         {
             CameraManager.Instance.EnableKillCam();
@@ -86,6 +87,7 @@ public class PlayerHealth : Health
         {
             vignette.intensity.value = 0f;
         }
-        Destroy(this.gameObject, 5f);
+        //Destroy(this.gameObject, 5f);
+        this.gameObject.SetActive(false);
     }
 }

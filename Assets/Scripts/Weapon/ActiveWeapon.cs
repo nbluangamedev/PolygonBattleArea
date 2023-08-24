@@ -41,7 +41,7 @@ public class ActiveWeapon : MonoBehaviour
                 weapon.StartFiring();
             }
 
-            if (Input.GetButtonUp("Fire1") || !canFire || weapon.IsEmptyAmmo())
+            if (Input.GetButtonUp("Fire1") || !canFire || weapon.IsEmptyAmmo() || weapon.ammoCount <= 0)
             {
                 weapon.StopFiring();
             }
