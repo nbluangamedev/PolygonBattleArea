@@ -14,7 +14,7 @@ public class ScreenGame : BaseScreen
         base.Init();
         if (DataManager.HasInstance)
         {
-            healthText.text = DataManager.Instance.globalConfig.playerMaxHealth.ToString();
+            healthText.text = "Health: " + DataManager.Instance.globalConfig.playerMaxHealth.ToString();
         }
         if (ListenerManager.HasInstance)
         {
@@ -51,8 +51,8 @@ public class ScreenGame : BaseScreen
         {
             if (weapon.equipWeaponBy == EquipWeaponBy.Player)
             {
-                ammoText.text = "Ammo: " + weapon.ammoCount.ToString();
-                ammoTotalText.text = "Total Ammo: " + weapon.ammoTotal.ToString();
+                ammoText.text = weapon.ammoCount.ToString();
+                ammoTotalText.text = weapon.ammoTotal.ToString();
             }
         }
     }

@@ -89,5 +89,10 @@ public class PlayerHealth : Health
         }
         //Destroy(this.gameObject, 5f);
         this.gameObject.SetActive(false);
+        if(UIManager.HasInstance)
+        {
+            Debug.Log("you lose");
+            //lose UI
+        }
     }
 }

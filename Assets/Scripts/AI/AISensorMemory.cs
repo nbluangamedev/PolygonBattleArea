@@ -28,7 +28,7 @@ public class AISensorMemory
 
     public void UpdateSenses(AISensor sensor)
     {
-        int targets = sensor.Filter(characters, "Character");
+        int targets = sensor.Filter(characters, "Character", "Player");
         for (int i = 0; i < targets; ++i)
         {
             GameObject target = characters[i];

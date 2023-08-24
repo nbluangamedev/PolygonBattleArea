@@ -12,7 +12,8 @@ public enum ListenType
     UPDATE_HEALTH,
     CHARACTER_SELECTION,
     SELECTED_CHARACTER,
-    SELECTED_MAP
+    SELECTED_MAP,
+    ENEMY_COUNT
 }
 
 public enum UIType

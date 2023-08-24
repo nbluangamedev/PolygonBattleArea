@@ -26,7 +26,7 @@ public class AIAgent : MonoBehaviour
             waypoints = GameObject.FindGameObjectWithTag("Waypoint");
         }
 
-        currentWaypoint = waypoints.GetComponentInChildren<Waypoint>();        
+        currentWaypoint = waypoints.GetComponentInChildren<Waypoint>();
 
         healthBar = GetComponentInChildren<UIHealthBar>();
         navMeshAgent = GetComponent<NavMeshAgent>();
@@ -67,47 +67,32 @@ public class AIAgent : MonoBehaviour
     {
         if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance + .1f)
         {
-            bool shouldBranch = false;
-
-            if (currentWaypoint.branches != null && currentWaypoint.branches.Count > 0)
+            if (activeWaypoint == 0)
             {
-                shouldBranch = Random.Range(0f, 1f) <= currentWaypoint.branchProbability;
-            }
-
-            if (shouldBranch)
-            {
-                currentWaypoint = currentWaypoint.branches[Random.Range(0, currentWaypoint.branches.Count - 1)];
-            }
-            else
-            {
-                if (activeWaypoint == 0)
+                if (currentWaypoint.nextWaypoint != null)
                 {
-                    if (currentWaypoint.nextWaypoint != null)
-                    {
-                        currentWaypoint = currentWaypoint.nextWaypoint;
-                    }
-                    else
-                    {
-                        currentWaypoint = currentWaypoint.prevWaypoint;
-                        activeWaypoint = 1;
-                    }
+                    currentWaypoint = currentWaypoint.nextWaypoint;
                 }
-
-                if (activeWaypoint == 1)
+                else
                 {
-                    if (currentWaypoint.prevWaypoint != null)
-                    {
-                        currentWaypoint = currentWaypoint.prevWaypoint;
-                    }
-                    else
-                    {
-                        currentWaypoint = currentWaypoint.nextWaypoint;
-                        activeWaypoint = 0;
-                    }
+                    currentWaypoint = currentWaypoint.prevWaypoint;
+                    activeWaypoint = 1;
                 }
-
-                navMeshAgent.SetDestination(currentWaypoint.GetPosition());
             }
+
+            if (activeWaypoint == 1)
+            {
+                if (currentWaypoint.prevWaypoint != null)
+                {
+                    currentWaypoint = currentWaypoint.prevWaypoint;
+                }
+                else
+                {
+                    currentWaypoint = currentWaypoint.nextWaypoint;
+                    activeWaypoint = 0;
+                }
+            }
+            navMeshAgent.SetDestination(currentWaypoint.GetPosition());
         }
     }
 

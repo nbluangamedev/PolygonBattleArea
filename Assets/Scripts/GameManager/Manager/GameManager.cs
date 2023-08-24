@@ -4,16 +4,21 @@ using UnityEngine.SceneManagement;
 public class GameManager : BaseManager<GameManager>
 {
     private int selectedCharacter;
-    private int selectedMap;
-
     public int SelectedCharacter
     {
         get { return selectedCharacter; }
     }
 
+    private int selectedMap;
     public int SelectedMap
     {
         get { return selectedMap; }
+    }
+
+    private int enemyCount;
+    public int EnemyCount
+    {
+        get { return enemyCount; }
     }
 
     private void Start()
@@ -22,6 +27,7 @@ public class GameManager : BaseManager<GameManager>
         {
             ListenerManager.Instance.Register(ListenType.SELECTED_CHARACTER, UpdateSelectedCharacter);
             ListenerManager.Instance.Register(ListenType.SELECTED_MAP, UpdateSelectedMap);
+            ListenerManager.Instance.Register(ListenType.ENEMY_COUNT, UpdateEnemyRemain);
         }
 
         if (UIManager.HasInstance)
@@ -37,6 +43,12 @@ public class GameManager : BaseManager<GameManager>
                     scr.Hide();
                 });
             }
+
+            if (enemyCount == 20)
+            {
+                Debug.Log("you win");
+                //win UI
+            }
         }
     }
 
@@ -46,6 +58,7 @@ public class GameManager : BaseManager<GameManager>
         {
             ListenerManager.Instance.Unregister(ListenType.SELECTED_CHARACTER, UpdateSelectedCharacter);
             ListenerManager.Instance.Unregister(ListenType.SELECTED_MAP, UpdateSelectedMap);
+            ListenerManager.Instance.Unregister(ListenType.ENEMY_COUNT, UpdateEnemyRemain);
         }
     }
 
@@ -67,6 +80,14 @@ public class GameManager : BaseManager<GameManager>
         if (select is int value)
         {
             selectedMap = value;
+        }
+    }
+
+    private void UpdateEnemyRemain(object value)
+    {
+        if(value is int num)
+        {
+            enemyCount += num;
         }
     }
 }
