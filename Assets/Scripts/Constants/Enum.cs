@@ -66,3 +66,10 @@ public enum WeaponState
     Active,
     Reloading
 }
+
+public enum QualitySetting
+{
+    LOW,
+    MEDIUM,
+    HIGH
+}

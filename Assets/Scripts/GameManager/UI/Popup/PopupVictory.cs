@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
 
-public class PopupSetting : BasePopup
+public class PopupVictory : BasePopup
 {
     public Slider bgmSlider;
     public Slider seSlider;
@@ -114,20 +114,5 @@ public class PopupSetting : BasePopup
         }
         this.Hide();
         //Debug.Log("Apply value qualityLevel: " + value);
-    }
-
-    public void OnBackToMenu()
-    {
-
-    }
-
-    public void OnRestart()
-    {
-
-    }
-
-    public void OnExit()
-    {
-
     }
 }

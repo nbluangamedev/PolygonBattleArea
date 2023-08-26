@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 491644089054009938}
   - component: {fileID: 438778980909732936}
+  - component: {fileID: 1191103586274700011}
   m_Layer: 0
   m_Name: PopupSetting
   m_TagString: Untagged
@@ -52,6 +53,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bgmSlider: {fileID: 5797031275650757274}
   seSlider: {fileID: 5797031276022614601}
+  qualityLevels:
+  - {fileID: 11400000, guid: 0371e1f780f79a346ad3abf9c8a24c71, type: 2}
+  - {fileID: 11400000, guid: f2635489b71b8f3439f38f64cb659731, type: 2}
+  - {fileID: 11400000, guid: 55d65e35d9be4274585ebee52c2463de, type: 2}
+  qualityToggles:
+  - {fileID: 5797031275888429202}
+  - {fileID: 5797031276220283191}
+  - {fileID: 5797031276083783692}
+--- !u!114 &1191103586274700011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 491644089054009933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fafe2cfe61f6974895a912c3755e8f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AllowSwitchOff: 0
 --- !u!1 &1353162998725734335
 GameObject:
   m_ObjectHideFlags: 0
@@ -2646,7 +2668,7 @@ GameObject:
   - component: {fileID: 5797031275888429203}
   - component: {fileID: 5797031275888429202}
   m_Layer: 5
-  m_Name: Toggle_Radio
+  m_Name: Toggle_Radio_Low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2755,11 +2777,23 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5797031275888429203}
   toggleTransition: 1
   graphic: {fileID: 5797031274994028683}
-  m_Group: {fileID: 0}
+  m_Group: {fileID: 1191103586274700011}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
-  m_IsOn: 1
+      m_Calls:
+      - m_Target: {fileID: 438778980909732936}
+        m_TargetAssemblyTypeName: PopupSetting, Assembly-CSharp
+        m_MethodName: OnToggleSelect
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsOn: 0
 --- !u!1 &5797031275931839806
 GameObject:
   m_ObjectHideFlags: 0
@@ -3150,7 +3184,7 @@ GameObject:
   - component: {fileID: 5797031276083783693}
   - component: {fileID: 5797031276083783692}
   m_Layer: 5
-  m_Name: Toggle_Radio (2)
+  m_Name: Toggle_Radio_High
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3259,10 +3293,22 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5797031276083783693}
   toggleTransition: 1
   graphic: {fileID: 5797031276701527879}
-  m_Group: {fileID: 0}
+  m_Group: {fileID: 1191103586274700011}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 438778980909732936}
+        m_TargetAssemblyTypeName: PopupSetting, Assembly-CSharp
+        m_MethodName: OnToggleSelect
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 0
 --- !u!1 &5797031276091384578
 GameObject:
@@ -3710,7 +3756,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5797031276124990320}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 438778980909732936}
+        m_TargetAssemblyTypeName: PopupSetting, Assembly-CSharp
+        m_MethodName: OnClickCloseButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5797031276134711753
 GameObject:
   m_ObjectHideFlags: 0
@@ -3800,7 +3858,7 @@ GameObject:
   - component: {fileID: 5797031276220283184}
   - component: {fileID: 5797031276220283191}
   m_Layer: 5
-  m_Name: Toggle_Radio (1)
+  m_Name: Toggle_Radio_Medium
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3909,10 +3967,22 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5797031276220283184}
   toggleTransition: 1
   graphic: {fileID: 5797031276553484193}
-  m_Group: {fileID: 0}
+  m_Group: {fileID: 1191103586274700011}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 438778980909732936}
+        m_TargetAssemblyTypeName: PopupSetting, Assembly-CSharp
+        m_MethodName: OnToggleSelect
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 0
 --- !u!1 &5797031276242321888
 GameObject:
