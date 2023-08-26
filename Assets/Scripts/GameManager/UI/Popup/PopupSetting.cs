@@ -1,20 +1,23 @@
-using UnityEngine;
 using UnityEngine.UI;
 
 public class PopupSetting : BasePopup
 {
-    private float bgmVolume;
-    private float effectVolume;
-    public Slider sliderBGM;
-    public Slider sliderEffect;
+    public Slider bgmSlider;
+    public Slider seSlider;
+
+    private float bgmValue;
+    private float seValue;
 
     public override void Show(object data)
     {
         base.Show(data);
-        bgmVolume = PlayerPrefs.GetFloat("BGM",0.75f);
-        effectVolume = PlayerPrefs.GetFloat("Effect", 0.75f);
-        sliderBGM.value = bgmVolume;
-        sliderEffect.value = effectVolume;
+        if (AudioManager.HasInstance)
+        {
+            bgmValue = AudioManager.Instance.AttachBGMSource.volume;
+            seValue = AudioManager.Instance.AttachSESource.volume;
+        }
+        bgmSlider.value = bgmValue;
+        seSlider.value = seValue;
     }
 
     public override void Hide()
@@ -29,17 +32,21 @@ public class PopupSetting : BasePopup
 
     public void OnBGMValueChange(float v)
     {
-        bgmVolume = v;
+        bgmValue = v;
     }
 
     public void OnEffectValueChange(float v)
     {
-        effectVolume = v;
+        seValue = v;
     }
 
     public void OnApplySetting()
     {
-
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.ChangeBGMVolume(bgmValue);
+            AudioManager.Instance.ChangeSEVolume(seValue);
+        }
         this.Hide();
     }
 }
