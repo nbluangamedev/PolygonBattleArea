@@ -1,8 +1,6 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
-using System.Collections;
-using Cinemachine;
 
 public class PlayerHealth : Health
 {
@@ -38,6 +36,7 @@ public class PlayerHealth : Health
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.BroadCast(ListenType.UPDATE_HEALTH, this);
+            ListenerManager.Instance.BroadCast(ListenType.ON_PLAYER_DEATH, this);
         }
 
         Debug.Log("player health: " + currentHealth);
@@ -66,10 +65,18 @@ public class PlayerHealth : Health
     protected override void OnDeath(Vector3 direction, Rigidbody ridigBody)
     {
         aiming.enabled = false;
+        if (GameManager.HasInstance)
+        {
+            GameManager.Instance.ReleaseCursor();
+        }
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.BroadCast(ListenType.SCOPE, false);
             ListenerManager.Instance.BroadCast(ListenType.ACTIVECROSSHAIR, false);
+        }
+        if (CameraManager.HasInstance)
+        {
+            CameraManager.Instance.EnableKillCam();
         }
         RaycastWeapon weapon = activeWeapon.GetActiveWeapon();
         if (weapon)
@@ -79,10 +86,6 @@ public class PlayerHealth : Health
         ragdoll.ActiveRagdoll();
         ragdoll.ApplyForce(direction, ridigBody);        
         locomotion.enabled = false;
-        if (CameraManager.HasInstance)
-        {
-            CameraManager.Instance.EnableKillCam();
-        }
         if (postProcessing.profile.TryGet(out Vignette vignette))
         {
             vignette.intensity.value = 0f;
@@ -91,8 +94,8 @@ public class PlayerHealth : Health
         this.gameObject.SetActive(false);
         if(UIManager.HasInstance)
         {
-            Debug.Log("you lose");
-            //lose UI
+            //Debug.Log("you lose");
+            UIManager.Instance.ShowPopup<PopupLose>();
         }
     }
 }

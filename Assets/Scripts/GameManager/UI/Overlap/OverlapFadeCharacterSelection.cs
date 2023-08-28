@@ -10,13 +10,14 @@ public class OverlapFadeCharacterSelection : BaseOverlap
 
     public override void Init()
     {
-        base.Init();
         Fade(DataManager.Instance.globalConfig.loadingOverLapTime, OnFinishCharacterSelection);
+        base.Init();
     }
 
     public override void Show(object data)
     {
-        base.Show(data);    
+        Fade(DataManager.Instance.globalConfig.loadingOverLapTime, OnFinishCharacterSelection);
+        base.Show(data);
     }
 
     public override void Hide()
@@ -30,7 +31,7 @@ public class OverlapFadeCharacterSelection : BaseOverlap
         SetAlpha(0);
         Sequence seq = DOTween.Sequence();
         seq.Append(this.imgFade.DOFade(1f, fadeTime));
-        //seq.Append(this.imgFade.DOFade(0, fadeTime));
+        seq.Append(this.imgFade.DOFade(0, fadeTime));
         seq.OnComplete(() =>
         {
             onFinish?.Invoke();
@@ -48,7 +49,12 @@ public class OverlapFadeCharacterSelection : BaseOverlap
     {
         if (UIManager.HasInstance)
         {
-            UIManager.Instance.ShowScreen<ScreenCharacterSelection>();
+            ScreenCharacterSelection screenCharacterSelection = UIManager.Instance.GetExistScreen<ScreenCharacterSelection>();
+            if (screenCharacterSelection)
+            {
+                screenCharacterSelection.Show(screenCharacterSelection.gameObject);
+            }
+            else UIManager.Instance.ShowScreen<ScreenCharacterSelection>();
         }
         this.Hide();
     }

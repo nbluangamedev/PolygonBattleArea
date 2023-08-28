@@ -10,26 +10,40 @@ public class NotifyLoadingGame : BaseNotify
     public Slider loadingSlider;
 
     private int sceneNumber;
+
     public override void Init()
     {
         if (GameManager.HasInstance)
         {
             sceneNumber = GameManager.Instance.SelectedMap;
         }
-
-        base.Init();
         if (sceneNumber == 0)
         {
-            StartCoroutine(LoadSceneMedium());
+            StartCoroutine(LoadScene("Medium"));
         }
         if(sceneNumber == 1)
         {
-            StartCoroutine(LoadSceneSmall());
+            StartCoroutine(LoadScene("Small"));
         }
+        Debug.Log("Init sceneNumber " + sceneNumber);
+        base.Init();
     }
 
     public override void Show(object data)
     {
+        if (GameManager.HasInstance)
+        {
+            sceneNumber = GameManager.Instance.SelectedMap;
+        }
+        if (sceneNumber == 0)
+        {
+            StartCoroutine(LoadScene("Medium"));
+        }
+        if (sceneNumber == 1)
+        {
+            StartCoroutine(LoadScene("Small"));
+        }
+        Debug.Log("Show sceneNumber" + sceneNumber);
         base.Show(data);
     }
 
@@ -38,11 +52,11 @@ public class NotifyLoadingGame : BaseNotify
         base.Hide();
     }
 
-    private IEnumerator LoadSceneMedium()
+    private IEnumerator LoadScene(string sceneName)
     {
         yield return null;
 
-        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync("Medium");
+        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneName);
         asyncOperation.allowSceneActivation = false;
         while (!asyncOperation.isDone)
         {
@@ -54,33 +68,16 @@ public class NotifyLoadingGame : BaseNotify
                 loadingPercentText.SetText($"LOADING SCENES: {loadingSlider.value * 100}%");
                 if (UIManager.HasInstance)
                 {
-                    UIManager.Instance.ShowOverlap<OverlapFadeLoadingGame>();
+                    OverlapFadeLoadingGame overlapFadeLoadingGame = UIManager.Instance.GetExistOverlap<OverlapFadeLoadingGame>();
+                    if (overlapFadeLoadingGame)
+                    {
+                        overlapFadeLoadingGame.Show(overlapFadeLoadingGame.gameObject);
+                    }
+                    else UIManager.Instance.ShowOverlap<OverlapFadeLoadingGame>();
                 }
-                yield return new WaitForSeconds(1f);
-                asyncOperation.allowSceneActivation = true;
-                this.Hide();
-            }
-            yield return null;
-        }
-    }
-
-    private IEnumerator LoadSceneSmall()
-    {
-        yield return null;
-
-        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync("Small");
-        asyncOperation.allowSceneActivation = false;
-        while (!asyncOperation.isDone)
-        {
-            loadingSlider.value = asyncOperation.progress;
-            loadingPercentText.SetText($"LOADING SCENES: {asyncOperation.progress * 100}%");
-            if (asyncOperation.progress >= 0.9f)
-            {
-                loadingSlider.value = 1f;
-                loadingPercentText.SetText($"LOADING SCENES: {loadingSlider.value * 100}%");
-                if (UIManager.HasInstance)
+                if (AudioManager.HasInstance)
                 {
-                    UIManager.Instance.ShowOverlap<OverlapFadeLoadingGame>();
+                    AudioManager.Instance.FadeOutBGM(1f);
                 }
                 yield return new WaitForSeconds(1f);
                 asyncOperation.allowSceneActivation = true;

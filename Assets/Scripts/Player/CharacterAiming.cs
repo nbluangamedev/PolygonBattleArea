@@ -1,6 +1,4 @@
 using Cinemachine;
-using Sirenix.Utilities;
-using System;
 using System.Collections;
 using UnityEngine;
 
@@ -43,10 +41,11 @@ public class CharacterAiming : MonoBehaviour
             defaultMask = DataManager.Instance.globalConfig.defaultMask;
             weaponMask = DataManager.Instance.globalConfig.weaponMask;
         }
+        if (GameManager.HasInstance)
+        {
+            GameManager.Instance.LockCursor();
+        }
 
-
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
         mainCamera = Camera.main;
         animator = GetComponent<Animator>();
         activeWeapon = GetComponent<ActiveWeapon>();

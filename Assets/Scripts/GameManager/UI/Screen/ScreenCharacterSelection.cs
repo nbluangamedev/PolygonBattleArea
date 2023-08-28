@@ -7,6 +7,10 @@ public class ScreenCharacterSelection : BaseScreen
 
     public override void Show(object data)
     {
+        if (GameManager.HasInstance)
+        {
+            GameManager.Instance.PauseGame();
+        }
         base.Show(data);
     }
 
@@ -43,7 +47,19 @@ public class ScreenCharacterSelection : BaseScreen
     {
         if (UIManager.HasInstance)
         {
-            UIManager.Instance.ShowNotify<NotifyLoadingGame>();
+            NotifyLoadingGame notifyLoadingGame = UIManager.Instance.GetExistNotify<NotifyLoadingGame>();
+            if (notifyLoadingGame)
+            {
+                notifyLoadingGame.Show(notifyLoadingGame.gameObject);
+            }
+            else
+            {
+                UIManager.Instance.ShowNotify<NotifyLoadingGame>();
+            }
+        }
+        if (GameManager.HasInstance)
+        {
+            GameManager.Instance.ResumeGame();
         }
         this.Hide();
     }

@@ -11,12 +11,13 @@ public class NotifyLoadingCharacterSelection : BaseNotify
 
     public override void Init()
     {
-        base.Init();
         StartCoroutine(LoadScene());
+        base.Init();
     }
 
     public override void Show(object data)
     {
+        StartCoroutine(LoadScene());
         base.Show(data);
     }
 
@@ -41,7 +42,12 @@ public class NotifyLoadingCharacterSelection : BaseNotify
                 loadingPercentText.SetText($"CREATING NEW GAME: {loadingSlider.value * 100}%");
                 if (UIManager.HasInstance)
                 {
-                    UIManager.Instance.ShowOverlap<OverlapFadeCharacterSelection>();
+                    OverlapFadeCharacterSelection overlapFadeCharacterSelection = UIManager.Instance.GetExistOverlap<OverlapFadeCharacterSelection>();
+                    if (overlapFadeCharacterSelection)
+                    {
+                        overlapFadeCharacterSelection.Show(overlapFadeCharacterSelection.gameObject);
+                    }
+                    else UIManager.Instance.ShowOverlap<OverlapFadeCharacterSelection>();
                 }
                 yield return new WaitForSeconds(1f);
                 asyncOperation.allowSceneActivation = true;

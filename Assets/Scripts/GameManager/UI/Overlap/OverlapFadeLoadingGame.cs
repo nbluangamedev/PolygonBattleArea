@@ -10,12 +10,13 @@ public class OverlapFadeLoadingGame : BaseOverlap
 
     public override void Init()
     {
-        base.Init();
         Fade(DataManager.Instance.globalConfig.loadingOverLapTime, OnFinishLoadingGame);
+        base.Init();
     }
 
     public override void Show(object data)
     {
+        Fade(DataManager.Instance.globalConfig.loadingOverLapTime, OnFinishLoadingGame);
         base.Show(data);    
     }
 
@@ -48,7 +49,12 @@ public class OverlapFadeLoadingGame : BaseOverlap
     {
         if (UIManager.HasInstance)
         {
-            UIManager.Instance.ShowScreen<ScreenGame>();
+            ScreenGame screenGame = UIManager.Instance.GetExistScreen<ScreenGame>();
+            if (screenGame)
+            {
+                screenGame.Show(screenGame.gameObject);
+            }
+            else UIManager.Instance.ShowScreen<ScreenGame>();
         }
         this.Hide();
     }

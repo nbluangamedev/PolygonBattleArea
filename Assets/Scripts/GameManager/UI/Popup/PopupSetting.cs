@@ -16,7 +16,6 @@ public class PopupSetting : BasePopup
 
     public override void Init()
     {
-        base.Init();
         if (AudioManager.HasInstance)
         {
             bgmValue = AudioManager.Instance.AttachBGMSource.volume;
@@ -29,11 +28,11 @@ public class PopupSetting : BasePopup
         PlayerPrefs.SetInt("QUALITY_SETTINGS", value);
         qualityToggles[value].isOn = true;
         //Debug.Log("get quality level: " + value);
+        base.Init();
     }
 
     public override void Show(object data)
     {
-        base.Show(data);
         if (AudioManager.HasInstance)
         {
             bgmValue = AudioManager.Instance.AttachBGMSource.volume;
@@ -41,6 +40,7 @@ public class PopupSetting : BasePopup
             bgmSlider.value = bgmValue;
             seSlider.value = seValue;
         }
+        base.Show(data);
     }
 
     public override void Hide()
@@ -48,8 +48,13 @@ public class PopupSetting : BasePopup
         base.Hide();
     }
 
-    public void OnClickCloseButton()
+    public void OnCloseButton()
     {
+        if (GameManager.HasInstance)
+        {
+            GameManager.Instance.IsPopupSetting = false;
+        }
+
         this.Hide();
     }
 
@@ -90,8 +95,13 @@ public class PopupSetting : BasePopup
         });
     }
 
-    public void OnApplySetting()
+    public void OnApplyButton()
     {
+        if (GameManager.HasInstance)
+        {
+            GameManager.Instance.IsPopupSetting = false;
+        }
+
         if (AudioManager.HasInstance)
         {
             if (bgmValue != AudioManager.Instance.AttachBGMSource.volume)
@@ -102,7 +112,6 @@ public class PopupSetting : BasePopup
             if (seValue != AudioManager.Instance.AttachSESource.volume)
             {
                 AudioManager.Instance.ChangeSEVolume(seValue);
-
             }
         }
 
@@ -116,17 +125,17 @@ public class PopupSetting : BasePopup
         //Debug.Log("Apply value qualityLevel: " + value);
     }
 
-    public void OnBackToMenu()
+    public void OnBackToMenuButton()
     {
 
     }
 
-    public void OnRestart()
+    public void OnTryAgainButton()
     {
 
     }
 
-    public void OnExit()
+    public void OnExitButton()
     {
 
     }

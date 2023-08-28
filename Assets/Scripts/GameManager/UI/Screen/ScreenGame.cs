@@ -11,10 +11,9 @@ public class ScreenGame : BaseScreen
 
     public override void Init()
     {
-        base.Init();
         if (DataManager.HasInstance)
         {
-            healthText.text = "Health: " + DataManager.Instance.globalConfig.playerMaxHealth.ToString();
+            healthText.text = DataManager.Instance.globalConfig.playerMaxHealth.ToString();
         }
         if (ListenerManager.HasInstance)
         {
@@ -23,6 +22,7 @@ public class ScreenGame : BaseScreen
             ListenerManager.Instance.Register(ListenType.ACTIVECROSSHAIR, OnUpdateDeactiveCrossHair);
             ListenerManager.Instance.Register(ListenType.UPDATE_HEALTH, OnUpdateHealth);
         }
+        base.Init();
     }
 
     private void OnDestroy()
@@ -36,12 +36,22 @@ public class ScreenGame : BaseScreen
         }
     }
 
+    public override void Show(object data)
+    {
+        base.Show(data);
+    }
+
+    public override void Hide()
+    {
+        base.Hide();
+    }
+
     private void OnUpdateHealth(object value)
     {
         if (value is PlayerHealth currentHealth)
         {
             float health = Mathf.Max(currentHealth.CurrentHealth, 0.0f);
-            healthText.text = "Health: " + health.ToString();
+            healthText.text = health.ToString();
         }
     }
 
