@@ -25,7 +25,7 @@ public class NotifyLoadingGame : BaseNotify
         {
             StartCoroutine(LoadScene("Small"));
         }
-        Debug.Log("Init sceneNumber " + sceneNumber);
+        //Debug.Log("Init sceneNumber " + sceneNumber);
         base.Init();
     }
 
@@ -43,7 +43,7 @@ public class NotifyLoadingGame : BaseNotify
         {
             StartCoroutine(LoadScene("Small"));
         }
-        Debug.Log("Show sceneNumber" + sceneNumber);
+        //Debug.Log("Show sceneNumber" + sceneNumber);
         base.Show(data);
     }
 
@@ -68,12 +68,7 @@ public class NotifyLoadingGame : BaseNotify
                 loadingPercentText.SetText($"LOADING SCENES: {loadingSlider.value * 100}%");
                 if (UIManager.HasInstance)
                 {
-                    OverlapFadeLoadingGame overlapFadeLoadingGame = UIManager.Instance.GetExistOverlap<OverlapFadeLoadingGame>();
-                    if (overlapFadeLoadingGame)
-                    {
-                        overlapFadeLoadingGame.Show(overlapFadeLoadingGame.gameObject);
-                    }
-                    else UIManager.Instance.ShowOverlap<OverlapFadeLoadingGame>();
+                    UIManager.Instance.ShowOverlap<OverlapFadeLoadingGame>();
                 }
                 if (AudioManager.HasInstance)
                 {

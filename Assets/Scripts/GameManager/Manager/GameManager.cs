@@ -80,7 +80,7 @@ public class GameManager : BaseManager<GameManager>
                 if (Input.GetKeyDown(KeyCode.Escape))
                 {
                     isPopupSetting = !isPopupSetting;
-                    Debug.Log("pop setting enable " + IsPopupSetting);
+                    //Debug.Log("pop setting enable " + IsPopupSetting);
                     ScreenGame screenGame = UIManager.Instance.GetExistScreen<ScreenGame>();
                     PopupSettingOnGame popupSettingOnGame = UIManager.Instance.GetExistPopup<PopupSettingOnGame>();
                     PopupSetting popupSetting = UIManager.Instance.GetExistPopup<PopupSetting>();
@@ -92,20 +92,22 @@ public class GameManager : BaseManager<GameManager>
                             if (screenGame.CanvasGroup.alpha == 1)
                             {
                                 ReleaseCursor();
-                                if (!popupSettingOnGame)
-                                {
-                                    UIManager.Instance.ShowPopup<PopupSettingOnGame>();
-                                }
-                                else popupSettingOnGame.Show(popupSettingOnGame.gameObject);
+                                UIManager.Instance.ShowPopup<PopupSettingOnGame>();
+                                //if (!popupSettingOnGame)
+                                //{
+                                //}
+                                //else popupSettingOnGame.Show(popupSettingOnGame.gameObject);
                             }
                             else
                             {
-                                ShowPopupSetting(popupSetting);
+                                UIManager.Instance.ShowPopup<PopupSetting>();
+                                //ShowPopupSetting(popupSetting);
                             }
                         }
                         else
                         {
-                            ShowPopupSetting(popupSetting);
+                            UIManager.Instance.ShowPopup<PopupSetting>();
+                            //ShowPopupSetting(popupSetting);
                         }
                     }
                     else
@@ -122,12 +124,14 @@ public class GameManager : BaseManager<GameManager>
                             }
                             else
                             {
-                                HidePopupSetting(popupSetting);
+                                popupSetting.Hide();
+                                //HidePopupSetting(popupSetting);
                             }
                         }
                         else
                         {
-                            HidePopupSetting(popupSetting);
+                            popupSetting.Hide();
+                            //HidePopupSetting(popupSetting);
                         }
                     }
                 }

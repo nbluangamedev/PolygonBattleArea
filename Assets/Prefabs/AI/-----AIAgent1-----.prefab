@@ -463,7 +463,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 4363016541114193667}
+  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 4363016541114193667}
@@ -507,10 +507,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  objects:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 4456603946393967263}
+  objects: []
 --- !u!114 &4363016541114193668
 MonoBehaviour:
   m_ObjectHideFlags: 0

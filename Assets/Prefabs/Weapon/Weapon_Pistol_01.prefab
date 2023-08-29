@@ -94,7 +94,6 @@ GameObject:
   - component: {fileID: 2056323387748285302}
   - component: {fileID: 2085292906845340190}
   - component: {fileID: 2077345150261382794}
-  - component: {fileID: 2045578485137493476}
   m_Layer: 6
   m_Name: SM_Wep_Pistol_01
   m_TagString: Untagged
@@ -171,20 +170,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &2045578485137493476
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2054365603208214276}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 43660329708874206, guid: 5934268a026f28c4ca86a20b37cafc50, type: 2}
 --- !u!1 &2054618701162395612
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,96 +3,93 @@ using UnityEngine.SceneManagement;
 
 public class PopupLose : BasePopup
 {
+    public override void Init()
+    {
+        if (GameManager.HasInstance)
+        {
+            GameManager.Instance.PauseGame();
+        }
+        base.Init();
+    }
+
     public override void Show(object data)
-    {        
+    {
+        if (GameManager.HasInstance)
+        {
+            GameManager.Instance.PauseGame();
+        }
         base.Show(data);
     }
 
     public override void Hide()
     {
+        if (GameManager.HasInstance)
+        {
+            GameManager.Instance.ResumeGame();
+        }
         base.Hide();
     }
 
     public void OnTryAgainButton()
     {
+        this.Hide();
+
         if (UIManager.HasInstance)
         {
             ScreenGame screenGame = UIManager.Instance.GetExistScreen<ScreenGame>();
-            ScreenCharacterSelection screenCharacterSelection = UIManager.Instance.GetExistScreen<ScreenCharacterSelection>();
-            NotifyLoadingCharacterSelection notifyLoadingCharacterSelection = UIManager.Instance.GetExistNotify<NotifyLoadingCharacterSelection>();
 
             if (screenGame)
             {
                 screenGame.Hide();
             }
 
-            if (notifyLoadingCharacterSelection)
-            {
-                notifyLoadingCharacterSelection.Hide();
-            }
-
-            if (screenCharacterSelection)
-            {
-                screenCharacterSelection.Show(screenCharacterSelection.gameObject);
-            }
-            else UIManager.Instance.ShowScreen<ScreenCharacterSelection>();
+            UIManager.Instance.ShowNotify<NotifyLoadingCharacterSelection>();
         }
 
-        if(CameraManager.HasInstance)
+        if (CameraManager.HasInstance)
         {
             CameraManager.Instance.DisableKillCam();
         }
+
 
         if (GameManager.HasInstance)
         {
             GameManager.Instance.LoadScene("CharacterSelection");
         }
-        this.Hide();
     }
 
     public void OnBackToMenuButton()
     {
+        this.Hide();
         if (CameraManager.HasInstance)
         {
             CameraManager.Instance.DisableKillCam();
-        }        
+        }
 
         if (UIManager.HasInstance)
         {
             ScreenGame screenGame = UIManager.Instance.GetExistScreen<ScreenGame>();
-            ScreenCharacterSelection screenCharacterSelection = UIManager.Instance.GetExistScreen<ScreenCharacterSelection>();
-            NotifyLoading notifyLoading = UIManager.Instance.GetExistNotify<NotifyLoading>();
-
             if (screenGame)
             {
                 screenGame.Hide();
             }
+        }
 
-            if (notifyLoading)
+        if (GameManager.HasInstance)
+        {
+            UIManager.Instance.ShowNotify<NotifyLoading>();
+            NotifyLoading scr = UIManager.Instance.GetExistNotify<NotifyLoading>();
+            if (scr != null)
             {
-                notifyLoading.AnimationLoaddingText();
-                notifyLoading.DoAnimationLoadingProgress(1, () =>
+                scr.AnimationLoaddingText();
+                scr.DoAnimationLoadingProgress(1, () =>
                 {
                     UIManager.Instance.ShowScreen<ScreenHome>();
-                    notifyLoading.Hide();
+                    scr.Hide();
                 });
             }
-            else
-            {
-                UIManager.Instance.ShowNotify<NotifyLoading>();
-                NotifyLoading ntfLoading = UIManager.Instance.GetExistNotify<NotifyLoading>();
-                if (ntfLoading)
-                {
-                    ntfLoading.AnimationLoaddingText();
-                    ntfLoading.DoAnimationLoadingProgress(1, () =>
-                    {
-                        UIManager.Instance.ShowScreen<ScreenHome>();
-                        ntfLoading.Hide();
-                    });
-                }
-            }
+            GameManager.Instance.LoadScene("Loading");
         }
-        this.Hide();
     }
 
     public void OnExitButton()

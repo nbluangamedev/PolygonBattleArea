@@ -42,12 +42,7 @@ public class NotifyLoadingCharacterSelection : BaseNotify
                 loadingPercentText.SetText($"CREATING NEW GAME: {loadingSlider.value * 100}%");
                 if (UIManager.HasInstance)
                 {
-                    OverlapFadeCharacterSelection overlapFadeCharacterSelection = UIManager.Instance.GetExistOverlap<OverlapFadeCharacterSelection>();
-                    if (overlapFadeCharacterSelection)
-                    {
-                        overlapFadeCharacterSelection.Show(overlapFadeCharacterSelection.gameObject);
-                    }
-                    else UIManager.Instance.ShowOverlap<OverlapFadeCharacterSelection>();
+                    UIManager.Instance.ShowOverlap<OverlapFadeCharacterSelection>();
                 }
                 yield return new WaitForSeconds(1f);
                 asyncOperation.allowSceneActivation = true;

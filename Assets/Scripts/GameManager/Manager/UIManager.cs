@@ -365,7 +365,7 @@ public class UIManager : BaseManager<UIManager>
 
         if (curNotify != null)
         {
-            var curName = curPopup.GetType().Name;
+            var curName = curNotify.GetType().Name;
             if (curName.Equals(notifyName))
             {
                 result = curNotify;

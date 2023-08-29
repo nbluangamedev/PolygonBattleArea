@@ -47,7 +47,7 @@ public class GlobalConfig : ScriptableObject
     //----------------------------UI---------------------------//
     [Header("UI")]
     [Header("Overlap")]
-    public float loadingOverLapTime = 1.0f;
+    public float loadingOverLapTime = 2.0f;
     public float loadingOverLapTimeCharacterSelection = 1.0f;
 
     //----------------------------AI---------------------------//
