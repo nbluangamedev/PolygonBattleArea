@@ -45,16 +45,15 @@ public class PopupSetting : BasePopup
 
     public override void Hide()
     {
+        if (GameManager.HasInstance)
+        {
+            GameManager.Instance.IsPopupSetting = false;
+        }
         base.Hide();
     }
 
     public void OnCloseButton()
     {
-        if (GameManager.HasInstance)
-        {
-            GameManager.Instance.IsPopupSetting = false;
-        }
-
         this.Hide();
     }
 
@@ -97,11 +96,6 @@ public class PopupSetting : BasePopup
 
     public void OnApplyButton()
     {
-        if (GameManager.HasInstance)
-        {
-            GameManager.Instance.IsPopupSetting = false;
-        }
-
         if (AudioManager.HasInstance)
         {
             if (bgmValue != AudioManager.Instance.AttachBGMSource.volume)
@@ -125,18 +119,19 @@ public class PopupSetting : BasePopup
         //Debug.Log("Apply value qualityLevel: " + value);
     }
 
-    public void OnBackToMenuButton()
+    public void OnInstagramButton()
     {
-
+        Application.OpenURL("https://www.instagram.com/nbluangamedev");
     }
 
-    public void OnTryAgainButton()
+    public void OnFacebookButton()
     {
-
+        Application.OpenURL("https://www.facebook.com/nbluan89");
+        this.Hide();
     }
 
-    public void OnExitButton()
+    public void OnTwitterButton()
     {
-
+        Application.OpenURL("https://twitter.com/nbluan89");
     }
 }

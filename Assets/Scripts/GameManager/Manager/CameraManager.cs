@@ -7,20 +7,20 @@ public class CameraManager : BaseManager<CameraManager>
     public CinemachineVirtualCamera weaponCamera;
     public Camera minimap;
 
-    private Transform player;
+    //private Transform player;
 
     public void EnableKillCam()
     {
-        if (!player)
-        {
-            player = GameObject.FindGameObjectWithTag("Player").transform;
-        }
+        //if (!player)
+        //{
+        //    player = GameObject.FindGameObjectWithTag("Player").transform;
+        //}
 
-        if (player)
+        //if (player)
         {
-            Vector3 newPosition = player.position;
+            Vector3 newPosition = transform.position;
             newPosition.y = minimap.transform.position.y;
-            minimap.transform.SetPositionAndRotation(newPosition, Quaternion.Euler(90f, player.eulerAngles.y, 0f));
+            minimap.transform.SetPositionAndRotation(newPosition, Quaternion.Euler(90f, transform.eulerAngles.y, 0f));
         }
 
         killCam.Priority = 20;
@@ -33,11 +33,14 @@ public class CameraManager : BaseManager<CameraManager>
 
     private void LateUpdate()
     {
-        if (player)
-        {
-            Vector3 newPosition = player.position;
-            newPosition.y = minimap.transform.position.y;
-            minimap.transform.SetPositionAndRotation(newPosition, Quaternion.Euler(90f, player.eulerAngles.y, 0f));
-        }
+        //if (player)
+        //{
+        //    Vector3 newPosition = player.position;
+        //    newPosition.y = minimap.transform.position.y;
+        //    minimap.transform.SetPositionAndRotation(newPosition, Quaternion.Euler(90f, player.eulerAngles.y, 0f));
+        //}
+        Vector3 newPosition = transform.position;
+        newPosition.y = minimap.transform.position.y;
+        minimap.transform.SetPositionAndRotation(newPosition, Quaternion.Euler(90f, transform.eulerAngles.y, 0f));
     }
 }

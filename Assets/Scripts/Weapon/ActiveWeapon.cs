@@ -25,7 +25,7 @@ public class ActiveWeapon : MonoBehaviour
         if (existingWeapon)
         {
             Equip(existingWeapon);
-        }
+        }        
     }
 
     private void Update()

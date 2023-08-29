@@ -38,6 +38,9 @@ public class ScreenGame : BaseScreen
 
     public override void Show(object data)
     {
+        ammoText.text = "0";
+        ammoTotalText.text = "0";
+        crossHair.SetActive(true);
         base.Show(data);
     }
 
@@ -52,6 +55,10 @@ public class ScreenGame : BaseScreen
         {
             float health = Mathf.Max(currentHealth.CurrentHealth, 0.0f);
             healthText.text = health.ToString();
+            if (health <= 0.0f)
+            {
+                this.Hide();
+            }
         }
     }
 

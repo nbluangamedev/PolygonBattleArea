@@ -45,6 +45,10 @@ public class PopupSettingOnGame : BasePopup
 
     public override void Hide()
     {
+        if (GameManager.HasInstance)
+        {
+            GameManager.Instance.IsPopupSetting = false;
+        }
         base.Hide();
     }
 
@@ -52,7 +56,6 @@ public class PopupSettingOnGame : BasePopup
     {
         if (GameManager.HasInstance)
         {
-            GameManager.Instance.IsPopupSetting = false;
             GameManager.Instance.LockCursor();
             GameManager.Instance.ResumeGame();
         }
@@ -121,7 +124,6 @@ public class PopupSettingOnGame : BasePopup
 
         if (GameManager.HasInstance)
         {
-            GameManager.Instance.IsPopupSetting = false;
             GameManager.Instance.LockCursor();
             GameManager.Instance.ResumeGame();
         }

@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 public class PopupLose : BasePopup
 {
     public override void Show(object data)
-    {
+    {        
         base.Show(data);
     }
 
