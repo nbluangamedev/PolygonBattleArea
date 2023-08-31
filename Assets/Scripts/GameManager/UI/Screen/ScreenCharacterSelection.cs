@@ -39,6 +39,14 @@ public class ScreenCharacterSelection : BaseScreen
         }
     }
 
+    public void SelectedLevel(int value)
+    {
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.BroadCast(ListenType.SELECTED_LEVEL, value);
+        }
+    }
+
     public void PlayGame()
     {
         if (UIManager.HasInstance)

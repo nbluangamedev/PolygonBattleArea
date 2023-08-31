@@ -6,6 +6,7 @@ public class ScreenGame : BaseScreen
     [SerializeField] private TextMeshProUGUI ammoText;
     [SerializeField] private TextMeshProUGUI ammoTotalText;
     [SerializeField] private TextMeshProUGUI healthText;
+    [SerializeField] private TextMeshProUGUI timeText;
     public GameObject scopeOverlay;
     public GameObject crossHair;
 
@@ -21,6 +22,10 @@ public class ScreenGame : BaseScreen
             ListenerManager.Instance.Register(ListenType.SCOPE, OnUpdateScope);
             ListenerManager.Instance.Register(ListenType.ACTIVECROSSHAIR, OnUpdateDeactiveCrossHair);
             ListenerManager.Instance.Register(ListenType.UPDATE_HEALTH, OnUpdateHealth);
+        }
+        if (GameManager.HasInstance)
+        {
+            GameManager.Instance.timer = 0;
         }
         base.Init();
     }
@@ -38,6 +43,10 @@ public class ScreenGame : BaseScreen
 
     public override void Show(object data)
     {
+        if (GameManager.HasInstance)
+        {
+            GameManager.Instance.timer = 0;
+        }
         ammoText.text = "0";
         ammoTotalText.text = "0";
         crossHair.SetActive(true);
@@ -88,5 +97,13 @@ public class ScreenGame : BaseScreen
         {
             crossHair.SetActive(active);
         }
+    }
+
+    public void DisplayTime(float timeToDisplay)
+    {
+        timeToDisplay += 1;
+        float minutes = Mathf.FloorToInt(timeToDisplay / 60);
+        float seconds = Mathf.FloorToInt(timeToDisplay % 60);
+        timeText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
     }
 }

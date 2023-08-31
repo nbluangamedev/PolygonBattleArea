@@ -1,18 +1,26 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.UI;
 
-public class PopupHowToPlay : MonoBehaviour
+public class PopupHowToPlay : BasePopup
 {
-    // Start is called before the first frame update
-    void Start()
+    public override void Init()
     {
-        
+        base.Init();
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void Show(object data)
     {
-        
+        base.Show(data);
+    }
+
+    public override void Hide()
+    {
+        base.Hide();
+    }
+
+    public void OnCloseButton()
+    {
+        this.Hide();
     }
 }

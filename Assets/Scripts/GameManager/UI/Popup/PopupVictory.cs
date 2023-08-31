@@ -1,16 +1,29 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class PopupVictory : BasePopup
 {
+    [SerializeField] private TextMeshProUGUI timerText;
+
     public override void Init()
     {
+        if (GameManager.HasInstance)
+        {
+            GameManager.Instance.PauseGame();
+            timerText.text = GameManager.Instance.timer.ToString();
+        }
         base.Init();
     }
 
     public override void Show(object data)
     {
+        if (GameManager.HasInstance)
+        {
+            GameManager.Instance.PauseGame();
+            timerText.text = GameManager.Instance.timer.ToString();
+        }
         base.Show(data);
     }
 

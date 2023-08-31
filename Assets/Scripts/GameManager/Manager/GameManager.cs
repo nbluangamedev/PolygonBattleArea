@@ -37,6 +37,15 @@ public class GameManager : BaseManager<GameManager>
         set { playerDeath = value; }
     }
 
+    private int level = 0;
+    public int Level
+    {
+        set { level = value; }
+        get { return level; }
+    }
+
+    public float timer = 0;
+
     private void Start()
     {
         if (ListenerManager.HasInstance)
@@ -45,6 +54,7 @@ public class GameManager : BaseManager<GameManager>
             ListenerManager.Instance.Register(ListenType.SELECTED_MAP, UpdateSelectedMap);
             ListenerManager.Instance.Register(ListenType.ENEMY_COUNT, UpdateEnemyRemain);
             ListenerManager.Instance.Register(ListenType.ON_PLAYER_DEATH, UpdatePlayerHealth);
+            ListenerManager.Instance.Register(ListenType.SELECTED_LEVEL, UpdateSelectedLevel);
         }
 
         if (UIManager.HasInstance)
@@ -74,6 +84,16 @@ public class GameManager : BaseManager<GameManager>
         if (UIManager.HasInstance)
         {
             PopupLose popupLose = UIManager.Instance.GetExistPopup<PopupLose>();
+            ScreenGame screenGame = UIManager.Instance.GetExistScreen<ScreenGame>();
+            PopupSettingOnGame popupSettingOnGame = UIManager.Instance.GetExistPopup<PopupSettingOnGame>();
+            PopupSetting popupSetting = UIManager.Instance.GetExistPopup<PopupSetting>();
+                        
+            if(screenGame && screenGame.CanvasGroup.alpha == 1)
+            {
+                timer += Time.deltaTime;
+                //Debug.Log(timer);
+                screenGame.DisplayTime(timer);
+            }
 
             if (!popupLose || popupLose.CanvasGroup.alpha == 0)
             {
@@ -81,9 +101,6 @@ public class GameManager : BaseManager<GameManager>
                 {
                     isPopupSetting = !isPopupSetting;
                     //Debug.Log("pop setting enable " + IsPopupSetting);
-                    ScreenGame screenGame = UIManager.Instance.GetExistScreen<ScreenGame>();
-                    PopupSettingOnGame popupSettingOnGame = UIManager.Instance.GetExistPopup<PopupSettingOnGame>();
-                    PopupSetting popupSetting = UIManager.Instance.GetExistPopup<PopupSetting>();
 
                     if (isPopupSetting)
                     {
@@ -93,21 +110,15 @@ public class GameManager : BaseManager<GameManager>
                             {
                                 ReleaseCursor();
                                 UIManager.Instance.ShowPopup<PopupSettingOnGame>();
-                                //if (!popupSettingOnGame)
-                                //{
-                                //}
-                                //else popupSettingOnGame.Show(popupSettingOnGame.gameObject);
                             }
                             else
                             {
                                 UIManager.Instance.ShowPopup<PopupSetting>();
-                                //ShowPopupSetting(popupSetting);
                             }
                         }
                         else
                         {
                             UIManager.Instance.ShowPopup<PopupSetting>();
-                            //ShowPopupSetting(popupSetting);
                         }
                     }
                     else
@@ -125,35 +136,16 @@ public class GameManager : BaseManager<GameManager>
                             else
                             {
                                 popupSetting.Hide();
-                                //HidePopupSetting(popupSetting);
                             }
                         }
                         else
                         {
                             popupSetting.Hide();
-                            //HidePopupSetting(popupSetting);
                         }
                     }
                 }
             }
         }
-    }
-
-    private void HidePopupSetting(PopupSetting popupSetting)
-    {
-        if (popupSetting)
-        {
-            popupSetting.Hide();
-        }
-    }
-
-    private void ShowPopupSetting(PopupSetting popupSetting)
-    {
-        if (!popupSetting)
-        {
-            UIManager.Instance.ShowPopup<PopupSetting>();
-        }
-        else popupSetting.Show(popupSetting.gameObject);
     }
 
     private void OnDestroy()
@@ -164,6 +156,7 @@ public class GameManager : BaseManager<GameManager>
             ListenerManager.Instance.Unregister(ListenType.SELECTED_MAP, UpdateSelectedMap);
             ListenerManager.Instance.Unregister(ListenType.ENEMY_COUNT, UpdateEnemyRemain);
             ListenerManager.Instance.Unregister(ListenType.ON_PLAYER_DEATH, UpdatePlayerHealth);
+            ListenerManager.Instance.Unregister(ListenType.SELECTED_LEVEL, UpdateSelectedLevel);
         }
     }
 
@@ -221,6 +214,14 @@ public class GameManager : BaseManager<GameManager>
         {
             playerDeath = health.CurrentHealth <= 0;
             Debug.Log("player death: " + playerDeath);
+        }
+    }
+
+    private void UpdateSelectedLevel(object value)
+    {
+        if(value is int level)
+        {
+            Level = level;
         }
     }
 

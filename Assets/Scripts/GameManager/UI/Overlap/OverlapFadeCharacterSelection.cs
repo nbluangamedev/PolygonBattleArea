@@ -49,11 +49,6 @@ public class OverlapFadeCharacterSelection : BaseOverlap
     {
         if (UIManager.HasInstance)
         {
-            //ScreenCharacterSelection screenCharacterSelection = UIManager.Instance.GetExistScreen<ScreenCharacterSelection>();
-            //if (screenCharacterSelection)
-            //{
-            //    screenCharacterSelection.Show(screenCharacterSelection.gameObject);
-            //}
             UIManager.Instance.ShowScreen<ScreenCharacterSelection>();
         }
         this.Hide();

@@ -43,7 +43,7 @@ public class NotifyLoadingGame : BaseNotify
         {
             StartCoroutine(LoadScene("Small"));
         }
-        //Debug.Log("Show sceneNumber" + sceneNumber);
+        //Debug.Log("Show sceneNumber" + sceneNumber);        
         base.Show(data);
     }
 
