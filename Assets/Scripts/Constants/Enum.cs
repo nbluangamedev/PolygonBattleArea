@@ -14,7 +14,8 @@ public enum ListenType
     SELECTED_CHARACTER,
     SELECTED_MAP,
     ENEMY_COUNT,
-    SELECTED_LEVEL
+    SELECTED_LEVEL,
+    ENEMY_SPAWN
 }
 
 public enum UIType

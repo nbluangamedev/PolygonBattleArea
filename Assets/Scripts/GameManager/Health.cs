@@ -21,19 +21,24 @@ public class Health : MonoBehaviour
     {
         currentHealth -= amount;
 
-        OnDamage(direction, rigidbody);
-
-        if (currentHealth <= 0)
+        if (IsDead())
         {
+            currentHealth = Mathf.Max(currentHealth, 0);
             Die(direction, rigidbody);
+            return;
         }
+
+        OnDamage(direction, rigidbody);
+        //if (currentHealth <= 0)
+        //{
+        //}
     }
 
     public void Heal(float amount)
     {
         currentHealth += amount;
         currentHealth = Mathf.Min(currentHealth, maxHealth);
-        
+
         OnHeal(amount);
     }
 

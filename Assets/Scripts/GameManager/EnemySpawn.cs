@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -20,7 +19,6 @@ public class EnemySpawn : MonoBehaviour
     {
         numberAgent = agentPrefabs.Count;
         numberPosition = spawnPositions.Count;
-
         numberEnemy = 0;
     }
 
@@ -29,7 +27,7 @@ public class EnemySpawn : MonoBehaviour
         agentSlot = Mathf.RoundToInt(Random.Range(0, numberAgent - 1));
         positonSpawn = Mathf.RoundToInt(Random.Range(0, numberPosition - 1));
         timer += Time.deltaTime;
-        if (timer > timeToSpawn && numberEnemy <= numberEnemySpawn)
+        if (timer > timeToSpawn && numberEnemy < numberEnemySpawn)
         {
             Instantiate(agentPrefabs[agentSlot], spawnPositions[positonSpawn].position, Quaternion.identity);
             numberEnemy++;

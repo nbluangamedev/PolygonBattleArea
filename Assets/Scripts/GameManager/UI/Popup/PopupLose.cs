@@ -1,6 +1,3 @@
-using UnityEngine;
-using UnityEngine.SceneManagement;
-
 public class PopupLose : BasePopup
 {
     public override void Init()
@@ -33,7 +30,6 @@ public class PopupLose : BasePopup
     public void OnTryAgainButton()
     {
         this.Hide();
-
         if (UIManager.HasInstance)
         {
             ScreenGame screenGame = UIManager.Instance.GetExistScreen<ScreenGame>();
@@ -50,7 +46,6 @@ public class PopupLose : BasePopup
         {
             CameraManager.Instance.DisableKillCam();
         }
-
 
         if (GameManager.HasInstance)
         {

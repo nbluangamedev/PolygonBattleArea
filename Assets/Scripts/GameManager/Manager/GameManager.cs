@@ -10,13 +10,13 @@ public class GameManager : BaseManager<GameManager>
         get { return selectedCharacter; }
     }
 
-    private int selectedMap;
+    private int selectedMap = 0;
     public int SelectedMap
     {
         get { return selectedMap; }
     }
 
-    private int enemyCount;
+    private int enemyCount = 0;
     public int EnemyCount
     {
         get { return enemyCount; }
@@ -44,7 +44,8 @@ public class GameManager : BaseManager<GameManager>
         get { return level; }
     }
 
-    public float timer = 0;
+    [HideInInspector] public float timer = 0;
+    [HideInInspector] public int enemySpawn = 12;
 
     private void Start()
     {
@@ -70,13 +71,9 @@ public class GameManager : BaseManager<GameManager>
                     scr.Hide();
                 });
             }
-
-            if (enemyCount == 20)
-            {
-                //Debug.Log("you win");
-                UIManager.Instance.ShowPopup<PopupVictory>();
-            }
         }
+        Debug.Log(enemySpawn);
+        Debug.Log(EnemyCount);
     }
 
     private void Update()
@@ -84,18 +81,28 @@ public class GameManager : BaseManager<GameManager>
         if (UIManager.HasInstance)
         {
             PopupLose popupLose = UIManager.Instance.GetExistPopup<PopupLose>();
+            PopupVictory popupVictory = UIManager.Instance.GetExistPopup<PopupVictory>();
             ScreenGame screenGame = UIManager.Instance.GetExistScreen<ScreenGame>();
             PopupSettingOnGame popupSettingOnGame = UIManager.Instance.GetExistPopup<PopupSettingOnGame>();
             PopupSetting popupSetting = UIManager.Instance.GetExistPopup<PopupSetting>();
-                        
-            if(screenGame && screenGame.CanvasGroup.alpha == 1)
+
+            if (screenGame)
+            {
+                if (enemyCount == enemySpawn)
+                {
+                    //Debug.Log("you win");
+                    UIManager.Instance.ShowPopup<PopupVictory>();
+                }
+            }
+
+            if (screenGame && screenGame.CanvasGroup.alpha == 1)
             {
                 timer += Time.deltaTime;
                 //Debug.Log(timer);
                 screenGame.DisplayTime(timer);
             }
 
-            if (!popupLose || popupLose.CanvasGroup.alpha == 0)
+            if (!popupVictory || !popupLose || popupLose.CanvasGroup.alpha == 0)
             {
                 if (Input.GetKeyDown(KeyCode.Escape))
                 {
@@ -219,9 +226,19 @@ public class GameManager : BaseManager<GameManager>
 
     private void UpdateSelectedLevel(object value)
     {
-        if(value is int level)
+        if (value is int level)
         {
             Level = level;
+
+            enemySpawn = level switch
+            {
+                0 => 12,
+                1 => 24,
+                2 => 36,
+                _ => 0
+            };
+            Debug.Log(enemySpawn);
+            Debug.Log(Level);
         }
     }
 

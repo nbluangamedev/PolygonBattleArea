@@ -33,8 +33,7 @@ public class AIHealth : Health
         {
             healthBar.SetHealthBarPercentage(currentHealth / maxHealth);
         }
-
-        StartCoroutine(EnemyFlash());
+        StartCoroutine(EnemyFlash());              
 
         Debug.Log("ai health: " + currentHealth);
     }
@@ -45,10 +44,6 @@ public class AIHealth : Health
         deathState.direction = direction;
         deathState.rigidbody = ridigBody;
         aiAgent.stateMachine.ChangeState(AIStateID.Death);
-        if (ListenerManager.HasInstance)
-        {
-            ListenerManager.Instance.BroadCast(ListenType.ENEMY_COUNT, 1);
-        }
     }
 
     protected override void OnHeal(float amout)

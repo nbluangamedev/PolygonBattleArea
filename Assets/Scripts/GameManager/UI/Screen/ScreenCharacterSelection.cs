@@ -53,6 +53,10 @@ public class ScreenCharacterSelection : BaseScreen
         {
             UIManager.Instance.ShowNotify<NotifyLoadingGame>();
         }
+        if (GameManager.HasInstance)
+        {
+            GameManager.Instance.EnemyCount = 0;
+        }
         this.Hide();
     }
 }

@@ -55,6 +55,10 @@ public class ScreenGame : BaseScreen
 
     public override void Hide()
     {
+        if(GameManager.HasInstance)
+        {
+            GameManager.Instance.ResumeGame();
+        }
         base.Hide();
     }
 

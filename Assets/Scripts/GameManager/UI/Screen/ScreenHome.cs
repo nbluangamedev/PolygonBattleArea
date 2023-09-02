@@ -20,7 +20,6 @@ public class ScreenHome : BaseScreen
         if (GameManager.HasInstance)
         {
             GameManager.Instance.ResumeGame();
-            GameManager.Instance.EnemyCount = 0;
         }
 
         if (UIManager.HasInstance)

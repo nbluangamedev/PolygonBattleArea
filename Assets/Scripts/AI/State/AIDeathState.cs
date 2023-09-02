@@ -18,7 +18,13 @@ public class AIDeathState : AIState
         {
             dieForce = DataManager.Instance.globalConfig.enemyDieForce;
         }
-
+        if (agent.ragdoll.animator.enabled == true)
+        {
+            if (ListenerManager.HasInstance)
+            {
+                ListenerManager.Instance.BroadCast(ListenType.ENEMY_COUNT, 1);
+            }
+        }
         agent.weapon.DropWeapon((int)agent.weapon.currentWeaponSlot);
         agent.ragdoll.ActiveRagdoll();
         agent.ragdoll.ApplyForce(direction * dieForce, rigidbody);

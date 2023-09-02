@@ -16,6 +16,10 @@ public class NotifyLoading : BaseNotify
 
     public override void Show(object data)
     {
+        if (GameManager.HasInstance)
+        {
+            GameManager.Instance.ResumeGame();
+        }
         base.Show(data);
     }
 

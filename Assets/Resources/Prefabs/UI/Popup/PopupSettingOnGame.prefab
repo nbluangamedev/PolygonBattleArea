@@ -2713,9 +2713,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: PopupSetting, Assembly-CSharp
-        m_MethodName: OnClickCloseButton
+      - m_Target: {fileID: -7791987882500713819}
+        m_TargetAssemblyTypeName: PopupSettingOnGame, Assembly-CSharp
+        m_MethodName: OnCloseButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
