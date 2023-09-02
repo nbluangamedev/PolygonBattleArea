@@ -101,7 +101,7 @@ public class PopupVictory : BasePopup
                     scr.Hide();
                 });
             }
-            GameManager.Instance.LoadScene("Loading");
+            GameManager.Instance.LoadScene("Home");
         }
     }
 

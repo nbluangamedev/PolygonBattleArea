@@ -171,7 +171,7 @@ public class PopupSettingOnGame : BasePopup
                     scr.Hide();
                 });
             }
-            GameManager.Instance.LoadScene("Loading");
+            GameManager.Instance.LoadScene("Home");
         }
     }
 
@@ -186,7 +186,6 @@ public class PopupSettingOnGame : BasePopup
             {
                 screenGame.Hide();
             }
-
             UIManager.Instance.ShowNotify<NotifyLoadingCharacterSelection>();
         }
 

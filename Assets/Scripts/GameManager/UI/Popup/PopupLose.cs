@@ -49,7 +49,7 @@ public class PopupLose : BasePopup
 
         if (GameManager.HasInstance)
         {
-            GameManager.Instance.LoadScene("CharacterSelection");
+            GameManager.Instance.LoadScene("Home");
         }
     }
 
@@ -83,7 +83,7 @@ public class PopupLose : BasePopup
                     scr.Hide();
                 });
             }
-            GameManager.Instance.LoadScene("Loading");
+            GameManager.Instance.LoadScene("Home");
         }
     }
 

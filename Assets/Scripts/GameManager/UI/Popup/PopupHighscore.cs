@@ -123,7 +123,15 @@ public class PopupHighscore : BasePopup
         }
 
         removePositionHighscore = int.Parse(inputField.text);
-        highscores.highscoreList.RemoveAt(removePositionHighscore - 1);
+        if (removePositionHighscore <= highscores.highscoreList.Count)
+        {
+            highscores.highscoreList.RemoveAt(removePositionHighscore - 1);
+        }
+        else
+        {
+            Debug.Log("Khong co position can xoa");
+            return;
+        }
 
         string jsonToSave = JsonUtility.ToJson(highscores);
         PlayerPrefs.SetString("highscoreTable", jsonToSave);

@@ -2,16 +2,25 @@ using TMPro;
 using UnityEngine.UI;
 using DG.Tweening;
 using System;
+using UnityEngine.SceneManagement;
+using UnityEngine;
+using System.Collections;
 
 public class NotifyLoading : BaseNotify
 {
     public TextMeshProUGUI tmpLoading;
     public Slider slProgress;
+
     private string loadingText = "Loading";
 
-    public override void Hide()
+    public override void Init()
     {
-        base.Hide();
+        if (GameManager.HasInstance)
+        {
+            GameManager.Instance.ResumeGame();
+        }
+        StartCoroutine(LoadScene());
+        base.Init();
     }
 
     public override void Show(object data)
@@ -20,7 +29,13 @@ public class NotifyLoading : BaseNotify
         {
             GameManager.Instance.ResumeGame();
         }
+        StartCoroutine(LoadScene());
         base.Show(data);
+    }
+
+    public override void Hide()
+    {
+        base.Hide();
     }
 
     public void SetProgress(float dt)
@@ -67,5 +82,23 @@ public class NotifyLoading : BaseNotify
         {
             OnComplete?.Invoke();
         });
+    }
+
+    private IEnumerator LoadScene()
+    {
+        yield return null;
+
+        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync("Home");
+        asyncOperation.allowSceneActivation = false;
+        while (!asyncOperation.isDone)
+        {
+            if (asyncOperation.progress >= 0.9f)
+            {
+                yield return new WaitForSeconds(1f);
+                asyncOperation.allowSceneActivation = true;
+                this.Hide();
+            }
+            yield return null;
+        }
     }
 }

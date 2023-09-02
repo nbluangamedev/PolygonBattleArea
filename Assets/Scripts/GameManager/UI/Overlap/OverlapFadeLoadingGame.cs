@@ -49,11 +49,6 @@ public class OverlapFadeLoadingGame : BaseOverlap
     {
         if (UIManager.HasInstance)
         {
-            //ScreenGame screenGame = UIManager.Instance.GetExistScreen<ScreenGame>();
-            //if (screenGame)
-            //{
-            //    screenGame.Show(screenGame.gameObject);
-            //}
             UIManager.Instance.ShowScreen<ScreenGame>();
         }
         this.Hide();
