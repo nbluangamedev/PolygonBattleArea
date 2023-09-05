@@ -3,7 +3,7 @@ using UnityEditor;
 
 public class WaypointManagerWindow : EditorWindow
 {
-    [MenuItem("Tools/AI/Waypoint Manager")]
+    [MenuItem("NBLuanGD/AI/Waypoint Manager")]
     public static void Open()
     {
         GetWindow<WaypointManagerWindow>("Waypoint Manager");

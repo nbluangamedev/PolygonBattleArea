@@ -1,11 +1,13 @@
 ﻿using ExitGames.Client.Photon;
+using Photon.Pun;
+using Photon.Pun.Demo.Asteroids;
 using Photon.Realtime;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Photon.Pun.Demo.Asteroids
-{
+//namespace Photon.Pun.Demo.Asteroids
+//{
     public class LobbyMainPanel : MonoBehaviourPunCallbacks
     {
         [Header("Login Panel")]
@@ -272,12 +274,12 @@ namespace Photon.Pun.Demo.Asteroids
             PhotonNetwork.CurrentRoom.IsOpen = false;
             PhotonNetwork.CurrentRoom.IsVisible = false;
 
-            PhotonNetwork.LoadLevel("DemoAsteroids-GameScene");
-        }
+            PhotonNetwork.LoadLevel("Medium");
+    }
 
-        #endregion
+    #endregion
 
-        private bool CheckPlayersReady()
+    private bool CheckPlayersReady()
         {
             if (!PhotonNetwork.IsMasterClient)
             {
@@ -369,4 +371,4 @@ namespace Photon.Pun.Demo.Asteroids
             }
         }
     }
-}
+//}

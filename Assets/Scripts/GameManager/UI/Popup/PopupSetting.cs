@@ -27,12 +27,13 @@ public class PopupSetting : BasePopup
         value = QualitySettings.GetQualityLevel();
         PlayerPrefs.SetInt("QUALITY_SETTINGS", value);
         qualityToggles[value].isOn = true;
-        //Debug.Log("get quality level: " + value);
+
         base.Init();
     }
 
     public override void Show(object data)
     {
+        base.Show(data);
         if (AudioManager.HasInstance)
         {
             bgmValue = AudioManager.Instance.AttachBGMSource.volume;
@@ -40,16 +41,15 @@ public class PopupSetting : BasePopup
             bgmSlider.value = bgmValue;
             seSlider.value = seValue;
         }
-        base.Show(data);
     }
 
     public override void Hide()
     {
+        base.Hide();
         if (GameManager.HasInstance)
         {
             GameManager.Instance.IsPopupSetting = false;
         }
-        base.Hide();
     }
 
     public void OnCloseButton()
@@ -96,6 +96,7 @@ public class PopupSetting : BasePopup
 
     public void OnApplyButton()
     {
+        this.Hide();
         if (AudioManager.HasInstance)
         {
             if (bgmValue != AudioManager.Instance.AttachBGMSource.volume)
@@ -115,8 +116,6 @@ public class PopupSetting : BasePopup
             QualitySettings.renderPipeline = qualityLevels[value];
             PlayerPrefs.SetInt("QUALITY_SETTINGS", value);
         }
-        this.Hide();
-        //Debug.Log("Apply value qualityLevel: " + value);
     }
 
     public void OnInstagramButton()

@@ -349,6 +349,7 @@ GameObject:
   - component: {fileID: 4245193159445016210}
   - component: {fileID: 1126023541969594337}
   - component: {fileID: 6464117932992169678}
+  - component: {fileID: 348161613288809125}
   m_Layer: 6
   m_Name: Weapon_Pistol_01
   m_TagString: Untagged
@@ -386,6 +387,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cd427bf719cc0c459c3ab4ee4e20b15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animationEvents: {fileID: 348161613288809125}
   equipWeaponBy: 0
   weaponSlot: 1
   isFiring: 0
@@ -501,6 +503,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.048806585, y: 0.1940303, z: 0.2868006}
   m_Center: {x: 0.0004525371, y: -0.009033479, z: 0.07783936}
+--- !u!114 &348161613288809125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3172744936653632961}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9243e42c2271f443b2eeeffa4d9ba5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3172744936664121319
 GameObject:
   m_ObjectHideFlags: 0

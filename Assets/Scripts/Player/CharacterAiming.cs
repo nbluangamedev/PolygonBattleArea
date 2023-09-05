@@ -11,6 +11,7 @@ public class CharacterAiming : MonoBehaviour
 
     private CinemachineVirtualCamera weaponCamera;
 
+    [SerializeField]
     private Camera mainCamera;
     private Animator animator;
     private ActiveWeapon activeWeapon;
@@ -47,6 +48,7 @@ public class CharacterAiming : MonoBehaviour
         }
 
         mainCamera = Camera.main;
+        //mainCamera = gameObject.transform.Find("MainCamera").GetComponent<Camera>();
         animator = GetComponent<Animator>();
         activeWeapon = GetComponent<ActiveWeapon>();
 
@@ -175,7 +177,6 @@ public class CharacterAiming : MonoBehaviour
     {
         isAiming = false;
         yield return new WaitForSeconds(0.1f);
-        //yield return null;
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.BroadCast(ListenType.SCOPE, false);
@@ -190,7 +191,6 @@ public class CharacterAiming : MonoBehaviour
     {
         isAiming = true;
         yield return new WaitForSeconds(0.1f);
-        //yield return null;
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.BroadCast(ListenType.SCOPE, true);

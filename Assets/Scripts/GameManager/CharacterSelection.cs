@@ -50,6 +50,7 @@ public class CharacterSelection : MonoBehaviour
                 if (selectedCharacter < 0)
                 {
                     selectedCharacter += characters.Length;
+                    Debug.Log("selectedCharacter scence leng index: " + selectedCharacter);
                 }
                 characters[selectedCharacter].SetActive(true);
                 characters[selectedCharacter].transform.rotation = Quaternion.LookRotation(-Vector3.forward, Vector3.up);
@@ -62,6 +63,7 @@ public class CharacterSelection : MonoBehaviour
             {
                 characters[selectedCharacter].SetActive(false);
                 selectedCharacter = (selectedCharacter + 1) % characters.Length;
+                Debug.Log("selectedCharacter scence leng index: " + selectedCharacter);
                 characters[selectedCharacter].SetActive(true);
                 characters[selectedCharacter].transform.rotation = Quaternion.LookRotation(-Vector3.forward,Vector3.up);
                 if (ListenerManager.HasInstance)

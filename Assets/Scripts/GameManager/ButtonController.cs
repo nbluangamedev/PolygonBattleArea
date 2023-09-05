@@ -26,7 +26,7 @@ public class ButtonController : MonoBehaviour
 
     public void PressedOnButton()
     {
-        AudioManager.Instance.PlaySE(AUDIO.SE_51_FLEE);
+        //AudioManager.Instance.PlaySE(AUDIO.SE_51_FLEE);
         //animator.SetTrigger(AnimationStrings.buttonClickTrigger);
     }
 }

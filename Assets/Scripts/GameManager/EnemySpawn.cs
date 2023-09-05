@@ -8,12 +8,12 @@ public class EnemySpawn : MonoBehaviour
     public List<GameObject> agentPrefabs = new();
     public List<Transform> spawnPositions = new();
 
-    int agentSlot;
-    int positonSpawn;
-    int numberEnemy;
-    int numberAgent;
-    int numberPosition;
-    float timer = 0;
+    private int agentSlot;
+    private int positonSpawn;
+    private int numberEnemy;
+    private int numberAgent;
+    private int numberPosition;
+    private float timer = 0;
 
     private void Start()
     {

@@ -30,7 +30,6 @@ public class PopupSettingOnGame : BasePopup
         value = QualitySettings.GetQualityLevel();
         PlayerPrefs.SetInt("QUALITY_SETTINGS", value);
         qualityToggles[value].isOn = true;
-        //Debug.Log("get quality level: " + value);
         base.Init();
     }
 
@@ -43,7 +42,6 @@ public class PopupSettingOnGame : BasePopup
             bgmSlider.value = bgmValue;
             seSlider.value = seValue;
         }
-
         if (GameManager.HasInstance)
         {
             GameManager.Instance.PauseGame();
@@ -53,22 +51,22 @@ public class PopupSettingOnGame : BasePopup
 
     public override void Hide()
     {
+        base.Hide();
         if (GameManager.HasInstance)
         {
             GameManager.Instance.IsPopupSetting = false;
             GameManager.Instance.ResumeGame();
         }
-        base.Hide();
     }
 
     public void OnCloseButton()
     {
+        this.Hide();
         if (GameManager.HasInstance)
         {
             GameManager.Instance.LockCursor();
             GameManager.Instance.ResumeGame();
         }
-        this.Hide();
     }
 
     public void OnBGMValueChange(float v)
@@ -110,6 +108,7 @@ public class PopupSettingOnGame : BasePopup
 
     public void OnApplyButton()
     {
+        this.Hide();
         if (AudioManager.HasInstance)
         {
             if (bgmValue != AudioManager.Instance.AttachBGMSource.volume)
@@ -136,9 +135,6 @@ public class PopupSettingOnGame : BasePopup
             GameManager.Instance.LockCursor();
             GameManager.Instance.ResumeGame();
         }
-
-        this.Hide();
-        //Debug.Log("Apply value qualityLevel: " + value);
     }
 
     public void OnBackToMenuButton()

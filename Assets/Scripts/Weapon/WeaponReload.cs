@@ -63,6 +63,21 @@ public class WeaponReload : MonoBehaviour
             case "attach_Magazine":
                 AttachMagazine();
                 break;
+            case "PistolShoot":
+                PistolShoot();
+                break;
+            case "RifleShoot":
+                RifleShoot();
+                break;
+            case "ShotgunShoot":
+                ShotgunShoot();
+                break;
+            case "SniperShoot":
+                SniperShoot();
+                break;
+            case "PullBolt":
+                PullBolt();
+                break;
         }
     }
 
@@ -99,5 +114,45 @@ public class WeaponReload : MonoBehaviour
             ListenerManager.Instance.BroadCast(ListenType.UPDATE_AMMO, weapon);
         }
         isReloading = false;
+    }
+
+    private void PistolShoot()
+    {
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE(AUDIO.SE_PISTOL2);
+        }
+    }
+
+    private void RifleShoot()
+    {
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE(AUDIO.SE_PISTOL2);
+        }
+    }
+
+    private void ShotgunShoot()
+    {
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE(AUDIO.SE_PISTOL2);
+        }
+    }
+
+    private void SniperShoot()
+    {
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE(AUDIO.SE_PISTOL2);
+        }
+    }
+
+    private void PullBolt()
+    {
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE(AUDIO.SE_PISTOL2);
+        }
     }
 }

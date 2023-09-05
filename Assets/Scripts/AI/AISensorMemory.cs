@@ -2,20 +2,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [ExecuteInEditMode]
-public class AIMemory
-{
-    public float Age
-    { get { return Time.time - lastSeen; } }
-
-    public GameObject gameObject;
-    public Vector3 position;
-    public Vector3 direction;
-    public float distance;
-    public float angle;
-    public float lastSeen;
-    public float score;
-}
-
 public class AISensorMemory
 {
     public List<AIMemory> memories = new();

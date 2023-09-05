@@ -1,10 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public class AnimationEvent : UnityEvent<string>
-{
-
-}
+public class AnimationEvent : UnityEvent<string> { }
 
 public class WeaponAnimationEvent : MonoBehaviour
 {

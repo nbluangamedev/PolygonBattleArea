@@ -121,17 +121,33 @@ public class CharacterLocomotion : MonoBehaviour
         bool isSprinting = IsSprinting();
         animator.SetBool(isSprintingParameter, isSprinting);
         rigController.SetBool(isSprintingParameter, isSprinting);
+        //audio sprinting
+        if (isSprinting )
+        {
+            if (AudioManager.HasInstance)
+            {
+                AudioManager.Instance.PlaySE(AUDIO.SE_RUNNING_FOOTSTEPS);
+            }
+        }
     }
 
     private void UpdateIsCrouching()
-    {
-        isCrouching = Input.GetKey(KeyCode.LeftControl);
+    {        
         //if (Input.GetKeyDown(KeyCode.LeftControl))
         //{
         //    isCrouching = !isCrouching;
         //}
+        isCrouching = Input.GetKey(KeyCode.LeftControl);
         animator.SetBool(isCrouchingParameter, isCrouching);
         rigController.SetBool(isCrouchingParameter, isCrouching);
+        //audio crouching
+        if (isCrouching )
+        {
+            if (AudioManager.HasInstance)
+            {
+                AudioManager.Instance.PlaySE(AUDIO.SE_RUNNING_FOOTSTEPS);
+            }
+        }
     }
 
     private void SetInAir(float jumpVelocity)

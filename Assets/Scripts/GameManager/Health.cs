@@ -29,9 +29,6 @@ public class Health : MonoBehaviour
         }
 
         OnDamage(direction, rigidbody);
-        //if (currentHealth <= 0)
-        //{
-        //}
     }
 
     public void Heal(float amount)
@@ -73,23 +70,11 @@ public class Health : MonoBehaviour
         OnDeath(direction, rigidbody);
     }
 
-    protected virtual void OnStart()
-    {
+    protected virtual void OnStart() { }
 
-    }
+    protected virtual void OnDeath(Vector3 direction, Rigidbody ridigBody) { }
 
-    protected virtual void OnDeath(Vector3 direction, Rigidbody ridigBody)
-    {
+    protected virtual void OnDamage(Vector3 direction, Rigidbody rigidBody) { }
 
-    }
-
-    protected virtual void OnDamage(Vector3 direction, Rigidbody rigidBody)
-    {
-
-    }
-
-    protected virtual void OnHeal(float amount)
-    {
-
-    }
+    protected virtual void OnHeal(float amount) { }
 }

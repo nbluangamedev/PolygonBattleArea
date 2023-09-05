@@ -72,19 +72,17 @@ public class GameManager : BaseManager<GameManager>
                 });
             }
         }
-        Debug.Log(enemySpawn);
-        Debug.Log(EnemyCount);
     }
 
     private void Update()
     {
         if (UIManager.HasInstance)
         {
+            ScreenGame screenGame = UIManager.Instance.GetExistScreen<ScreenGame>();
+            PopupSetting popupSetting = UIManager.Instance.GetExistPopup<PopupSetting>();
+            PopupSettingOnGame popupSettingOnGame = UIManager.Instance.GetExistPopup<PopupSettingOnGame>();
             PopupLose popupLose = UIManager.Instance.GetExistPopup<PopupLose>();
             PopupVictory popupVictory = UIManager.Instance.GetExistPopup<PopupVictory>();
-            ScreenGame screenGame = UIManager.Instance.GetExistScreen<ScreenGame>();
-            PopupSettingOnGame popupSettingOnGame = UIManager.Instance.GetExistPopup<PopupSettingOnGame>();
-            PopupSetting popupSetting = UIManager.Instance.GetExistPopup<PopupSetting>();
 
             if (screenGame)
             {
@@ -220,7 +218,7 @@ public class GameManager : BaseManager<GameManager>
         if (value is PlayerHealth health)
         {
             playerDeath = health.CurrentHealth <= 0;
-            Debug.Log("player death: " + playerDeath);
+            //Debug.Log("player death: " + playerDeath);
         }
     }
 
@@ -237,8 +235,8 @@ public class GameManager : BaseManager<GameManager>
                 2 => 36,
                 _ => 0
             };
-            Debug.Log(enemySpawn);
-            Debug.Log(Level);
+            //Debug.Log(enemySpawn);
+            //Debug.Log(Level);
         }
     }
 

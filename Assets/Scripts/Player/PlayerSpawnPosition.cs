@@ -3,25 +3,32 @@ using UnityEngine;
 
 public class PlayerSpawnPosition : MonoBehaviour
 {
-    private List<GameObject> characters;
+    public List<GameObject> characterPrefabs;
+    public List<Transform> spawnPositions;
+
     private int selectedCharacter;
+    private int numberPosition;
 
     private void Awake()
     {
         if (GameManager.HasInstance)
         {
             selectedCharacter = GameManager.Instance.SelectedCharacter;
-        }        
+        }
+        numberPosition = spawnPositions.Count;
     }
 
     private void Start()
     {
-        characters = new();
-        foreach (Transform character in transform)
+        //Debug.Log("selected play index: " + selectedCharacter);
+        int positonSpawn = Mathf.RoundToInt(Random.Range(0, numberPosition - 1));
+        switch (selectedCharacter)
         {
-            characters.Add(character.gameObject);
-            character.gameObject.SetActive(false);
+            case 0: Instantiate(characterPrefabs[0], spawnPositions[positonSpawn]); break;
+            case 1: Instantiate(characterPrefabs[1], spawnPositions[positonSpawn]); break;
+            case 2: Instantiate(characterPrefabs[2], spawnPositions[positonSpawn]); break;
+            case 3: Instantiate(characterPrefabs[3], spawnPositions[positonSpawn]); break;
+            default: Instantiate(characterPrefabs[0], spawnPositions[positonSpawn]); break;
         }
-        characters[selectedCharacter].SetActive(true);
     }
 }

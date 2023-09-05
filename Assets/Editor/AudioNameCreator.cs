@@ -7,7 +7,7 @@ using UnityEngine;
 public static class AudioNameCreator
 {
 
-    private const string MENUITEM_PATH = "Tools/Create Audio Name Script";
+    private const string MENUITEM_PATH = "NBLuanGD/Create Audio Name Script";
     private const string EXPORT_PATH = "Assets/Scripts/Constants/AUDIO.cs";
 
     private static readonly string FILENAME = Path.GetFileName(EXPORT_PATH);

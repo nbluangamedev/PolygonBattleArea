@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class ScreenHome : BaseScreen
 {
     public override void Init()
@@ -19,13 +21,30 @@ public class ScreenHome : BaseScreen
     {
         if (GameManager.HasInstance)
         {
-            GameManager.Instance.ResumeGame();
+            GameManager.Instance.ResumeGame();            
         }
 
         if (UIManager.HasInstance)
         {
             UIManager.Instance.ShowNotify<NotifyLoadingCharacterSelection>();
         }
+
+        this.Hide();
+    }
+
+    public void OnNewGameMultiplayerButton()
+    {
+        if (GameManager.HasInstance)
+        {
+            GameManager.Instance.ResumeGame();
+            GameManager.Instance.LoadScene("Lobby");
+        }
+
+        //if (UIManager.HasInstance)
+        //{
+        //    UIManager.Instance.ShowNotify<NotifyLoadingLobby>();
+        //}
+        Debug.Log("multi");
         this.Hide();
     }
 
