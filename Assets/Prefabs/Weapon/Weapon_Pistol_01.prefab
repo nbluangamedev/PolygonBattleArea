@@ -387,7 +387,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cd427bf719cc0c459c3ab4ee4e20b15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animationEvents: {fileID: 348161613288809125}
   equipWeaponBy: 0
   weaponSlot: 1
   isFiring: 0
@@ -417,6 +416,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1025
   overrideAnimator: {fileID: 22100000, guid: 1bb80f148a11a7e45b772a1cf0ef8205, type: 2}
+  weaponPrefabs:
+  - {fileID: 5887745884536796404, guid: a1746b629d4b60a46892a9939572d349, type: 3}
+  - {fileID: 6098963765467038716, guid: 6d438f796b8776040ae09ffee915a6c3, type: 3}
+  - {fileID: 13123982051371339, guid: 13587851c6181d1438d9d148dd5df871, type: 3}
+  - {fileID: 656081513813993384, guid: de6a9d0e3ad09c84c97e20a25c78e128, type: 3}
 --- !u!114 &4245193159445016210
 MonoBehaviour:
   m_ObjectHideFlags: 0

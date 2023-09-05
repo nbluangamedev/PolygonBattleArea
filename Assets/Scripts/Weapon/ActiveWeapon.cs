@@ -111,7 +111,7 @@ public class ActiveWeapon : MonoBehaviour
 
         if (equipWeapon)
         {
-            DropWeapon(weaponSlotIndex);
+            DropWeaponPrefab(weaponSlotIndex);
         }
 
         equipWeapon = newWeapon;
@@ -141,6 +141,40 @@ public class ActiveWeapon : MonoBehaviour
             currentWeapon.gameObject.AddComponent<Rigidbody>();
             equippedWeapon[weaponDropSlot] = null;
             Destroy(currentWeapon, 5f);
+        }
+    }
+
+    public void DropWeaponPrefab(int weaponDropSlot)
+    {
+        RaycastWeapon currentWeapon = GetWeapon(weaponDropSlot);
+        if (currentWeapon)
+        {
+            //currentWeapon.transform.SetParent(null);
+            //currentWeapon.gameObject.GetComponent<BoxCollider>().enabled = true;
+            //foreach (Transform child in currentWeapon.transform)
+            //{
+            //    child.gameObject.layer = LayerMask.NameToLayer("Default");
+            //}
+            //currentWeapon.gameObject.AddComponent<Rigidbody>();
+            //equippedWeapon[weaponDropSlot] = null;
+            Destroy(currentWeapon);
+            string weaponName = currentWeapon.weaponName;
+            switch (weaponName)
+            {
+                case "Pistol":
+                    Instantiate(currentWeapon.weaponPrefabs[0]);
+                    break;
+                case "Rifle":
+                    Instantiate(currentWeapon.weaponPrefabs[1]);
+                    break;
+                case "Shotgun":
+                    Instantiate(currentWeapon.weaponPrefabs[2]);
+                    break;
+                case "Sniper":
+                    Instantiate(currentWeapon.weaponPrefabs[3]);
+                    break;
+
+            }
         }
     }
 

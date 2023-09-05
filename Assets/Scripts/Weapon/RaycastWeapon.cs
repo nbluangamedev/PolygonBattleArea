@@ -32,6 +32,8 @@ public class RaycastWeapon : MonoBehaviour
     public LayerMask layerMask;
     public RuntimeAnimatorController overrideAnimator;
 
+    public GameObject[] weaponPrefabs;
+
     private Ray ray;
     private RaycastHit hitInfo;
     private float accumulatedTime;

@@ -81,7 +81,7 @@ public class PlayerHealth : Health
         RaycastWeapon weapon = activeWeapon.GetActiveWeapon();
         if (weapon)
         {
-            activeWeapon.DropWeapon((int)activeWeapon.GetActiveWeapon().weaponSlot);
+            activeWeapon.DropWeaponPrefab((int)activeWeapon.GetActiveWeapon().weaponSlot);
         }
         ragdoll.ActiveRagdoll();
         ragdoll.ApplyForce(direction, ridigBody);        
