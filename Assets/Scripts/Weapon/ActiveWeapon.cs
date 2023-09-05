@@ -1,3 +1,4 @@
+using Photon.Realtime;
 using System.Collections;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ public class ActiveWeapon : MonoBehaviour
     public WeaponReload weaponReload;
     public Transform crossHairTarget;
     public Transform[] weaponSlots;
+    public Transform positionDropWeapon;
 
     private RaycastWeapon[] equippedWeapon = new RaycastWeapon[2];
     private int activeWeaponIndex = -1;
@@ -25,14 +27,14 @@ public class ActiveWeapon : MonoBehaviour
         if (existingWeapon)
         {
             Equip(existingWeapon);
-        }        
+        }
     }
 
     private void Update()
     {
         RaycastWeapon weapon = GetWeapon(activeWeaponIndex);
         bool notSprinting = rigController.GetCurrentAnimatorStateInfo(2).shortNameHash == Animator.StringToHash("notSprinting");
-        canFire = !isHolstered && notSprinting && !weaponReload.isReloading && !isChangingWeapon ;
+        canFire = !isHolstered && notSprinting && !weaponReload.isReloading && !isChangingWeapon;
 
         if (weapon)
         {
@@ -149,31 +151,25 @@ public class ActiveWeapon : MonoBehaviour
         RaycastWeapon currentWeapon = GetWeapon(weaponDropSlot);
         if (currentWeapon)
         {
-            //currentWeapon.transform.SetParent(null);
-            //currentWeapon.gameObject.GetComponent<BoxCollider>().enabled = true;
-            //foreach (Transform child in currentWeapon.transform)
-            //{
-            //    child.gameObject.layer = LayerMask.NameToLayer("Default");
-            //}
-            //currentWeapon.gameObject.AddComponent<Rigidbody>();
-            //equippedWeapon[weaponDropSlot] = null;
-            Destroy(currentWeapon);
+            Vector3 position = positionDropWeapon.TransformPoint(Vector3.forward);
             string weaponName = currentWeapon.weaponName;
+            currentWeapon.transform.SetParent(null);
+            equippedWeapon[weaponDropSlot] = null;
+            Destroy(currentWeapon.gameObject);
             switch (weaponName)
             {
                 case "Pistol":
-                    Instantiate(currentWeapon.weaponPrefabs[0]);
+                    Instantiate(currentWeapon.weaponPrefabs[0], position, Quaternion.identity);
                     break;
                 case "Rifle":
-                    Instantiate(currentWeapon.weaponPrefabs[1]);
+                    Instantiate(currentWeapon.weaponPrefabs[1], position, Quaternion.identity);
                     break;
                 case "Shotgun":
-                    Instantiate(currentWeapon.weaponPrefabs[2]);
+                    Instantiate(currentWeapon.weaponPrefabs[2], position, Quaternion.identity);
                     break;
                 case "Sniper":
-                    Instantiate(currentWeapon.weaponPrefabs[3]);
+                    Instantiate(currentWeapon.weaponPrefabs[3], position, Quaternion.identity);
                     break;
-
             }
         }
     }

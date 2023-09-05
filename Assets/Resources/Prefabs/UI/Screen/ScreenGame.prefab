@@ -1091,6 +1091,7 @@ MonoBehaviour:
   ammoTotalText: {fileID: 5181196159409760651}
   healthText: {fileID: 8174275635239991273}
   timeText: {fileID: 7942152799655670668}
+  enemyCountText: {fileID: 8611744638614586358}
   scopeOverlay: {fileID: 1243033627830754741}
   crossHair: {fileID: 5059419406541598955}
 --- !u!1 &5059419405296855383

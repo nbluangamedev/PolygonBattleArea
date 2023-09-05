@@ -25,7 +25,7 @@ public class AIWeapon : MonoBehaviour
     private WeaponIK weaponIK;
     private MeshSocketController socketController;
     private GameObject magazineHand;
-    
+
     public bool IsActive()
     {
         return weaponState == WeaponState.Active;
@@ -132,7 +132,7 @@ public class AIWeapon : MonoBehaviour
             }
         }
         return count;
-    }    
+    }
 
     public void Equip(RaycastWeapon weapon)
     {
@@ -171,6 +171,39 @@ public class AIWeapon : MonoBehaviour
                 currentWeapon.gameObject.AddComponent<Rigidbody>();
                 aiWeapons[weaponDropSlot] = null;
                 Destroy(currentWeapon.gameObject, 5f);
+            }
+        }
+    }
+
+    public void DropWeaponPrefab(int weaponDropSlot)
+    {
+        if (aiWeapons[weaponDropSlot])
+        {
+            RaycastWeapon currentWeapon = aiWeapons[weaponDropSlot];
+            //Vector3 position = positionDropWeapon.TransformPoint(Vector3.forward);
+
+            if (currentWeapon)
+            {
+                currentWeapon.transform.SetParent(null);
+                aiWeapons[weaponDropSlot] = null;
+                Destroy(currentWeapon.gameObject);
+
+                string weaponName = currentWeapon.weaponName;
+                switch (weaponName)
+                {
+                    case "Pistol":
+                        //Instantiate(currentWeapon.weaponPrefabs[0], position, Quaternion.identity);
+                        break;
+                    case "Rifle":
+                        //Instantiate(currentWeapon.weaponPrefabs[1], position, Quaternion.identity);
+                        break;
+                    case "Shotgun":
+                        //Instantiate(currentWeapon.weaponPrefabs[2], position, Quaternion.identity);
+                        break;
+                    case "Sniper":
+                        //Instantiate(currentWeapon.weaponPrefabs[3], position, Quaternion.identity);
+                        break;
+                }
             }
         }
     }

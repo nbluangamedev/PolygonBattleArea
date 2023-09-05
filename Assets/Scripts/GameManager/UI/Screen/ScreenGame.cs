@@ -7,6 +7,7 @@ public class ScreenGame : BaseScreen
     [SerializeField] private TextMeshProUGUI ammoTotalText;
     [SerializeField] private TextMeshProUGUI healthText;
     [SerializeField] private TextMeshProUGUI timeText;
+    public TextMeshProUGUI enemyCountText;
     public GameObject scopeOverlay;
     public GameObject crossHair;
 
@@ -49,6 +50,7 @@ public class ScreenGame : BaseScreen
         }
         ammoText.text = "0";
         ammoTotalText.text = "0";
+        enemyCountText.text = "0";
         crossHair.SetActive(true);
         base.Show(data);
     }

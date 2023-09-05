@@ -53,7 +53,7 @@ public class GameManager : BaseManager<GameManager>
         {
             ListenerManager.Instance.Register(ListenType.SELECTED_CHARACTER, UpdateSelectedCharacter);
             ListenerManager.Instance.Register(ListenType.SELECTED_MAP, UpdateSelectedMap);
-            ListenerManager.Instance.Register(ListenType.ENEMY_COUNT, UpdateEnemyRemain);
+            ListenerManager.Instance.Register(ListenType.ENEMY_COUNT, UpdateEnemyCount);
             ListenerManager.Instance.Register(ListenType.ON_PLAYER_DEATH, UpdatePlayerHealth);
             ListenerManager.Instance.Register(ListenType.SELECTED_LEVEL, UpdateSelectedLevel);
         }
@@ -159,7 +159,7 @@ public class GameManager : BaseManager<GameManager>
         {
             ListenerManager.Instance.Unregister(ListenType.SELECTED_CHARACTER, UpdateSelectedCharacter);
             ListenerManager.Instance.Unregister(ListenType.SELECTED_MAP, UpdateSelectedMap);
-            ListenerManager.Instance.Unregister(ListenType.ENEMY_COUNT, UpdateEnemyRemain);
+            ListenerManager.Instance.Unregister(ListenType.ENEMY_COUNT, UpdateEnemyCount);
             ListenerManager.Instance.Unregister(ListenType.ON_PLAYER_DEATH, UpdatePlayerHealth);
             ListenerManager.Instance.Unregister(ListenType.SELECTED_LEVEL, UpdateSelectedLevel);
         }
@@ -204,12 +204,21 @@ public class GameManager : BaseManager<GameManager>
         }
     }
 
-    private void UpdateEnemyRemain(object value)
+    private void UpdateEnemyCount(object value)
     {
         if (value is int num)
         {
             enemyCount += num;
-            Debug.Log("enemy count: " + enemyCount);
+            //Debug.Log("enemy count: " + enemyCount);
+            if (UIManager.HasInstance)
+            {
+                ScreenGame screenGame = UIManager.Instance.GetExistScreen<ScreenGame>();
+                if (screenGame.CanvasGroup.alpha == 1)
+                {
+                    screenGame.enemyCountText.text = EnemyCount.ToString();
+                }
+            }
+
         }
     }
 
