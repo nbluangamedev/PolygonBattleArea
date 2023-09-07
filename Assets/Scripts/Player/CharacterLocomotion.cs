@@ -233,7 +233,7 @@ public class CharacterLocomotion : MonoBehaviour
         if (AudioManager.HasInstance)
         {
             AudioManager.Instance.PlaySE(AUDIO.SE_PL_JUMP1);
-            Debug.Log("jump");
+            //Debug.Log("jump");
         }
     }
 
@@ -242,7 +242,7 @@ public class CharacterLocomotion : MonoBehaviour
         if (AudioManager.HasInstance)
         {
             AudioManager.Instance.PlaySE(AUDIO.SE_LANDING);
-            Debug.Log("landing");
+            //Debug.Log("landing");
         }
     }
 }

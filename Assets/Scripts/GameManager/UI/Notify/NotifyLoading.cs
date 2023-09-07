@@ -87,7 +87,10 @@ public class NotifyLoading : BaseNotify
     private IEnumerator LoadScene()
     {
         yield return null;
-
+        if (GameManager.HasInstance)
+        {
+            GameManager.Instance.ResumeGame();
+        }
         AsyncOperation asyncOperation = SceneManager.LoadSceneAsync("Home");
         asyncOperation.allowSceneActivation = false;
         while (!asyncOperation.isDone)

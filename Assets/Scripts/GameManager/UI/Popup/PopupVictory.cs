@@ -10,13 +10,13 @@ public class PopupVictory : BasePopup
         if (GameManager.HasInstance)
         {
             GameManager.Instance.ReleaseCursor();
-            GameManager.Instance.PauseGame();
             float timer = GameManager.Instance.timer;
             float minutes = Mathf.FloorToInt(timer / 60);
             float seconds = Mathf.FloorToInt(timer % 60);
             timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+            GameManager.Instance.PauseGame();
         }
-        AddHighscoreEntry();
+        //AddHighscoreEntry();
         base.Init();
     }
 
@@ -25,23 +25,24 @@ public class PopupVictory : BasePopup
         if (GameManager.HasInstance)
         {
             GameManager.Instance.ReleaseCursor();
-            GameManager.Instance.PauseGame();
             float timer = GameManager.Instance.timer;
             float minutes = Mathf.FloorToInt(timer / 60);
             float seconds = Mathf.FloorToInt(timer % 60);
             timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+            GameManager.Instance.PauseGame();
         }
-        AddHighscoreEntry();
+        //AddHighscoreEntry();
         base.Show(data);
     }
 
     public override void Hide()
     {
+        AddHighscoreEntry();
         if (GameManager.HasInstance)
         {
-            GameManager.Instance.ResumeGame();
             GameManager.Instance.EnemyCount = 0;
-        }        
+            GameManager.Instance.ResumeGame();
+        }
         base.Hide();
     }
 
@@ -113,9 +114,10 @@ public class PopupVictory : BasePopup
         }
     }
 
-    public void AddHighscoreEntry()
+    private void AddHighscoreEntry()
     {
-        Highscore entry = new Highscore();
+        //Highscore entry = new Highscore();
+        Highscore entry = new();
 
         if (GameManager.HasInstance)
         {

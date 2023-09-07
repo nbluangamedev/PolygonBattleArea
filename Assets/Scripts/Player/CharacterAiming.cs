@@ -8,8 +8,7 @@ public class CharacterAiming : MonoBehaviour
     public AxisState yAxis;
     public bool isAiming = false;
     public Transform cameraLookAt;
-
-    private CinemachineVirtualCamera weaponCamera;
+    public CinemachineVirtualCamera weaponCamera;
 
     [SerializeField]
     private Camera mainCamera;
@@ -25,13 +24,16 @@ public class CharacterAiming : MonoBehaviour
     private float aimRecoil;
     private int isAimingParameter = Animator.StringToHash("isAiming");
 
+    private void Awake()
+    {
+        if (GameManager.HasInstance)
+        {
+            GameManager.Instance.LockCursor();
+        }
+    }
+
     private void Start()
     {
-        if (CameraManager.HasInstance)
-        {
-            weaponCamera = CameraManager.Instance.weaponCamera.GetComponent<CinemachineVirtualCamera>();
-        }
-
         if (DataManager.HasInstance)
         {
             turnSpeed = DataManager.Instance.globalConfig.turnSpeed;
@@ -42,13 +44,8 @@ public class CharacterAiming : MonoBehaviour
             defaultMask = DataManager.Instance.globalConfig.defaultMask;
             weaponMask = DataManager.Instance.globalConfig.weaponMask;
         }
-        if (GameManager.HasInstance)
-        {
-            GameManager.Instance.LockCursor();
-        }
 
         mainCamera = Camera.main;
-        //mainCamera = gameObject.transform.Find("MainCamera").GetComponent<Camera>();
         animator = GetComponent<Animator>();
         activeWeapon = GetComponent<ActiveWeapon>();
 

@@ -28,7 +28,7 @@ public class AIFindAmmoState : AIState
         if (!pickup)
         {
             timer += Time.deltaTime;
-            Debug.Log("timer find ammo " + timer);
+            //Debug.Log("timer find ammo " + timer);
             if (timer < 10f)
             {
                 pickup = agent.FindPickup(pickups, "Pickup", "Ammo");
