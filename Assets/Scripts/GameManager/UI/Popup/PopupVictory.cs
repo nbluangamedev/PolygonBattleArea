@@ -37,9 +37,9 @@ public class PopupVictory : BasePopup
 
     public override void Hide()
     {
-        AddHighscoreEntry();
         if (GameManager.HasInstance)
         {
+            AddHighscoreEntry();
             GameManager.Instance.EnemyCount = 0;
             GameManager.Instance.ResumeGame();
         }
@@ -65,11 +65,6 @@ public class PopupVictory : BasePopup
         {
             CameraManager.Instance.DisableKillCam();
         }
-
-        if (GameManager.HasInstance)
-        {
-            GameManager.Instance.LoadScene("CharacterSelection");
-        }
     }
 
     public void OnBackToMenuButton()
@@ -91,6 +86,7 @@ public class PopupVictory : BasePopup
 
         if (GameManager.HasInstance)
         {
+            GameManager.Instance.ResumeGame();
             UIManager.Instance.ShowNotify<NotifyLoading>();
             NotifyLoading scr = UIManager.Instance.GetExistNotify<NotifyLoading>();
             if (scr != null)
@@ -102,7 +98,6 @@ public class PopupVictory : BasePopup
                     scr.Hide();
                 });
             }
-            GameManager.Instance.LoadScene("Home");
         }
     }
 
@@ -117,7 +112,7 @@ public class PopupVictory : BasePopup
     private void AddHighscoreEntry()
     {
         //Highscore entry = new Highscore();
-        Highscore entry = new();
+        Highscore entry = new Highscore();
 
         if (GameManager.HasInstance)
         {

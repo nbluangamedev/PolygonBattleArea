@@ -1,3 +1,5 @@
+using System;
+
 public class BasePopup : BaseUIElement
 {
     public override void Init()
@@ -14,5 +16,10 @@ public class BasePopup : BaseUIElement
     public override void Show(object data)
     {
         base.Show(data);
+    }
+
+    internal void Show()
+    {
+        throw new NotImplementedException();
     }
 }

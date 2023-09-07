@@ -31,9 +31,9 @@ public class Highscore
 
     public Highscore()
     {
-        this.map = string.Empty;
-        this.level = string.Empty;
-        this.time = string.Empty;
-        score = 0;
+        this.map = "";
+        this.level = "";
+        this.time = "";
+        score = 10000;
     }
 }

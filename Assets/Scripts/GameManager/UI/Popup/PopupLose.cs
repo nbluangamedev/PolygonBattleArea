@@ -46,11 +46,6 @@ public class PopupLose : BasePopup
         {
             CameraManager.Instance.DisableKillCam();
         }
-
-        if (GameManager.HasInstance)
-        {
-            GameManager.Instance.LoadScene("Home");
-        }
     }
 
     public void OnBackToMenuButton()
@@ -83,7 +78,6 @@ public class PopupLose : BasePopup
                     scr.Hide();
                 });
             }
-            GameManager.Instance.LoadScene("Home");
         }
     }
 
