@@ -25,7 +25,7 @@ public class AIDeathState : AIState
                 ListenerManager.Instance.BroadCast(ListenType.ENEMY_COUNT, 1);
             }
         }
-        agent.weapon.DropWeapon((int)agent.weapon.currentWeaponSlot);
+        agent.weapon.DropWeaponPrefab((int)agent.weapon.currentWeaponSlot);
         agent.ragdoll.ActiveRagdoll();
         agent.ragdoll.ApplyForce(direction * dieForce, rigidbody);
         agent.healthBar.Deactive();

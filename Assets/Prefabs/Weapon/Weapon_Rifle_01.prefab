@@ -107,7 +107,7 @@ MonoBehaviour:
   forceBullet: 2
   ammoCount: 30
   clipSize: 30
-  ammoTotal: 90
+  ammoTotal: 0
   damage: 20
   BulletCasingPrefab: {fileID: 3525363408539371240, guid: 646dbef2eecbba041bde7b716db6d7e2, type: 3}
   GunSlider: {fileID: 4795033955488496330}
@@ -115,7 +115,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1025
   overrideAnimator: {fileID: 9100000, guid: c4b2b3f0050f5054e82a4517a7e026ad, type: 2}
-  weaponPrefabs:
+  weaponPickupPrefabs:
   - {fileID: 5887745884536796404, guid: a1746b629d4b60a46892a9939572d349, type: 3}
   - {fileID: 6098963765467038716, guid: 6d438f796b8776040ae09ffee915a6c3, type: 3}
   - {fileID: 13123982051371339, guid: 13587851c6181d1438d9d148dd5df871, type: 3}

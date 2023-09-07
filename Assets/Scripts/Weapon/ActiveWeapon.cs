@@ -22,6 +22,10 @@ public class ActiveWeapon : MonoBehaviour
     private void Start()
     {
         weaponReload = GetComponent<WeaponReload>();
+        if (!positionDropWeapon)
+        {
+            positionDropWeapon = GetComponentInChildren<Transform>().Find("PositionDropWeapon");
+        }
 
         RaycastWeapon existingWeapon = GetComponentInChildren<RaycastWeapon>();
         if (existingWeapon)
@@ -149,26 +153,31 @@ public class ActiveWeapon : MonoBehaviour
     public void DropWeaponPrefab(int weaponDropSlot)
     {
         RaycastWeapon currentWeapon = GetWeapon(weaponDropSlot);
+        Vector3 position = positionDropWeapon.TransformPoint(Vector3.forward);
         if (currentWeapon)
         {
-            Vector3 position = positionDropWeapon.TransformPoint(Vector3.forward);
-            string weaponName = currentWeapon.weaponName;
+            int ammoCount = currentWeapon.ammoCount;
             currentWeapon.transform.SetParent(null);
             equippedWeapon[weaponDropSlot] = null;
             Destroy(currentWeapon.gameObject);
+            string weaponName = currentWeapon.weaponName;
             switch (weaponName)
             {
                 case "Pistol":
-                    Instantiate(currentWeapon.weaponPrefabs[0], position, Quaternion.identity);
+                    GameObject dropWeapon = Instantiate(currentWeapon.weaponPickupPrefabs[0], position, Quaternion.identity);
+                    dropWeapon.GetComponent<WeaponPickup>().weaponPrefab.ammoCount = ammoCount;
                     break;
                 case "Rifle":
-                    Instantiate(currentWeapon.weaponPrefabs[1], position, Quaternion.identity);
+                    GameObject dropWeapon1 = Instantiate(currentWeapon.weaponPickupPrefabs[1], position, Quaternion.identity);
+                    dropWeapon1.GetComponent<WeaponPickup>().weaponPrefab.ammoCount = ammoCount;
                     break;
                 case "Shotgun":
-                    Instantiate(currentWeapon.weaponPrefabs[2], position, Quaternion.identity);
+                    GameObject dropWeapon2 = Instantiate(currentWeapon.weaponPickupPrefabs[2], position, Quaternion.identity);
+                    dropWeapon2.GetComponent<WeaponPickup>().weaponPrefab.ammoCount = ammoCount;
                     break;
                 case "Sniper":
-                    Instantiate(currentWeapon.weaponPrefabs[3], position, Quaternion.identity);
+                    GameObject dropWeapon3 = Instantiate(currentWeapon.weaponPickupPrefabs[3], position, Quaternion.identity);
+                    dropWeapon3.GetComponent<WeaponPickup>().weaponPrefab.ammoCount = ammoCount;
                     break;
             }
         }
@@ -179,7 +188,7 @@ public class ActiveWeapon : MonoBehaviour
         return GetWeapon(activeWeaponIndex);
     }
 
-    private RaycastWeapon GetWeapon(int index)
+    public RaycastWeapon GetWeapon(int index)
     {
         if (index < 0 || index >= equippedWeapon.Length)
         {

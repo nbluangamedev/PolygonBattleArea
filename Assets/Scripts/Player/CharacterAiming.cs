@@ -182,7 +182,10 @@ public class CharacterAiming : MonoBehaviour
             ListenerManager.Instance.BroadCast(ListenType.SCOPE, false);
             ListenerManager.Instance.BroadCast(ListenType.ACTIVECROSSHAIR, false);
         }
-
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE(AUDIO.SE_SNIPERSCOPE);
+        }
         mainCamera.cullingMask = defaultMask;
         weaponCamera.m_Lens.FieldOfView = normalFOV;
     }
@@ -195,6 +198,10 @@ public class CharacterAiming : MonoBehaviour
         {
             ListenerManager.Instance.BroadCast(ListenType.SCOPE, true);
             ListenerManager.Instance.BroadCast(ListenType.ACTIVECROSSHAIR, false);
+        }
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE(AUDIO.SE_SNIPERSCOPE);
         }
         mainCamera.cullingMask = weaponMask;
         weaponCamera.m_Lens.FieldOfView = scopedFOV;

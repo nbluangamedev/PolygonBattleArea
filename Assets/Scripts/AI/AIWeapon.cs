@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class AIWeapon : MonoBehaviour
 {
+    //public WeaponAnimationEvent animationEvents;
     public RaycastWeapon AICurrentWeapon
     {
         get { return aiWeapons[currentWeaponIndex]; }
@@ -18,6 +19,8 @@ public class AIWeapon : MonoBehaviour
 
     [SerializeField] private Transform currentTarget;
     [SerializeField] public RaycastWeapon[] aiWeapons = new RaycastWeapon[2];
+
+    public Transform positionDropWeapon;
 
     private int currentWeaponIndex = 0;
     private WeaponState weaponState = WeaponState.Holstered;
@@ -43,13 +46,16 @@ public class AIWeapon : MonoBehaviour
 
     private void Awake()
     {
+        //animationEvents.GetComponent<WeaponAnimationEvent>();
         animator = GetComponent<Animator>();
         weaponIK = GetComponent<WeaponIK>();
         socketController = GetComponent<MeshSocketController>();
+        positionDropWeapon = GetComponentInChildren<Transform>().Find("PositionDropWeapon");
     }
 
     private void Start()
     {
+        //animationEvents.weaponAnimationEvent.AddListener(OnAnimationMoveEvent);
         foreach (var weapon in aiWeapons)
         {
             if (weapon)
@@ -139,7 +145,7 @@ public class AIWeapon : MonoBehaviour
         int weaponPickupSlot = (int)weapon.weaponSlot;
         if (aiWeapons[weaponPickupSlot])
         {
-            DropWeapon(weaponPickupSlot);
+            DropWeaponPrefab(weaponPickupSlot);
         }
 
         currentWeaponIndex = weaponPickupSlot;
@@ -180,10 +186,11 @@ public class AIWeapon : MonoBehaviour
         if (aiWeapons[weaponDropSlot])
         {
             RaycastWeapon currentWeapon = aiWeapons[weaponDropSlot];
-            //Vector3 position = positionDropWeapon.TransformPoint(Vector3.forward);
+            Vector3 position = positionDropWeapon.TransformPoint(Vector3.forward);
 
             if (currentWeapon)
             {
+                int ammoCount = currentWeapon.ammoCount;
                 currentWeapon.transform.SetParent(null);
                 aiWeapons[weaponDropSlot] = null;
                 Destroy(currentWeapon.gameObject);
@@ -192,16 +199,20 @@ public class AIWeapon : MonoBehaviour
                 switch (weaponName)
                 {
                     case "Pistol":
-                        //Instantiate(currentWeapon.weaponPrefabs[0], position, Quaternion.identity);
+                        GameObject dropWeapon = Instantiate(currentWeapon.weaponPickupPrefabs[0], position, Quaternion.identity);
+                        dropWeapon.GetComponent<WeaponPickup>().weaponPrefab.ammoCount = ammoCount;
                         break;
                     case "Rifle":
-                        //Instantiate(currentWeapon.weaponPrefabs[1], position, Quaternion.identity);
+                        GameObject dropWeapon1 = Instantiate(currentWeapon.weaponPickupPrefabs[1], position, Quaternion.identity);
+                        dropWeapon1.GetComponent<WeaponPickup>().weaponPrefab.ammoCount = ammoCount;
                         break;
                     case "Shotgun":
-                        //Instantiate(currentWeapon.weaponPrefabs[2], position, Quaternion.identity);
+                        GameObject dropWeapon2 = Instantiate(currentWeapon.weaponPickupPrefabs[2], position, Quaternion.identity);
+                        dropWeapon2.GetComponent<WeaponPickup>().weaponPrefab.ammoCount = ammoCount;
                         break;
                     case "Sniper":
-                        //Instantiate(currentWeapon.weaponPrefabs[3], position, Quaternion.identity);
+                        GameObject dropWeapon3 = Instantiate(currentWeapon.weaponPickupPrefabs[3], position, Quaternion.identity);
+                        dropWeapon3.GetComponent<WeaponPickup>().weaponPrefab.ammoCount = ammoCount;
                         break;
                 }
             }
@@ -212,16 +223,6 @@ public class AIWeapon : MonoBehaviour
     {
         RaycastWeapon weapon = AICurrentWeapon;
         if (weapon) StartCoroutine(EquipWeapon());
-
-        //foreach (var weapon in aiWeapons)
-        //{
-        //    if (weapon)
-        //    {
-        //        currentWeaponIndex = (int)weapon.weaponSlot;
-        //        StartCoroutine(EquipWeapon());
-        //        break;
-        //    }
-        //}
     }
 
     private IEnumerator EquipWeapon()
@@ -236,6 +237,7 @@ public class AIWeapon : MonoBehaviour
         {
             yield return null;
         }
+        AIEquipWeapon();
         weaponState = WeaponState.Active;
     }
 
@@ -300,6 +302,7 @@ public class AIWeapon : MonoBehaviour
         {
             yield return null;
         }
+        RifleReload();
         weaponIK.enabled = true;
         weaponState = WeaponState.Active;
     }
@@ -325,6 +328,12 @@ public class AIWeapon : MonoBehaviour
                 break;
             case "attach_Magazine":
                 AttachMagazine();
+                break;
+            case "AIEquipWeapon":
+                AIEquipWeapon();
+                break;
+            case "RifleReload":
+                RifleReload();
                 break;
         }
     }
@@ -384,6 +393,22 @@ public class AIWeapon : MonoBehaviour
         Destroy(magazineHand);
         weapon.RefillAmmo();
         animator.ResetTrigger("reload_Weapon");
+    }
+
+    private void AIEquipWeapon()
+    {
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE(AUDIO.SE_SNIPERBOLT);
+        }
+    }
+
+    private void RifleReload()
+    {
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE(AUDIO.SE_GENERIC_RELOAD);
+        }
     }
 
     public void RefillAmmo(int ammoAmount)

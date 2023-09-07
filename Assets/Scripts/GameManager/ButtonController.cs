@@ -21,7 +21,7 @@ public class ButtonController : MonoBehaviour
     public void HoverOnButton(int buttonPos)
     {
         //indicatorPosition = buttonPos;
-        AudioManager.Instance.PlaySE(AUDIO.SE_WOODBLOCK1);
+        AudioManager.Instance.PlaySE(AUDIO.SE_HOVERBUTTON1);
     }
 
     public void PressedOnButton()

@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class RaycastWeapon : MonoBehaviour
 {
@@ -32,7 +33,7 @@ public class RaycastWeapon : MonoBehaviour
     public LayerMask layerMask;
     public RuntimeAnimatorController overrideAnimator;
 
-    public GameObject[] weaponPrefabs;
+    public GameObject[] weaponPickupPrefabs;
 
     private Ray ray;
     private RaycastHit hitInfo;
@@ -380,6 +381,28 @@ public class RaycastWeapon : MonoBehaviour
             var bulletcasing = Instantiate(BulletCasingPrefab, GunSlider.position, transform.rotation);
             bulletcasing.hideFlags = HideFlags.HideInHierarchy;
             Destroy(bulletcasing, 5f);
+            if (AudioManager.HasInstance)
+            {
+                AudioManager.Instance.PlaySE(AUDIO.SE_PL_SHELL);
+                if (this.equipWeaponBy == EquipWeaponBy.AI)
+                {
+                    switch (this.weaponName)
+                    {
+                        case "Pistol":
+                            AudioManager.Instance.PlaySE(AUDIO.SE_PISTOL);
+                            break;
+                        case "Rifle":
+                            AudioManager.Instance.PlaySE(AUDIO.SE_RIFLE2);
+                            break;
+                        case "Shotgun":
+                            AudioManager.Instance.PlaySE(AUDIO.SE_SHOTGUN2);
+                            break;
+                        case "Sniper":
+                            AudioManager.Instance.PlaySE(AUDIO.SE_SNIPER);
+                            break;
+                    }
+                }
+            }
         }
     }
 

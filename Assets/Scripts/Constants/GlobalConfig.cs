@@ -32,10 +32,7 @@ public class GlobalConfig : ScriptableObject
     [Header("Character Selection")]
     public float speedRotateCharacter = 5f;
 
-    //---------------------------WEAPON--------------------------//
-    [Header("WEAPON")]
-    public int ammoPickupAmount = 30;
-
+    //---------------------------WEAPON--------------------------//    
     [Header("Weapon Recoil")]
     public float duration;
 

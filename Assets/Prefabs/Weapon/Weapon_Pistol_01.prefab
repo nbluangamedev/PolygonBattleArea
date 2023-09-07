@@ -349,7 +349,6 @@ GameObject:
   - component: {fileID: 4245193159445016210}
   - component: {fileID: 1126023541969594337}
   - component: {fileID: 6464117932992169678}
-  - component: {fileID: 348161613288809125}
   m_Layer: 6
   m_Name: Weapon_Pistol_01
   m_TagString: Untagged
@@ -406,9 +405,9 @@ MonoBehaviour:
   lossOfAccuracyPerShot: 0
   magazine: {fileID: 2054690038695303234}
   forceBullet: 1.5
-  ammoCount: 10
-  clipSize: 10
-  ammoTotal: 30
+  ammoCount: 12
+  clipSize: 12
+  ammoTotal: 0
   damage: 10
   BulletCasingPrefab: {fileID: 3525363408539371240, guid: 646dbef2eecbba041bde7b716db6d7e2, type: 3}
   GunSlider: {fileID: 3645663858191130892}
@@ -416,7 +415,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1025
   overrideAnimator: {fileID: 22100000, guid: 1bb80f148a11a7e45b772a1cf0ef8205, type: 2}
-  weaponPrefabs:
+  weaponPickupPrefabs:
   - {fileID: 5887745884536796404, guid: a1746b629d4b60a46892a9939572d349, type: 3}
   - {fileID: 6098963765467038716, guid: 6d438f796b8776040ae09ffee915a6c3, type: 3}
   - {fileID: 13123982051371339, guid: 13587851c6181d1438d9d148dd5df871, type: 3}
@@ -507,18 +506,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.048806585, y: 0.1940303, z: 0.2868006}
   m_Center: {x: 0.0004525371, y: -0.009033479, z: 0.07783936}
---- !u!114 &348161613288809125
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3172744936653632961}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b9243e42c2271f443b2eeeffa4d9ba5e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &3172744936664121319
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,8 +1,10 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class CharacterLocomotion : MonoBehaviour
 {
+    public WeaponAnimationEvent animationEvents;
     public Animator rigController;
     public bool isCrouching = false;
 
@@ -34,6 +36,7 @@ public class CharacterLocomotion : MonoBehaviour
 
     private void Start()
     {
+        animationEvents.weaponAnimationEvent.AddListener(OnAnimationMoveEvent);
         if (DataManager.HasInstance)
         {
             gravity = DataManager.Instance.globalConfig.gravity;
@@ -54,6 +57,28 @@ public class CharacterLocomotion : MonoBehaviour
 
         playerInput = GetComponent<PlayerInput>();
         moveAction = playerInput.actions["Move"];
+    }
+
+    private void OnAnimationMoveEvent(string eventName)
+    {
+        switch (eventName)
+        {
+            case "Crouch":
+                CrouchSound();
+                break;
+            case "Sprinting":
+                SprintSound();
+                break;
+            case "Locomotion":
+                LocomotionSound();
+                break;
+            case "Jump":
+                JumpSound();
+                break;
+            case "Landing":
+                LandingSound();
+                break;
+        }
     }
 
     private void Update()
@@ -121,18 +146,10 @@ public class CharacterLocomotion : MonoBehaviour
         bool isSprinting = IsSprinting();
         animator.SetBool(isSprintingParameter, isSprinting);
         rigController.SetBool(isSprintingParameter, isSprinting);
-        //audio sprinting
-        if (isSprinting )
-        {
-            if (AudioManager.HasInstance)
-            {
-                AudioManager.Instance.PlaySE(AUDIO.SE_RUNNING_FOOTSTEPS);
-            }
-        }
     }
 
     private void UpdateIsCrouching()
-    {        
+    {
         //if (Input.GetKeyDown(KeyCode.LeftControl))
         //{
         //    isCrouching = !isCrouching;
@@ -140,14 +157,6 @@ public class CharacterLocomotion : MonoBehaviour
         isCrouching = Input.GetKey(KeyCode.LeftControl);
         animator.SetBool(isCrouchingParameter, isCrouching);
         rigController.SetBool(isCrouchingParameter, isCrouching);
-        //audio crouching
-        if (isCrouching )
-        {
-            if (AudioManager.HasInstance)
-            {
-                AudioManager.Instance.PlaySE(AUDIO.SE_RUNNING_FOOTSTEPS);
-            }
-        }
     }
 
     private void SetInAir(float jumpVelocity)
@@ -180,7 +189,6 @@ public class CharacterLocomotion : MonoBehaviour
         Vector3 stepDownAmount = Vector3.down * stepDown;
         characterController.Move(stepForwardAmount + stepDownAmount);
         rootMotion = Vector3.zero;
-
         if (!characterController.isGrounded && !isCrouching)
         {
             SetInAir(0);
@@ -193,6 +201,48 @@ public class CharacterLocomotion : MonoBehaviour
         {
             float jumpVelocity = Mathf.Sqrt(2 * gravity * jumpHeight);
             SetInAir(jumpVelocity);
+        }
+    }
+
+    private void CrouchSound()
+    {
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE(AUDIO.SE_PL_STEP2);
+        }
+    }
+
+    private void SprintSound()
+    {
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE(AUDIO.SE_PL_STEP4);
+        }
+    }
+
+    private void LocomotionSound()
+    {
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE(AUDIO.SE_PL_STEP1);
+        }
+    }
+
+    private void JumpSound()
+    {
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE(AUDIO.SE_PL_JUMP1);
+            Debug.Log("jump");
+        }
+    }
+
+    private void LandingSound()
+    {
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE(AUDIO.SE_LANDING);
+            Debug.Log("landing");
         }
     }
 }

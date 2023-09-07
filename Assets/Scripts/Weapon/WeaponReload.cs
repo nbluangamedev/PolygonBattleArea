@@ -26,25 +26,13 @@ public class WeaponReload : MonoBehaviour
         {
             if (canReload)
             {
-                if(Input.GetKeyDown(KeyCode.R) || weapon.ShouldReload())
+                if ((Input.GetKeyDown(KeyCode.R) && weapon.ammoTotal > 0) || weapon.ShouldReload())
                 {
                     isReloading = true;
                     rigController.SetTrigger("reload_Weapon");
                 }
             }
         }
-
-        //if (weapon)
-        //{
-        //    if (canReload && !weapon.IsEmptyAmmo())
-        //    {
-        //        if (Input.GetKeyDown(KeyCode.R) || weapon.ShouldReload())
-        //        {
-        //            isReloading = true;
-        //            rigController.SetTrigger("reload_Weapon");
-        //        }
-        //    }
-        //}
     }
 
     private void OnAnimationEvent(string eventName)
@@ -66,11 +54,23 @@ public class WeaponReload : MonoBehaviour
             case "PistolShoot":
                 PistolShoot();
                 break;
+            case "PistolReload":
+                PistolReload();
+                break;
             case "RifleShoot":
                 RifleShoot();
                 break;
+            case "RifleReload":
+                RifleReload();
+                break;
             case "ShotgunShoot":
                 ShotgunShoot();
+                break;
+            case "ShotgunRefillMagazine":
+                ShotgunRefillMagazine();
+                break;
+            case "ShotgunAttachMagazine":
+                ShotgunAttachMagazine();
                 break;
             case "SniperShoot":
                 SniperShoot();
@@ -78,6 +78,13 @@ public class WeaponReload : MonoBehaviour
             case "PullBolt":
                 PullBolt();
                 break;
+            case "SniperDetachMagazine":
+                SniperDetachMagazine();
+                break;
+            case "SniperAttachMagazine":
+                SniperAttachMagazine();
+                break;
+            
         }
     }
 
@@ -120,7 +127,15 @@ public class WeaponReload : MonoBehaviour
     {
         if (AudioManager.HasInstance)
         {
-            AudioManager.Instance.PlaySE(AUDIO.SE_PISTOL2);
+            AudioManager.Instance.PlaySE(AUDIO.SE_PISTOL);
+        }
+    }
+
+    private void PistolReload()
+    {
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE(AUDIO.SE_PISTOLRELOAD);
         }
     }
 
@@ -128,7 +143,15 @@ public class WeaponReload : MonoBehaviour
     {
         if (AudioManager.HasInstance)
         {
-            AudioManager.Instance.PlaySE(AUDIO.SE_PISTOL2);
+            AudioManager.Instance.PlaySE(AUDIO.SE_RIFLE1);
+        }
+    }
+
+    private void RifleReload()
+    {
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE(AUDIO.SE_GENERIC_RELOAD);
         }
     }
 
@@ -136,7 +159,23 @@ public class WeaponReload : MonoBehaviour
     {
         if (AudioManager.HasInstance)
         {
-            AudioManager.Instance.PlaySE(AUDIO.SE_PISTOL2);
+            AudioManager.Instance.PlaySE(AUDIO.SE_SHOTGUN1);
+        }
+    }
+
+    private void ShotgunRefillMagazine()
+    {
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE(AUDIO.SE_SHOTGUNREFILL);
+        }
+    }
+
+    private void ShotgunAttachMagazine()
+    {
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE(AUDIO.SE_SHOTGUNATTACH);
         }
     }
 
@@ -144,7 +183,7 @@ public class WeaponReload : MonoBehaviour
     {
         if (AudioManager.HasInstance)
         {
-            AudioManager.Instance.PlaySE(AUDIO.SE_PISTOL2);
+            AudioManager.Instance.PlaySE(AUDIO.SE_SNIPER);
         }
     }
 
@@ -152,7 +191,23 @@ public class WeaponReload : MonoBehaviour
     {
         if (AudioManager.HasInstance)
         {
-            AudioManager.Instance.PlaySE(AUDIO.SE_PISTOL2);
+            AudioManager.Instance.PlaySE(AUDIO.SE_SNIPERBOLT);
+        }
+    }
+
+    private void SniperDetachMagazine()
+    {
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE(AUDIO.SE_SNIPERDETACHMAGAZINE);
+        }
+    }
+
+    private void SniperAttachMagazine()
+    {
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE(AUDIO.SE_SNIPERATTACHMAGAZINE);
         }
     }
 }
