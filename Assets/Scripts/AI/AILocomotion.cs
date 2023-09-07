@@ -45,12 +45,6 @@ public class AILocomotion : MonoBehaviour
             case "Locomotion":
                 LocomotionSound();
                 break;
-            case "Jump":
-                JumpSound();
-                break;
-            case "Landing":
-                LandingSound();
-                break;
         }
     }
 
@@ -75,24 +69,6 @@ public class AILocomotion : MonoBehaviour
         if (AudioManager.HasInstance)
         {
             AudioManager.Instance.PlaySE(AUDIO.SE_PL_STEP1);
-        }
-    }
-
-    private void JumpSound()
-    {
-        if (AudioManager.HasInstance)
-        {
-            AudioManager.Instance.PlaySE(AUDIO.SE_PL_JUMP1);
-            Debug.Log("jump");
-        }
-    }
-
-    private void LandingSound()
-    {
-        if (AudioManager.HasInstance)
-        {
-            AudioManager.Instance.PlaySE(AUDIO.SE_LANDING);
-            Debug.Log("landing");
         }
     }
 }

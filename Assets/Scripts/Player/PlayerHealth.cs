@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
@@ -90,12 +92,17 @@ public class PlayerHealth : Health
         {
             vignette.intensity.value = 0f;
         }
-        //Destroy(this.gameObject, 5f);
-        this.gameObject.SetActive(false);
-        if(UIManager.HasInstance)
+        
+        StartCoroutine(ShowPopupWhenDie());
+    }
+
+    private IEnumerator ShowPopupWhenDie()
+    {
+        yield return new WaitForSeconds(3f);
+        if (UIManager.HasInstance)
         {
-            //Debug.Log("you lose");
             UIManager.Instance.ShowPopup<PopupLose>();
+            this.gameObject.SetActive(false);
         }
     }
 }

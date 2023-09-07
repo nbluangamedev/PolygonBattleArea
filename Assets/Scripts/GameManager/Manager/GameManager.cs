@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -89,7 +90,8 @@ public class GameManager : BaseManager<GameManager>
                 if (enemyCount == enemySpawn)
                 {
                     //Debug.Log("you win");
-                    UIManager.Instance.ShowPopup<PopupVictory>();
+                    //UIManager.Instance.ShowPopup<PopupVictory>();
+                    StartCoroutine(ShowPopupWhenVictory());
                 }
             }
 
@@ -259,5 +261,15 @@ public class GameManager : BaseManager<GameManager>
     {
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    private IEnumerator ShowPopupWhenVictory()
+    {
+        yield return new WaitForSeconds(3f);
+        if (UIManager.HasInstance)
+        {
+            //Debug.Log("you lose");
+            UIManager.Instance.ShowPopup<PopupVictory>();
+        }
     }
 }

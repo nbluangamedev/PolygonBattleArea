@@ -95,7 +95,7 @@ public class AISensor : MonoBehaviour
 
     private Mesh CreateMesh()
     {
-        Mesh mesh = new Mesh();
+        Mesh mesh = new();
         int segment = 10;
         int numTriangle = (segment * 4) + 2 + 2;    //each segments has 4 verices and 2 up and 2 downside
         int numVertices = numTriangle * 3;
@@ -103,13 +103,13 @@ public class AISensor : MonoBehaviour
         Vector3[] vertices = new Vector3[numVertices];
         int[] triangles = new int[numVertices];
 
-        Vector3 bottomCenter = Vector3.zero;
-        Vector3 bottomLeft = Quaternion.Euler(0, -angle, 0) * Vector3.forward * distance;
-        Vector3 bottomRight = Quaternion.Euler(0, angle, 0) * Vector3.forward * distance;
+        Vector3 bottomCenter = Vector3.zero - Vector3.up * height;
+        Vector3 bottomLeft = (Quaternion.Euler(0, -angle, 0) * Vector3.forward * distance) - Vector3.up * height;
+        Vector3 bottomRight = (Quaternion.Euler(0, angle, 0) * Vector3.forward * distance) - Vector3.up * height;
 
-        Vector3 topCenter = bottomCenter + Vector3.up * height;
-        Vector3 topRight = bottomRight + Vector3.up * height;
-        Vector3 topLeft = bottomLeft + Vector3.up * height;
+        Vector3 topCenter = bottomCenter + 2 * height * Vector3.up;
+        Vector3 topRight = bottomRight + 2 * height * Vector3.up;
+        Vector3 topLeft = bottomLeft + 2 * height * Vector3.up;
 
         int vert = 0;
 
@@ -135,11 +135,11 @@ public class AISensor : MonoBehaviour
         float deltaAngle = (angle * 2) / segment;
         for (int i = 0; i < segment; i++)
         {
-            bottomLeft = Quaternion.Euler(0, currentAngle, 0) * Vector3.forward * distance;
-            bottomRight = Quaternion.Euler(0, currentAngle + deltaAngle, 0) * Vector3.forward * distance;
+            bottomLeft = (Quaternion.Euler(0, currentAngle, 0) * Vector3.forward * distance) - Vector3.up * height;
+            bottomRight = (Quaternion.Euler(0, currentAngle + deltaAngle, 0) * Vector3.forward * distance) - Vector3.up * height;
 
-            topRight = bottomRight + Vector3.up * height;
-            topLeft = bottomLeft + Vector3.up * height;
+            topRight = bottomRight + 2 * height * Vector3.up;
+            topLeft = bottomLeft + 2 * height * Vector3.up;
 
             //far side
             vertices[vert++] = bottomLeft;
