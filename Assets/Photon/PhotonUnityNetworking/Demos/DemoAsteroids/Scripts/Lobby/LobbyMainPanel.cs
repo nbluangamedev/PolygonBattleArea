@@ -274,7 +274,7 @@ using UnityEngine.UI;
             PhotonNetwork.CurrentRoom.IsOpen = false;
             PhotonNetwork.CurrentRoom.IsVisible = false;
 
-            PhotonNetwork.LoadLevel("Medium");
+            PhotonNetwork.LoadLevel("Multiplayer");
     }
 
     #endregion
