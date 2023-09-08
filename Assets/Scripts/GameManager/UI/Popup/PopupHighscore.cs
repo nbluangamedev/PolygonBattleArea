@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -20,7 +19,7 @@ public class PopupHighscore : BasePopup
         //load saved entry
         string jsonToLoad = PlayerPrefs.GetString("highscoreTable");
         Highscores highscores = JsonUtility.FromJson<Highscores>(jsonToLoad);
-        //Debug.Log("json " + jsonToLoad + "hs " + highscores.highscoreList.Count);
+
         if (jsonToLoad == "" || highscores.highscoreList.Count <= 0)
         {
             Highscores highscoress = new Highscores();
@@ -87,7 +86,7 @@ public class PopupHighscore : BasePopup
                 UpdateHighscoreList(highscores.highscoreList[i], entryContainer, highscoreEntryTransformList);
             }
         }
-            base.Init();
+        base.Init();
     }
 
     public override void Show(object data)
@@ -110,6 +109,7 @@ public class PopupHighscore : BasePopup
             PlayerPrefs.SetString("highscoreTable", jsonToSave);
             PlayerPrefs.Save();
 
+            //load saved entry
             jsonToLoad = PlayerPrefs.GetString("highscoreTable");
             highscores = JsonUtility.FromJson<Highscores>(jsonToLoad);
 
@@ -131,7 +131,7 @@ public class PopupHighscore : BasePopup
             for (int i = 0; i < rowHighscoreDisplay; i++)
             {
                 UpdateHighscoreList(highscores.highscoreList[i], entryContainer, highscoreEntryTransformList);
-            }            
+            }
         }
         else
         {
@@ -164,14 +164,14 @@ public class PopupHighscore : BasePopup
                 UpdateHighscoreList(highscores.highscoreList[i], entryContainer, highscoreEntryTransformList);
             }
         }
-            base.Show(data);
+        base.Show(data);
     }
 
     public override void Hide()
     {
-        foreach (Transform t in entryContainer)
+        foreach (Transform trf in entryContainer)
         {
-            Destroy(t.gameObject);
+            Destroy(trf.gameObject);
         }
         base.Hide();
     }
@@ -206,9 +206,10 @@ public class PopupHighscore : BasePopup
         else
         {
             Debug.Log("Khong co position can xoa");
-            return;
+            //return;
         }
 
+        //save highscore
         string jsonToSave = JsonUtility.ToJson(highscores);
         PlayerPrefs.SetString("highscoreTable", jsonToSave);
         PlayerPrefs.Save();
@@ -231,11 +232,15 @@ public class PopupHighscore : BasePopup
         {
             case 1:
                 rankPosition = "1ST";
-                entryTransform.Find("Trophy").GetComponent<Image>().color = new Color(255, 200, 0);
+                entryTransform.Find("Trophy").GetComponent<Image>().color = new Color(255, 170, 0, 255);
+                entryTransform.Find("Position").GetComponent<TextMeshProUGUI>().color = Color.green;
+                entryTransform.Find("Map").GetComponent<TextMeshProUGUI>().color = Color.green;
+                entryTransform.Find("Level").GetComponent<TextMeshProUGUI>().color = Color.green;
+                entryTransform.Find("Timer").GetComponent<TextMeshProUGUI>().color = Color.green;
                 break;
             case 2:
                 rankPosition = "2ND";
-                entryTransform.Find("Trophy").GetComponent<Image>().color = new Color(255, 255, 255);
+                entryTransform.Find("Trophy").GetComponent<Image>().color = new Color(255, 255, 255, 255);
                 break;
             case 3:
                 rankPosition = "3ND";
@@ -251,15 +256,6 @@ public class PopupHighscore : BasePopup
         entryTransform.Find("Level").GetComponent<TextMeshProUGUI>().text = entry.level;
         entryTransform.Find("Timer").GetComponent<TextMeshProUGUI>().text = entry.time;
         entryTransform.Find("Background").gameObject.SetActive(rank % 2 == 1);
-
-
-        if (rank == 1)
-        {
-            entryTransform.Find("Position").GetComponent<TextMeshProUGUI>().color = Color.green;
-            entryTransform.Find("Map").GetComponent<TextMeshProUGUI>().color = Color.green;
-            entryTransform.Find("Level").GetComponent<TextMeshProUGUI>().color = Color.green;
-            entryTransform.Find("Timer").GetComponent<TextMeshProUGUI>().color = Color.green;
-        }
 
         transformList.Add(entryTransform);
     }

@@ -57,7 +57,16 @@ public class ScreenHome : BaseScreen
 
         if (UIManager.HasInstance)
         {
-            UIManager.Instance.ShowPopup<PopupSetting>();
+            PopupSetting popupSetting = UIManager.Instance.GetExistPopup<PopupSetting>();
+            if (popupSetting)
+            {
+                if (popupSetting.CanvasGroup.alpha == 1)
+                {
+                    popupSetting.Hide();
+                }
+                else UIManager.Instance.ShowPopup<PopupSetting>();
+            }
+            else UIManager.Instance.ShowPopup<PopupSetting>();
         }
     }
 

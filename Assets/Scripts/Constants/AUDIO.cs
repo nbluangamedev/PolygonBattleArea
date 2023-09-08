@@ -9,6 +9,7 @@
 	  public const string BGM_ORIGINAL = "Original";
 	  public const string BGM_WARPED_SHOOTING_FX = "warped_shooting_fx";
 	
+	  public const string SE_AMMOPICKUP = "ammoPickup";
 	  public const string SE_CONFIRMBUTTON = "confirmButton";
 	  public const string SE_DIE1 = "die1";
 	  public const string SE_DIE2 = "die2";
@@ -22,6 +23,7 @@
 	  public const string SE_KNIFE_STAB = "knife_stab";
 	  public const string SE_LANDING = "landing";
 	  public const string SE_PISTOL = "pistol";
+	  public const string SE_PISTOLEQUIP = "pistolEquip";
 	  public const string SE_PISTOLRELOAD = "pistolReload";
 	  public const string SE_PL_DIRT1 = "pl_dirt1";
 	  public const string SE_PL_DIRT2 = "pl_dirt2";
@@ -41,9 +43,11 @@
 	  public const string SE_PL_STEP4 = "pl_step4";
 	  public const string SE_RIFLE1 = "rifle1";
 	  public const string SE_RIFLE2 = "rifle2";
+	  public const string SE_RIFLEEQUIP = "rifleEquip";
 	  public const string SE_SHOTGUN1 = "shotgun1";
 	  public const string SE_SHOTGUN2 = "shotgun2";
 	  public const string SE_SHOTGUNATTACH = "shotgunAttach";
+	  public const string SE_SHOTGUNEQUIP = "shotgunEquip";
 	  public const string SE_SHOTGUNREFILL = "shotgunRefill";
 	  public const string SE_SNIPER = "sniper";
 	  public const string SE_SNIPERATTACHMAGAZINE = "sniperAttachMagazine";

@@ -21,7 +21,7 @@ public class NotifyLoadingGame : BaseNotify
         {
             StartCoroutine(LoadScene("Medium"));
         }
-        if(sceneNumber == 1)
+        if (sceneNumber == 1)
         {
             StartCoroutine(LoadScene("Small"));
         }
@@ -66,17 +66,19 @@ public class NotifyLoadingGame : BaseNotify
             {
                 loadingSlider.value = 1f;
                 loadingPercentText.SetText($"LOADING SCENES: {loadingSlider.value * 100}%");
+                yield return new WaitForSeconds(1f);
                 if (UIManager.HasInstance)
                 {
                     UIManager.Instance.ShowOverlap<OverlapFadeLoadingGame>();
+                    UIManager.Instance.ShowScreen<ScreenGame>();
+                    this.Hide();
+                    asyncOperation.allowSceneActivation = true;
                 }
                 if (AudioManager.HasInstance)
                 {
                     AudioManager.Instance.FadeOutBGM(1f);
+                    AudioManager.Instance.PlayBGM(AUDIO.BGM_MARIAN);
                 }
-                yield return new WaitForSeconds(1f);
-                asyncOperation.allowSceneActivation = true;
-                this.Hide();
             }
             yield return null;
         }

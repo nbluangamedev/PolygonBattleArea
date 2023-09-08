@@ -28,9 +28,9 @@ public class OverlapFadeLoadingGame : BaseOverlap
     public void Fade(float fadeTime, Action onFinish)
     {
         imgFade.color = fadeColor;
-        SetAlpha(0);
+        SetAlpha(1);
         Sequence seq = DOTween.Sequence();
-        seq.Append(this.imgFade.DOFade(1f, fadeTime));
+        //seq.Append(this.imgFade.DOFade(1f, fadeTime));
         seq.Append(this.imgFade.DOFade(0, fadeTime));
         seq.OnComplete(() =>
         {
@@ -46,11 +46,7 @@ public class OverlapFadeLoadingGame : BaseOverlap
     }
 
     private void OnFinishLoadingGame()
-    {
-        if (UIManager.HasInstance)
-        {
-            UIManager.Instance.ShowScreen<ScreenGame>();
-        }
+    {        
         this.Hide();
     }
 }

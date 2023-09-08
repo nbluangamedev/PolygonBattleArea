@@ -12,7 +12,7 @@ public class AmmoPickup : MonoBehaviour
             Destroy(gameObject);
             if (AudioManager.HasInstance)
             {
-                //AudioManager.Instance.PlaySE(AUDIO.)
+                AudioManager.Instance.PlaySE(AUDIO.SE_AMMOPICKUP);
             }
         }
 
@@ -24,7 +24,7 @@ public class AmmoPickup : MonoBehaviour
             Destroy(gameObject);
             if (AudioManager.HasInstance)
             {
-                //AudioManager.Instance.PlaySE(AUDIO.)
+                AudioManager.Instance.PlaySE(AUDIO.SE_AMMOPICKUP);
             }
         }
     }

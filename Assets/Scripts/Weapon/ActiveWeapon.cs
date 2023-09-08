@@ -130,7 +130,7 @@ public class ActiveWeapon : MonoBehaviour
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.BroadCast(ListenType.UPDATE_AMMO, equipWeapon);
-        }
+        }        
     }
 
     public void DropWeapon(int weaponDropSlot)
@@ -284,6 +284,25 @@ public class ActiveWeapon : MonoBehaviour
             if (ListenerManager.HasInstance)
             {
                 ListenerManager.Instance.BroadCast(ListenType.UPDATE_AMMO, weapon);
+            }
+            if (AudioManager.HasInstance)
+            {
+                string weaponName = weapon.weaponName;
+                switch (weaponName)
+                {
+                    case "Pistol":
+                        AudioManager.Instance.PlaySE(AUDIO.SE_PISTOLEQUIP);
+                        break;
+                    case "Rifle":
+                        AudioManager.Instance.PlaySE(AUDIO.SE_RIFLEEQUIP);
+                        break;
+                    case "Shotgun":
+                        AudioManager.Instance.PlaySE(AUDIO.SE_SHOTGUNEQUIP);
+                        break;
+                    case "Sniper":
+                        AudioManager.Instance.PlaySE(AUDIO.SE_SNIPERBOLT);
+                        break;
+                }
             }
         }
         isChangingWeapon = false;

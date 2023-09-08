@@ -40,13 +40,14 @@ public class NotifyLoadingCharacterSelection : BaseNotify
             {
                 loadingSlider.value = 1f;
                 loadingPercentText.SetText($"CREATING NEW GAME: {loadingSlider.value * 100}%");
+                yield return new WaitForSeconds(2f);
                 if (UIManager.HasInstance)
                 {
                     UIManager.Instance.ShowOverlap<OverlapFadeCharacterSelection>();
+                    UIManager.Instance.ShowScreen<ScreenCharacterSelection>();
+                    this.Hide();
+                    asyncOperation.allowSceneActivation = true;
                 }
-                yield return new WaitForSeconds(1f);
-                asyncOperation.allowSceneActivation = true;
-                this.Hide();
             }
             yield return null;
         }

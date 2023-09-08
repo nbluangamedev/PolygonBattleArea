@@ -28,10 +28,10 @@ public class OverlapFadeCharacterSelection : BaseOverlap
     public void Fade(float fadeTime, Action onFinish)
     {
         imgFade.color = fadeColor;
-        SetAlpha(0);
+        SetAlpha(1);
         Sequence seq = DOTween.Sequence();
-        seq.Append(this.imgFade.DOFade(1f, fadeTime));
-        seq.Append(this.imgFade.DOFade(0, fadeTime));
+        //seq.Append(this.imgFade.DOFade(1f, fadeTime));
+        seq.Append(this.imgFade.DOFade(0f, fadeTime));
         seq.OnComplete(() =>
         {
             onFinish?.Invoke();
@@ -47,10 +47,10 @@ public class OverlapFadeCharacterSelection : BaseOverlap
 
     private void OnFinishCharacterSelection()
     {
-        if (UIManager.HasInstance)
-        {
-            UIManager.Instance.ShowScreen<ScreenCharacterSelection>();
-        }
+        //if (UIManager.HasInstance)
+        //{
+        //    UIManager.Instance.ShowScreen<ScreenCharacterSelection>();
+        //}
         this.Hide();
     }
 }

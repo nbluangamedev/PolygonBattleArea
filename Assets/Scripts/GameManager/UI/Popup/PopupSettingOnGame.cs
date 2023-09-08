@@ -51,22 +51,22 @@ public class PopupSettingOnGame : BasePopup
 
     public override void Hide()
     {
-        base.Hide();
         if (GameManager.HasInstance)
         {
             GameManager.Instance.IsPopupSetting = false;
             GameManager.Instance.ResumeGame();
         }
+        base.Hide();
     }
 
     public void OnCloseButton()
     {
-        this.Hide();
         if (GameManager.HasInstance)
         {
             GameManager.Instance.LockCursor();
             GameManager.Instance.ResumeGame();
         }
+        this.Hide();
     }
 
     public void OnBGMValueChange(float v)
@@ -108,7 +108,6 @@ public class PopupSettingOnGame : BasePopup
 
     public void OnApplyButton()
     {
-        this.Hide();
         if (AudioManager.HasInstance)
         {
             if (bgmValue != AudioManager.Instance.AttachBGMSource.volume)
@@ -135,11 +134,11 @@ public class PopupSettingOnGame : BasePopup
             GameManager.Instance.LockCursor();
             GameManager.Instance.ResumeGame();
         }
+        this.Hide();
     }
 
     public void OnBackToMenuButton()
     {
-        this.Hide();
         if (CameraManager.HasInstance)
         {
             CameraManager.Instance.DisableKillCam();
@@ -148,47 +147,27 @@ public class PopupSettingOnGame : BasePopup
         if (UIManager.HasInstance)
         {
             ScreenGame screenGame = UIManager.Instance.GetExistScreen<ScreenGame>();
-            if (screenGame)
+            if (screenGame.CanvasGroup.alpha == 1)
             {
                 screenGame.Hide();
             }
-        }
-
-        if (GameManager.HasInstance)
-        {
             UIManager.Instance.ShowNotify<NotifyLoading>();
-            NotifyLoading scr = UIManager.Instance.GetExistNotify<NotifyLoading>();
-            if (scr != null)
-            {
-                scr.AnimationLoaddingText();
-                scr.DoAnimationLoadingProgress(1, () =>
-                {
-                    UIManager.Instance.ShowScreen<ScreenHome>();
-                    scr.Hide();
-                });
-            }
-            GameManager.Instance.LoadScene("Home");
         }
+        this.Hide();
     }
 
     public void OnTryAgainButton()
     {
-        this.Hide();
         if (UIManager.HasInstance)
         {
             ScreenGame screenGame = UIManager.Instance.GetExistScreen<ScreenGame>();
-
             if (screenGame)
             {
                 screenGame.Hide();
             }
             UIManager.Instance.ShowNotify<NotifyLoadingCharacterSelection>();
         }
-
-        if (GameManager.HasInstance)
-        {
-            GameManager.Instance.LoadScene("CharacterSelection");
-        }
+        this.Hide();
     }
 
     public void OnExitButton()

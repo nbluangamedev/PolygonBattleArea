@@ -16,7 +16,6 @@ public class PopupVictory : BasePopup
             timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
             GameManager.Instance.PauseGame();
         }
-        //AddHighscoreEntry();
         base.Init();
     }
 
@@ -31,19 +30,17 @@ public class PopupVictory : BasePopup
             timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
             GameManager.Instance.PauseGame();
         }
-        //AddHighscoreEntry();
         base.Show(data);
     }
 
     public override void Hide()
     {
+        base.Hide();
+        AddHighscoreEntry();
         if (GameManager.HasInstance)
         {
-            AddHighscoreEntry();
-            GameManager.Instance.EnemyCount = 0;
             GameManager.Instance.ResumeGame();
         }
-        base.Hide();
     }
 
     public void OnTryAgainButton()
@@ -52,52 +49,25 @@ public class PopupVictory : BasePopup
         if (UIManager.HasInstance)
         {
             ScreenGame screenGame = UIManager.Instance.GetExistScreen<ScreenGame>();
-
             if (screenGame)
             {
                 screenGame.Hide();
             }
-
             UIManager.Instance.ShowNotify<NotifyLoadingCharacterSelection>();
-        }
-
-        if (CameraManager.HasInstance)
-        {
-            CameraManager.Instance.DisableKillCam();
         }
     }
 
     public void OnBackToMenuButton()
     {
         this.Hide();
-        if (CameraManager.HasInstance)
-        {
-            CameraManager.Instance.DisableKillCam();
-        }
-
         if (UIManager.HasInstance)
         {
             ScreenGame screenGame = UIManager.Instance.GetExistScreen<ScreenGame>();
             if (screenGame)
             {
                 screenGame.Hide();
-            }
-        }
-
-        if (GameManager.HasInstance)
-        {
-            GameManager.Instance.ResumeGame();
+            }        
             UIManager.Instance.ShowNotify<NotifyLoading>();
-            NotifyLoading scr = UIManager.Instance.GetExistNotify<NotifyLoading>();
-            if (scr != null)
-            {
-                scr.AnimationLoaddingText();
-                scr.DoAnimationLoadingProgress(1, () =>
-                {
-                    UIManager.Instance.ShowScreen<ScreenHome>();
-                    scr.Hide();
-                });
-            }
         }
     }
 

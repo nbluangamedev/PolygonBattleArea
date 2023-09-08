@@ -89,16 +89,14 @@ public class GameManager : BaseManager<GameManager>
             {
                 if (enemyCount == enemySpawn)
                 {
-                    //Debug.Log("you win");
-                    //UIManager.Instance.ShowPopup<PopupVictory>();
                     StartCoroutine(ShowPopupWhenVictory());
+                    enemyCount = 0;
                 }
             }
 
             if (screenGame && screenGame.CanvasGroup.alpha == 1)
             {
                 timer += Time.deltaTime;
-                //Debug.Log(timer);
                 screenGame.DisplayTime(timer);
             }
 
@@ -107,7 +105,6 @@ public class GameManager : BaseManager<GameManager>
                 if (Input.GetKeyDown(KeyCode.Escape))
                 {
                     isPopupSetting = !isPopupSetting;
-                    //Debug.Log("pop setting enable " + IsPopupSetting);
 
                     if (isPopupSetting)
                     {
@@ -246,8 +243,6 @@ public class GameManager : BaseManager<GameManager>
                 2 => 36,
                 _ => 0
             };
-            //Debug.Log(enemySpawn);
-            //Debug.Log(Level);
         }
     }
 
