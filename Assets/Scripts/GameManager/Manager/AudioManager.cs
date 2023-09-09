@@ -7,7 +7,7 @@ public class AudioManager : BaseManager<AudioManager>
     private const string BGM_VOLUME_KEY = "BGM_VOLUME_KEY";
     private const string SE_VOLUME_KEY = "SE_VOLUME_KEY";
     private const float BGM_VOLUME_DEFULT = 0.2f;
-    private const float SE_VOLUME_DEFULT = 1.0f;
+    private const float SE_VOLUME_DEFULT = 0.3f;
 
     //Time it takes for the background music to fade
     public const float BGM_FADE_SPEED_RATE_HIGH = 0.9f;
@@ -63,12 +63,32 @@ public class AudioManager : BaseManager<AudioManager>
         }
 
         nextSEName = seName;
-        Invoke("DelayPlaySE", delay);
+        Invoke(nameof(DelayPlaySE), delay);
     }
 
     private void DelayPlaySE()
     {
         AttachSESource.PlayOneShot(seDic[nextSEName] as AudioClip);
+    }
+
+    public void PlaySEAgent(string seName, float delay = 0.0f)
+    {
+        if (!seDic.ContainsKey(seName))
+        {
+            Debug.Log(seName + "There is no SE named");
+            return;
+        }
+
+        nextSEName = seName;
+        Invoke(nameof(DelayPlaySEAgent), delay);
+    }
+
+    private void DelayPlaySEAgent()
+    {
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.BroadCast(ListenType.GET_AUDIOSOURCE, seDic[nextSEName]);
+        }
     }
 
     public void PlayBGM(string bgmName, float fadeSpeedRate = BGM_FADE_SPEED_RATE_HIGH)
@@ -104,6 +124,11 @@ public class AudioManager : BaseManager<AudioManager>
 
     private void Update()
     {
+        if (!AttachSESource)
+        {
+            AttachSESource = transform.Find("AudioSESource").GetComponent<AudioSource>();
+        }
+
         if (!isFadeOut)
         {
             return;

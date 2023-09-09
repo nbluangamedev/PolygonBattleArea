@@ -21,6 +21,42 @@ public class ActiveWeapon : MonoBehaviour
 
     private void Start()
     {
+        //foreach (GameObject weaponPickup in weaponPickupPrefabs)
+        //{
+        //    GameObject weaponPrefab = Instantiate(weaponPickup);
+        //    RaycastWeapon getWeapon = weaponPrefab.GetComponent<WeaponPickup>().weaponPrefab;
+        //    Debug.Log("getweapon ok");
+
+        //    if (getWeapon.weaponName == "Pistol")
+        //    {
+        //        getWeapon.ammoCount = 12;
+        //        getWeapon.ammoTotal = 0;
+        //        weaponPickupPrefabs[0] = weaponPrefab;
+        //        Debug.Log(getWeapon.weaponName + getWeapon.ammoCount);
+        //    }
+        //    if (getWeapon.weaponName == "Rifle")
+        //    {
+        //        getWeapon.ammoCount = 30;
+        //        getWeapon.ammoTotal = 0;
+        //        weaponPickupPrefabs[1] = weaponPrefab;
+        //        Debug.Log(getWeapon.weaponName + getWeapon.ammoCount);
+        //    }
+        //    if (getWeapon.weaponName == "Shotgun")
+        //    {
+        //        getWeapon.ammoCount = 8;
+        //        getWeapon.ammoTotal = 0;
+        //        weaponPickupPrefabs[2] = weaponPrefab;
+        //        Debug.Log(getWeapon.weaponName + getWeapon.ammoCount);
+        //    }
+        //    if (getWeapon.weaponName == "Sniper")
+        //    {
+        //        getWeapon.ammoCount = 10;
+        //        getWeapon.ammoTotal = 0;
+        //        weaponPickupPrefabs[3] = weaponPrefab;
+        //        Debug.Log(getWeapon.weaponName + getWeapon.ammoCount);
+        //    }
+        //}
+
         weaponReload = GetComponent<WeaponReload>();
         if (!positionDropWeapon)
         {
@@ -157,6 +193,7 @@ public class ActiveWeapon : MonoBehaviour
         if (currentWeapon)
         {
             int ammoCount = currentWeapon.ammoCount;
+            int ammoTotal = currentWeapon.ammoTotal;
             currentWeapon.transform.SetParent(null);
             equippedWeapon[weaponDropSlot] = null;
             Destroy(currentWeapon.gameObject);
@@ -166,18 +203,22 @@ public class ActiveWeapon : MonoBehaviour
                 case "Pistol":
                     GameObject dropWeapon = Instantiate(currentWeapon.weaponPickupPrefabs[0], position, Quaternion.identity);
                     dropWeapon.GetComponent<WeaponPickup>().weaponPrefab.ammoCount = ammoCount;
+                    dropWeapon.GetComponent<WeaponPickup>().weaponPrefab.ammoTotal = ammoTotal;
                     break;
                 case "Rifle":
                     GameObject dropWeapon1 = Instantiate(currentWeapon.weaponPickupPrefabs[1], position, Quaternion.identity);
                     dropWeapon1.GetComponent<WeaponPickup>().weaponPrefab.ammoCount = ammoCount;
+                    dropWeapon1.GetComponent<WeaponPickup>().weaponPrefab.ammoTotal = ammoTotal;
                     break;
                 case "Shotgun":
                     GameObject dropWeapon2 = Instantiate(currentWeapon.weaponPickupPrefabs[2], position, Quaternion.identity);
                     dropWeapon2.GetComponent<WeaponPickup>().weaponPrefab.ammoCount = ammoCount;
+                    dropWeapon2.GetComponent<WeaponPickup>().weaponPrefab.ammoTotal = ammoTotal;
                     break;
                 case "Sniper":
                     GameObject dropWeapon3 = Instantiate(currentWeapon.weaponPickupPrefabs[3], position, Quaternion.identity);
                     dropWeapon3.GetComponent<WeaponPickup>().weaponPrefab.ammoCount = ammoCount;
+                    dropWeapon3.GetComponent<WeaponPickup>().weaponPrefab.ammoTotal = ammoTotal;
                     break;
             }
         }

@@ -15,7 +15,9 @@ public enum ListenType
     SELECTED_MAP,
     ENEMY_COUNT,
     SELECTED_LEVEL,
-    ENEMY_SPAWN
+    ENEMY_SPAWN,
+    GET_AUDIOSOURCE,
+    UPDATE_MOUSE_SPEED
 }
 
 public enum UIType
@@ -51,7 +53,9 @@ public enum SocketID
 public enum WeaponSlot
 {
     Primary = 0,
-    Secondary = 1
+    Secondary = 1,
+    Knife = 2,
+    Grenade = 3
 }
 
 public enum EquipWeaponBy

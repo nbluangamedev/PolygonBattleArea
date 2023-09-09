@@ -34,6 +34,11 @@ public class CharacterAiming : MonoBehaviour
 
     private void Start()
     {
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Register(ListenType.UPDATE_MOUSE_SPEED, UpdateMouseSpeed);
+        }
+
         if (DataManager.HasInstance)
         {
             turnSpeed = DataManager.Instance.globalConfig.turnSpeed;
@@ -146,6 +151,14 @@ public class CharacterAiming : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, yawCamera, 0), turnSpeed * Time.fixedDeltaTime);
     }
 
+    private void OnDestroy()
+    {
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Unregister(ListenType.UPDATE_MOUSE_SPEED, UpdateMouseSpeed);
+        }
+    }
+
     public void UnScopeAndAim(RaycastWeapon weapon)
     {
         isAiming = false;
@@ -202,5 +215,13 @@ public class CharacterAiming : MonoBehaviour
         }
         mainCamera.cullingMask = weaponMask;
         weaponCamera.m_Lens.FieldOfView = scopedFOV;
+    }
+
+    private void UpdateMouseSpeed(object value)
+    {
+        if(value is float maxSpeed)
+        {
+            yAxis.m_MaxSpeed = maxSpeed;
+        }
     }
 }

@@ -3,17 +3,17 @@ using UnityEngine;
 public class ScreenHome : BaseScreen
 {
     public override void Init()
-    {
+    {        
         base.Init();
     }
 
     public override void Show(object data)
-    {
+    {        
         base.Show(data);
     }
 
     public override void Hide()
-    {
+    {        
         base.Hide();
     }
 

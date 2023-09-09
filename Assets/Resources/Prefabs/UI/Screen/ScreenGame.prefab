@@ -1067,6 +1067,7 @@ RectTransform:
   - {fileID: 7861520491492874104}
   - {fileID: 1769567048616379236}
   - {fileID: 8457617601840324223}
+  - {fileID: 4810825432454957629}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1094,6 +1095,12 @@ MonoBehaviour:
   enemyCountText: {fileID: 8611744638614586358}
   scopeOverlay: {fileID: 1243033627830754741}
   crossHair: {fileID: 5059419406541598955}
+  weaponPrefabs:
+  - {fileID: 3172744936653632961, guid: 34f731d8925f71f40ac8aa4962af99be, type: 3}
+  - {fileID: 3172744936653632961, guid: 654cd15554992bc4d9a7295c64f5121c, type: 3}
+  - {fileID: 3172744936653632961, guid: de81ad37b3e194f47bc8d0b42c5fe523, type: 3}
+  - {fileID: 3172744936653632961, guid: 24eecd7f2540cb84cbde8df4c3ce8c8e, type: 3}
+  resetWeapon: {fileID: 4810825432454957629}
 --- !u!1 &5059419405296855383
 GameObject:
   m_ObjectHideFlags: 0
@@ -1381,6 +1388,37 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &7701179390284935841
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4810825432454957629}
+  m_Layer: 0
+  m_Name: WeaponReset
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4810825432454957629
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7701179390284935841}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1414, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5059419405264088328}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8052640122414914183
 GameObject:
   m_ObjectHideFlags: 0

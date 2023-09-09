@@ -28,6 +28,7 @@ public class ScreenGame : BaseScreen
         {
             GameManager.Instance.timer = 0;
         }
+                
         base.Init();
     }
 
@@ -52,12 +53,13 @@ public class ScreenGame : BaseScreen
         ammoTotalText.text = "0";
         enemyCountText.text = "0";
         crossHair.SetActive(true);
+                
         base.Show(data);
     }
 
     public override void Hide()
-    {
-        if(GameManager.HasInstance)
+    {        
+        if (GameManager.HasInstance)
         {
             GameManager.Instance.ResumeGame();
         }

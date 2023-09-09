@@ -206,10 +206,7 @@ public class CharacterLocomotion : MonoBehaviour
 
     private void CrouchSound()
     {
-        if (AudioManager.HasInstance)
-        {
-            AudioManager.Instance.PlaySE(AUDIO.SE_PL_STEP2);
-        }
+        
     }
 
     private void SprintSound()

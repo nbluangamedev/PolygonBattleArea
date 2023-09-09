@@ -36,9 +36,6 @@ public class AILocomotion : MonoBehaviour
     {
         switch (eventName)
         {
-            case "Crouch":
-                CrouchSound();
-                break;
             case "Sprinting":
                 SprintSound();
                 break;
@@ -48,19 +45,12 @@ public class AILocomotion : MonoBehaviour
         }
     }
 
-    private void CrouchSound()
-    {
-        if (AudioManager.HasInstance)
-        {
-            AudioManager.Instance.PlaySE(AUDIO.SE_PL_STEP2);
-        }
-    }
 
     private void SprintSound()
     {
         if (AudioManager.HasInstance)
         {
-            AudioManager.Instance.PlaySE(AUDIO.SE_PL_STEP4);
+            AudioManager.Instance.PlaySEAgent(AUDIO.SE_PL_STEP4);
         }
     }
 
@@ -68,7 +58,7 @@ public class AILocomotion : MonoBehaviour
     {
         if (AudioManager.HasInstance)
         {
-            AudioManager.Instance.PlaySE(AUDIO.SE_PL_STEP1);
+            AudioManager.Instance.PlaySEAgent(AUDIO.SE_PL_STEP1);
         }
     }
 }

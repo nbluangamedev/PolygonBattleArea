@@ -6,13 +6,15 @@ public class PopupSettingOnGame : BasePopup
 {
     public Slider bgmSlider;
     public Slider seSlider;
+    public Slider mouseSlider;
 
     public RenderPipelineAsset[] qualityLevels;
     public Toggle[] qualityToggles;
 
     private float bgmValue;
     private float seValue;
-    private int value;
+    private float mouseValue = 300f;
+    private int qualityValue;
 
     public override void Init()
     {
@@ -22,14 +24,15 @@ public class PopupSettingOnGame : BasePopup
             seValue = AudioManager.Instance.AttachSESource.volume;
             bgmSlider.value = bgmValue;
             seSlider.value = seValue;
+            mouseSlider.value = mouseValue;
         }
         if (GameManager.HasInstance)
         {
             GameManager.Instance.PauseGame();
         }
-        value = QualitySettings.GetQualityLevel();
-        PlayerPrefs.SetInt("QUALITY_SETTINGS", value);
-        qualityToggles[value].isOn = true;
+        qualityValue = QualitySettings.GetQualityLevel();
+        PlayerPrefs.SetInt("QUALITY_SETTINGS", qualityValue);
+        qualityToggles[qualityValue].isOn = true;
         base.Init();
     }
 
@@ -46,6 +49,9 @@ public class PopupSettingOnGame : BasePopup
         {
             GameManager.Instance.PauseGame();
         }
+        qualityValue = QualitySettings.GetQualityLevel();
+        PlayerPrefs.SetInt("QUALITY_SETTINGS", qualityValue);
+        qualityToggles[qualityValue].isOn = true;
         base.Show(data);
     }
 
@@ -79,13 +85,18 @@ public class PopupSettingOnGame : BasePopup
         seValue = v;
     }
 
+    public void OnMouseSpeedValueChange(float v)
+    {
+        mouseValue = v;        
+    }
+
     public void OnToggleSelect()
     {
         qualityToggles[0].onValueChanged.AddListener((isSelected) =>
         {
             if (isSelected)
             {
-                value = (int)QualitySetting.LOW;
+                qualityValue = (int)QualitySetting.LOW;
             }
         });
 
@@ -93,7 +104,7 @@ public class PopupSettingOnGame : BasePopup
         {
             if (isSelected)
             {
-                value = (int)QualitySetting.MEDIUM;
+                qualityValue = (int)QualitySetting.MEDIUM;
             }
         });
 
@@ -101,7 +112,7 @@ public class PopupSettingOnGame : BasePopup
         {
             if (isSelected)
             {
-                value = (int)QualitySetting.HIGH;
+                qualityValue = (int)QualitySetting.HIGH;
             }
         });
     }
@@ -122,11 +133,16 @@ public class PopupSettingOnGame : BasePopup
             }
         }
 
-        if (value != QualitySettings.GetQualityLevel())
+        if (ListenerManager.HasInstance)
         {
-            QualitySettings.SetQualityLevel(value);
-            QualitySettings.renderPipeline = qualityLevels[value];
-            PlayerPrefs.SetInt("QUALITY_SETTINGS", value);
+            ListenerManager.Instance.BroadCast(ListenType.UPDATE_MOUSE_SPEED, mouseValue);
+        }
+
+        if (qualityValue != QualitySettings.GetQualityLevel())
+        {
+            QualitySettings.SetQualityLevel(qualityValue);
+            QualitySettings.renderPipeline = qualityLevels[qualityValue];
+            PlayerPrefs.SetInt("QUALITY_SETTINGS", qualityValue);
         }
 
         if (GameManager.HasInstance)
@@ -146,6 +162,8 @@ public class PopupSettingOnGame : BasePopup
 
         if (UIManager.HasInstance)
         {
+            UIManager.Instance.HideAllPopups();
+
             ScreenGame screenGame = UIManager.Instance.GetExistScreen<ScreenGame>();
             if (screenGame.CanvasGroup.alpha == 1)
             {

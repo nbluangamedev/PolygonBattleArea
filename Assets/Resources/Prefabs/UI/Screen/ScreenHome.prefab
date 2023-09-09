@@ -989,6 +989,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c51d9780b031647369f2ff0033be88af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponPrefabs:
+  - {fileID: 3172744936653632961, guid: 34f731d8925f71f40ac8aa4962af99be, type: 3}
+  - {fileID: 3172744936653632961, guid: 654cd15554992bc4d9a7295c64f5121c, type: 3}
+  - {fileID: 3172744936653632961, guid: de81ad37b3e194f47bc8d0b42c5fe523, type: 3}
+  - {fileID: 3172744936653632961, guid: 24eecd7f2540cb84cbde8df4c3ce8c8e, type: 3}
 --- !u!1 &8608963419571084982
 GameObject:
   m_ObjectHideFlags: 0

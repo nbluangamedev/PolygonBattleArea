@@ -72,7 +72,7 @@ public class GameManager : BaseManager<GameManager>
                     scr.Hide();
                 });
             }
-        }
+        }        
     }
 
     private void Update()

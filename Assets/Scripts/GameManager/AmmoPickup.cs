@@ -8,23 +8,29 @@ public class AmmoPickup : MonoBehaviour
         if (playerWeapon)
         {
             RaycastWeapon raycastWeapon = playerWeapon.GetActiveWeapon();
-            playerWeapon.RefillAmmo(raycastWeapon.clipSize * 2);
-            Destroy(gameObject);
-            if (AudioManager.HasInstance)
+            if (raycastWeapon)
             {
-                AudioManager.Instance.PlaySE(AUDIO.SE_AMMOPICKUP);
-            }
+                playerWeapon.RefillAmmo(raycastWeapon.clipSize * 2);
+                Destroy(gameObject);
+                if (AudioManager.HasInstance)
+                {
+                    AudioManager.Instance.PlaySE(AUDIO.SE_AMMOPICKUP);
+                }
+            }            
         }
 
         AIWeapon aiWeapon = other.GetComponent<AIWeapon>();
         if (aiWeapon)
         {
-            RaycastWeapon raycastWeapon = aiWeapon.AICurrentWeapon;
-            aiWeapon.RefillAmmo(raycastWeapon.clipSize * 2);
-            Destroy(gameObject);
-            if (AudioManager.HasInstance)
+            RaycastWeapon raycastAIWeapon = aiWeapon.AICurrentWeapon;
+            if (raycastAIWeapon)
             {
-                AudioManager.Instance.PlaySE(AUDIO.SE_AMMOPICKUP);
+                aiWeapon.RefillAmmo(raycastAIWeapon.clipSize * 2);
+                Destroy(gameObject);
+                if (AudioManager.HasInstance)
+                {
+                    AudioManager.Instance.PlaySEAgent(AUDIO.SE_AMMOPICKUP);
+                }
             }
         }
     }

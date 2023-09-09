@@ -8,7 +8,7 @@ public class AIHealth : Health
     private float timeDestroyAI;
     private AIAgent aiAgent;
     private Ragdoll ragdoll;
-    private SkinnedMeshRenderer skinnedMeshRenderer;
+    private SkinnedMeshRenderer[] skinnedMeshRenderers;
 
     protected override void OnStart()
     {
@@ -24,7 +24,7 @@ public class AIHealth : Health
         aiAgent = GetComponent<AIAgent>();
         healthBar = GetComponentInChildren<UIHealthBar>();
         ragdoll = GetComponent<Ragdoll>();
-        skinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
+        skinnedMeshRenderers = GetComponentsInChildren<SkinnedMeshRenderer>();
     }
 
     protected override void OnDamage(Vector3 direction, Rigidbody rigidBody)
@@ -62,9 +62,12 @@ public class AIHealth : Health
 
     private IEnumerator EnemyFlash()
     {
-        skinnedMeshRenderer.material.EnableKeyword("_EMISSION");
-        yield return new WaitForSeconds(blinkDuration);
-        skinnedMeshRenderer.material.DisableKeyword("_EMISSION");
-        StopCoroutine(nameof(EnemyFlash));
+        foreach(SkinnedMeshRenderer skin in skinnedMeshRenderers)
+        {
+            skin.material.EnableKeyword("_EMISSION");
+            yield return new WaitForSeconds(blinkDuration);
+            skin.material.DisableKeyword("_EMISSION");
+            StopCoroutine(nameof(EnemyFlash));
+        }
     }
 }

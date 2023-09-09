@@ -8,6 +8,7 @@ public class PlayerHealth : Health
 {
     public Volume postProcessing;
     [Range(0, 1)] public float maxValue;
+    public Camera mainCamera;
 
     private Ragdoll ragdoll;
     private ActiveWeapon activeWeapon;
@@ -86,13 +87,12 @@ public class PlayerHealth : Health
             activeWeapon.DropWeaponPrefab((int)activeWeapon.GetActiveWeapon().weaponSlot);
         }
         ragdoll.ActiveRagdoll();
-        ragdoll.ApplyForce(direction, ridigBody);        
+        ragdoll.ApplyForce(direction, ridigBody);
         locomotion.enabled = false;
         if (postProcessing.profile.TryGet(out Vignette vignette))
         {
             vignette.intensity.value = 0f;
         }
-        
         StartCoroutine(ShowPopupWhenDie());
     }
 

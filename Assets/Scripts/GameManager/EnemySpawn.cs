@@ -29,7 +29,17 @@ public class EnemySpawn : MonoBehaviour
         timer += Time.deltaTime;
         if (timer > timeToSpawn && numberEnemy < numberEnemySpawn)
         {
-            Instantiate(agentPrefabs[agentSlot], spawnPositions[positonSpawn].position, Quaternion.identity);
+            GameObject agent = Instantiate(agentPrefabs[agentSlot], spawnPositions[positonSpawn].position, Quaternion.identity);
+            
+            //3d sound
+            AudioSource agentAudio = agent.AddComponent<AudioSource>();
+            agentAudio.spatialBlend = 1f;
+            agentAudio.dopplerLevel = 0f;
+            agentAudio.rolloffMode = AudioRolloffMode.Linear;
+            agentAudio.minDistance = 1f;
+            agentAudio.maxDistance = 30f;
+            agent.AddComponent<GetAudioSource>();
+
             numberEnemy++;
             timer = 0;
         }

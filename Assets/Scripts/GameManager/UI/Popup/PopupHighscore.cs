@@ -28,21 +28,21 @@ public class PopupHighscore : BasePopup
                 new Highscore(){map = "DESERT", level = "EASY", time = "01:30", score = 10000},
                 new Highscore(){map = "ISLAND", level = "MEDIUM", time = "02:50", score = 15000}
             };
-            string jsonToSave = JsonUtility.ToJson(highscoress);
-            PlayerPrefs.SetString("highscoreTable", jsonToSave);
-            PlayerPrefs.Save();
+            //string jsonToSave = JsonUtility.ToJson(highscoress);
+            //PlayerPrefs.SetString("highscoreTable", jsonToSave);
+            //PlayerPrefs.Save();
 
-            jsonToLoad = PlayerPrefs.GetString("highscoreTable");
-            highscores = JsonUtility.FromJson<Highscores>(jsonToLoad);
+            //jsonToLoad = PlayerPrefs.GetString("highscoreTable");
+            //highscores = JsonUtility.FromJson<Highscores>(jsonToLoad);
 
             //bubble sort rank
-            for (int i = 0; i < highscores.highscoreList.Count; i++)
+            for (int i = 0; i < highscoress.highscoreList.Count; i++)
             {
-                for (int j = highscores.highscoreList.Count - 1; j > i; j--)
+                for (int j = highscoress.highscoreList.Count - 1; j > i; j--)
                 {
-                    if (highscores.highscoreList[j].score < highscores.highscoreList[j - 1].score)
+                    if (highscoress.highscoreList[j].score < highscoress.highscoreList[j - 1].score)
                     {
-                        (highscores.highscoreList[i], highscores.highscoreList[j]) = (highscores.highscoreList[j], highscores.highscoreList[i]);
+                        (highscoress.highscoreList[i], highscoress.highscoreList[j]) = (highscoress.highscoreList[j], highscoress.highscoreList[i]);
                     }
                 }
             }
@@ -50,10 +50,14 @@ public class PopupHighscore : BasePopup
             //show rank
             highscoreEntryTransformList = new List<Transform>();
 
-            for (int i = 0; i < rowHighscoreDisplay; i++)
+            for (int i = 0; i < highscoress.highscoreList.Count; i++)
             {
-                UpdateHighscoreList(highscores.highscoreList[i], entryContainer, highscoreEntryTransformList);
+                UpdateHighscoreList(highscoress.highscoreList[i], entryContainer, highscoreEntryTransformList);
             }
+
+            string jsonToSave = JsonUtility.ToJson(highscoress);
+            PlayerPrefs.SetString("highscoreTable", jsonToSave);
+            PlayerPrefs.Save();
         }
         else
         {
@@ -104,23 +108,21 @@ public class PopupHighscore : BasePopup
                 new Highscore(){map = "DESERT", level = "EASY", time = "01:30", score = 10000},
                 new Highscore(){map = "ISLAND", level = "MEDIUM", time = "02:50", score = 15000}
             };
+            //string jsonToSave = JsonUtility.ToJson(highscoress);
+            //PlayerPrefs.SetString("highscoreTable", jsonToSave);
+            //PlayerPrefs.Save();
 
-            string jsonToSave = JsonUtility.ToJson(highscoress);
-            PlayerPrefs.SetString("highscoreTable", jsonToSave);
-            PlayerPrefs.Save();
-
-            //load saved entry
-            jsonToLoad = PlayerPrefs.GetString("highscoreTable");
-            highscores = JsonUtility.FromJson<Highscores>(jsonToLoad);
+            //jsonToLoad = PlayerPrefs.GetString("highscoreTable");
+            //highscores = JsonUtility.FromJson<Highscores>(jsonToLoad);
 
             //bubble sort rank
-            for (int i = 0; i < highscores.highscoreList.Count; i++)
+            for (int i = 0; i < highscoress.highscoreList.Count; i++)
             {
-                for (int j = highscores.highscoreList.Count - 1; j > i; j--)
+                for (int j = highscoress.highscoreList.Count - 1; j > i; j--)
                 {
-                    if (highscores.highscoreList[j].score < highscores.highscoreList[j - 1].score)
+                    if (highscoress.highscoreList[j].score < highscoress.highscoreList[j - 1].score)
                     {
-                        (highscores.highscoreList[i], highscores.highscoreList[j]) = (highscores.highscoreList[j], highscores.highscoreList[i]);
+                        (highscoress.highscoreList[i], highscoress.highscoreList[j]) = (highscoress.highscoreList[j], highscoress.highscoreList[i]);
                     }
                 }
             }
@@ -130,8 +132,12 @@ public class PopupHighscore : BasePopup
 
             for (int i = 0; i < rowHighscoreDisplay; i++)
             {
-                UpdateHighscoreList(highscores.highscoreList[i], entryContainer, highscoreEntryTransformList);
+                UpdateHighscoreList(highscoress.highscoreList[i], entryContainer, highscoreEntryTransformList);
             }
+
+            string jsonToSave = JsonUtility.ToJson(highscoress);
+            PlayerPrefs.SetString("highscoreTable", jsonToSave);
+            PlayerPrefs.Save();
         }
         else
         {

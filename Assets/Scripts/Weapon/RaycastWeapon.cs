@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class RaycastWeapon : MonoBehaviour
 {
@@ -47,7 +46,7 @@ public class RaycastWeapon : MonoBehaviour
         {
             recoil = GetComponent<WeaponRecoil>();
             characterAiming = FindObjectOfType<CharacterAiming>();
-        }
+        }        
     }
 
     public void StartFiring()
@@ -96,7 +95,14 @@ public class RaycastWeapon : MonoBehaviour
     public void UpdateBullets(float deltaTime)
     {
         SimulateBullets(deltaTime);
-        DestroyBullets();
+        if (equipWeaponBy == EquipWeaponBy.Player)
+        {
+            DestroyBullets();
+        }
+        else
+        {
+            DestroyEnemyBullets();
+        }
     }
 
     private void RaycastSegment(Vector3 start, Vector3 end, Bullet bullet)
@@ -356,6 +362,17 @@ public class RaycastWeapon : MonoBehaviour
             if (bullet.time >= maxLifetime)
             {
                 bullet.Deactive();
+            }
+        }
+    }
+
+    private void DestroyEnemyBullets()
+    {
+        foreach (EnemyBullet enemyBullet in ObjectPool.Instance.pooledEnemyBulletObjects)
+        {
+            if (enemyBullet.time >= maxLifetime)
+            {
+                enemyBullet.Deactive();
             }
         }
     }

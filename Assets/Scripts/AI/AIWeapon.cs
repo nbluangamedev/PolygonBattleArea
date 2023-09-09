@@ -191,6 +191,7 @@ public class AIWeapon : MonoBehaviour
             if (currentWeapon)
             {
                 int ammoCount = currentWeapon.ammoCount;
+                int ammoTotal = currentWeapon.ammoTotal;
                 currentWeapon.transform.SetParent(null);
                 aiWeapons[weaponDropSlot] = null;
                 Destroy(currentWeapon.gameObject);
@@ -201,18 +202,22 @@ public class AIWeapon : MonoBehaviour
                     case "Pistol":
                         GameObject dropWeapon = Instantiate(currentWeapon.weaponPickupPrefabs[0], position, Quaternion.identity);
                         dropWeapon.GetComponent<WeaponPickup>().weaponPrefab.ammoCount = ammoCount;
+                        dropWeapon.GetComponent<WeaponPickup>().weaponPrefab.ammoTotal = ammoTotal;
                         break;
                     case "Rifle":
                         GameObject dropWeapon1 = Instantiate(currentWeapon.weaponPickupPrefabs[1], position, Quaternion.identity);
                         dropWeapon1.GetComponent<WeaponPickup>().weaponPrefab.ammoCount = ammoCount;
+                        dropWeapon1.GetComponent<WeaponPickup>().weaponPrefab.ammoTotal = ammoTotal;
                         break;
                     case "Shotgun":
                         GameObject dropWeapon2 = Instantiate(currentWeapon.weaponPickupPrefabs[2], position, Quaternion.identity);
                         dropWeapon2.GetComponent<WeaponPickup>().weaponPrefab.ammoCount = ammoCount;
+                        dropWeapon2.GetComponent<WeaponPickup>().weaponPrefab.ammoTotal = ammoTotal;
                         break;
                     case "Sniper":
                         GameObject dropWeapon3 = Instantiate(currentWeapon.weaponPickupPrefabs[3], position, Quaternion.identity);
                         dropWeapon3.GetComponent<WeaponPickup>().weaponPrefab.ammoCount = ammoCount;
+                        dropWeapon3.GetComponent<WeaponPickup>().weaponPrefab.ammoTotal = ammoTotal;
                         break;
                 }
             }
@@ -403,16 +408,16 @@ public class AIWeapon : MonoBehaviour
             switch (weaponName)
             {
                 case "Pistol":
-                    AudioManager.Instance.PlaySE(AUDIO.SE_PISTOLEQUIP);
+                    AudioManager.Instance.PlaySEAgent(AUDIO.SE_PISTOLEQUIP);
                     break;
                 case "Rifle":
-                    AudioManager.Instance.PlaySE(AUDIO.SE_RIFLEEQUIP);
+                    AudioManager.Instance.PlaySEAgent(AUDIO.SE_RIFLEEQUIP);
                     break;
                 case "Shotgun":
-                    AudioManager.Instance.PlaySE(AUDIO.SE_SHOTGUNEQUIP);
+                    AudioManager.Instance.PlaySEAgent(AUDIO.SE_SHOTGUNEQUIP);
                     break;
                 case "Sniper":
-                    AudioManager.Instance.PlaySE(AUDIO.SE_SNIPERBOLT);
+                    AudioManager.Instance.PlaySEAgent(AUDIO.SE_SNIPERBOLT);
                     break;
             }
         }
@@ -422,7 +427,7 @@ public class AIWeapon : MonoBehaviour
     {
         if (AudioManager.HasInstance)
         {
-            AudioManager.Instance.PlaySE(AUDIO.SE_GENERIC_RELOAD);
+            AudioManager.Instance.PlaySEAgent(AUDIO.SE_GENERIC_RELOAD);
         }
     }
 
