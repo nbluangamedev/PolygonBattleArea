@@ -3,6 +3,7 @@ public class PopupLose : BasePopup
     public override void Init()
     {
         base.Init();
+
         if (GameManager.HasInstance)
         {
             GameManager.Instance.PauseGame();

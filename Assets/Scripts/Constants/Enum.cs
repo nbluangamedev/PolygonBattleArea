@@ -17,7 +17,8 @@ public enum ListenType
     SELECTED_LEVEL,
     ENEMY_SPAWN,
     GET_AUDIOSOURCE,
-    UPDATE_MOUSE_SPEED
+    UPDATE_MOUSE_SPEED,
+    PLAYER_DEATH
 }
 
 public enum UIType

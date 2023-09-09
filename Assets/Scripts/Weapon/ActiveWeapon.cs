@@ -21,42 +21,6 @@ public class ActiveWeapon : MonoBehaviour
 
     private void Start()
     {
-        //foreach (GameObject weaponPickup in weaponPickupPrefabs)
-        //{
-        //    GameObject weaponPrefab = Instantiate(weaponPickup);
-        //    RaycastWeapon getWeapon = weaponPrefab.GetComponent<WeaponPickup>().weaponPrefab;
-        //    Debug.Log("getweapon ok");
-
-        //    if (getWeapon.weaponName == "Pistol")
-        //    {
-        //        getWeapon.ammoCount = 12;
-        //        getWeapon.ammoTotal = 0;
-        //        weaponPickupPrefabs[0] = weaponPrefab;
-        //        Debug.Log(getWeapon.weaponName + getWeapon.ammoCount);
-        //    }
-        //    if (getWeapon.weaponName == "Rifle")
-        //    {
-        //        getWeapon.ammoCount = 30;
-        //        getWeapon.ammoTotal = 0;
-        //        weaponPickupPrefabs[1] = weaponPrefab;
-        //        Debug.Log(getWeapon.weaponName + getWeapon.ammoCount);
-        //    }
-        //    if (getWeapon.weaponName == "Shotgun")
-        //    {
-        //        getWeapon.ammoCount = 8;
-        //        getWeapon.ammoTotal = 0;
-        //        weaponPickupPrefabs[2] = weaponPrefab;
-        //        Debug.Log(getWeapon.weaponName + getWeapon.ammoCount);
-        //    }
-        //    if (getWeapon.weaponName == "Sniper")
-        //    {
-        //        getWeapon.ammoCount = 10;
-        //        getWeapon.ammoTotal = 0;
-        //        weaponPickupPrefabs[3] = weaponPrefab;
-        //        Debug.Log(getWeapon.weaponName + getWeapon.ammoCount);
-        //    }
-        //}
-
         weaponReload = GetComponent<WeaponReload>();
         if (!positionDropWeapon)
         {

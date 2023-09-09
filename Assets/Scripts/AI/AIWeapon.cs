@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class AIWeapon : MonoBehaviour
 {
-    //public WeaponAnimationEvent animationEvents;
+    public WeaponAnimationEvent animationEvents;
     public RaycastWeapon AICurrentWeapon
     {
         get { return aiWeapons[currentWeaponIndex]; }
@@ -46,7 +46,7 @@ public class AIWeapon : MonoBehaviour
 
     private void Awake()
     {
-        //animationEvents.GetComponent<WeaponAnimationEvent>();
+        animationEvents.GetComponent<WeaponAnimationEvent>();
         animator = GetComponent<Animator>();
         weaponIK = GetComponent<WeaponIK>();
         socketController = GetComponent<MeshSocketController>();
@@ -55,7 +55,7 @@ public class AIWeapon : MonoBehaviour
 
     private void Start()
     {
-        //animationEvents.weaponAnimationEvent.AddListener(OnAnimationMoveEvent);
+        animationEvents.weaponAnimationEvent.AddListener(OnAnimationEventAI);
         foreach (var weapon in aiWeapons)
         {
             if (weapon)
@@ -312,7 +312,7 @@ public class AIWeapon : MonoBehaviour
         weaponState = WeaponState.Active;
     }
 
-    public void OnAnimationEvent(string eventName)
+    public void OnAnimationEventAI(string eventName)
     {
         switch (eventName)
         {

@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -72,7 +73,23 @@ public class GameManager : BaseManager<GameManager>
                     scr.Hide();
                 });
             }
-        }        
+        }
+
+        //init highscore
+        string jsonToLoad = PlayerPrefs.GetString("highscoreTable");
+        Highscores highscores = JsonUtility.FromJson<Highscores>(jsonToLoad);
+        if (jsonToLoad == "" || highscores.highscoreList.Count <= 0)
+        {
+            Highscores highscoress = new Highscores();
+            highscoress.highscoreList = new List<Highscore>()
+            {
+                new Highscore(){map = "DESERT", level = "EASY", time = "01:30", score = 10000},
+                new Highscore(){map = "ISLAND", level = "MEDIUM", time = "02:50", score = 15000}
+            };
+            string jsonToSave = JsonUtility.ToJson(highscoress);
+            PlayerPrefs.SetString("highscoreTable", jsonToSave);
+            PlayerPrefs.Save();
+        }
     }
 
     private void Update()

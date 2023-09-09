@@ -28,6 +28,8 @@ public class AudioManager : BaseManager<AudioManager>
     //Keep All Audio
     private Dictionary<string, AudioClip> bgmDic, seDic;
 
+    //Vector3 positionPlayClip;
+
     protected override void Awake()
     {
         base.Awake();
@@ -50,6 +52,10 @@ public class AudioManager : BaseManager<AudioManager>
 
     private void Start()
     {
+        //if (ListenerManager.HasInstance)
+        //{
+        //    ListenerManager.Instance.Register(ListenType.GET_AUDIOSOURCE, UpdateAudioSource);
+        //}
         AttachBGMSource.volume = PlayerPrefs.GetFloat(BGM_VOLUME_KEY, BGM_VOLUME_DEFULT);
         AttachSESource.volume = PlayerPrefs.GetFloat(SE_VOLUME_KEY, SE_VOLUME_DEFULT);
     }
@@ -85,6 +91,7 @@ public class AudioManager : BaseManager<AudioManager>
 
     private void DelayPlaySEAgent()
     {
+        //AudioSource.PlayClipAtPoint(seDic[nextSEName], positionPlayClip, PlayerPrefs.GetFloat(SE_VOLUME_KEY));
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.BroadCast(ListenType.GET_AUDIOSOURCE, seDic[nextSEName]);
@@ -150,6 +157,14 @@ public class AudioManager : BaseManager<AudioManager>
         }
     }
 
+    //private void OnDestroy()
+    //{
+    //    if (ListenerManager.HasInstance)
+    //    {
+    //        ListenerManager.Instance.Unregister(ListenType.GET_AUDIOSOURCE, UpdateAudioSource);
+    //    }
+    //}
+
     public void ChangeBGMVolume(float BGMVolume)
     {
         AttachBGMSource.volume = BGMVolume;
@@ -161,4 +176,12 @@ public class AudioManager : BaseManager<AudioManager>
         AttachSESource.volume = SEVolume;
         PlayerPrefs.SetFloat(SE_VOLUME_KEY, SEVolume);
     }
+
+    //private void UpdateAudioSource(object position)
+    //{
+    //    if (position is Vector3 agentPosition)
+    //    {
+    //        positionPlayClip = agentPosition;
+    //    }
+    //}
 }

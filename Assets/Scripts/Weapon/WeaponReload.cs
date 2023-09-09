@@ -5,6 +5,7 @@ public class WeaponReload : MonoBehaviour
     public WeaponAnimationEvent animationEvents;
     public Animator rigController;
     public ActiveWeapon activeWeapon;
+
     public Transform leftHand;
     public bool isReloading;
 
@@ -84,7 +85,7 @@ public class WeaponReload : MonoBehaviour
             case "SniperAttachMagazine":
                 SniperAttachMagazine();
                 break;
-            
+
         }
     }
 

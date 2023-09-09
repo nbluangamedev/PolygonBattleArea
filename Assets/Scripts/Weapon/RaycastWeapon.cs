@@ -406,16 +406,16 @@ public class RaycastWeapon : MonoBehaviour
                     switch (this.weaponName)
                     {
                         case "Pistol":
-                            AudioManager.Instance.PlaySE(AUDIO.SE_PISTOL);
+                            AudioManager.Instance.PlaySEAgent(AUDIO.SE_PISTOL);
                             break;
                         case "Rifle":
-                            AudioManager.Instance.PlaySE(AUDIO.SE_RIFLE2);
+                            AudioManager.Instance.PlaySEAgent(AUDIO.SE_RIFLE2);
                             break;
                         case "Shotgun":
-                            AudioManager.Instance.PlaySE(AUDIO.SE_SHOTGUN2);
+                            AudioManager.Instance.PlaySEAgent(AUDIO.SE_SHOTGUN2);
                             break;
                         case "Sniper":
-                            AudioManager.Instance.PlaySE(AUDIO.SE_SNIPER);
+                            AudioManager.Instance.PlaySEAgent(AUDIO.SE_SNIPER);
                             break;
                     }
                 }

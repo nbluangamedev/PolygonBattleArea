@@ -7,6 +7,8 @@ public class PlayerSpawnPositionSingle : MonoBehaviour
     private List<GameObject> characters;
     private int selectedCharacter;
 
+    private AudioListener listener;
+
     private void Awake()
     {
         if (GameManager.HasInstance)
@@ -29,11 +31,26 @@ public class PlayerSpawnPositionSingle : MonoBehaviour
         characters[selectedCharacter].AddComponent<GetAudioManager>();
     }
 
-    private void Update()
-    {
-        if (!characters[selectedCharacter])
-        {
-            this.AddComponent<AudioListener>();
-        }
-    }
+    //private void Update()
+    //{
+    //    if (GameManager.HasInstance)
+    //    {
+    //        listener = GetComponent<AudioListener>();
+    //        if (GameManager.Instance.PlayerDeath)
+    //        {
+    //            if (listener)
+    //            {
+    //                listener.enabled = true;
+    //            }
+    //            else this.AddComponent<AudioListener>();
+    //        }
+    //        else
+    //        {
+    //            if (listener)
+    //            {
+    //                listener.enabled = false;
+    //            }
+    //        }
+    //    }
+    //}
 }

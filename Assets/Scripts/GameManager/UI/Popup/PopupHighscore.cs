@@ -20,76 +20,35 @@ public class PopupHighscore : BasePopup
         string jsonToLoad = PlayerPrefs.GetString("highscoreTable");
         Highscores highscores = JsonUtility.FromJson<Highscores>(jsonToLoad);
 
-        if (jsonToLoad == "" || highscores.highscoreList.Count <= 0)
+        if (highscores.highscoreList.Count < 10)
         {
-            Highscores highscoress = new Highscores();
-            highscoress.highscoreList = new List<Highscore>()
-            {
-                new Highscore(){map = "DESERT", level = "EASY", time = "01:30", score = 10000},
-                new Highscore(){map = "ISLAND", level = "MEDIUM", time = "02:50", score = 15000}
-            };
-            //string jsonToSave = JsonUtility.ToJson(highscoress);
-            //PlayerPrefs.SetString("highscoreTable", jsonToSave);
-            //PlayerPrefs.Save();
-
-            //jsonToLoad = PlayerPrefs.GetString("highscoreTable");
-            //highscores = JsonUtility.FromJson<Highscores>(jsonToLoad);
-
-            //bubble sort rank
-            for (int i = 0; i < highscoress.highscoreList.Count; i++)
-            {
-                for (int j = highscoress.highscoreList.Count - 1; j > i; j--)
-                {
-                    if (highscoress.highscoreList[j].score < highscoress.highscoreList[j - 1].score)
-                    {
-                        (highscoress.highscoreList[i], highscoress.highscoreList[j]) = (highscoress.highscoreList[j], highscoress.highscoreList[i]);
-                    }
-                }
-            }
-            Debug.Log(PlayerPrefs.GetString("highscoreTable"));
-            //show rank
-            highscoreEntryTransformList = new List<Transform>();
-
-            for (int i = 0; i < highscoress.highscoreList.Count; i++)
-            {
-                UpdateHighscoreList(highscoress.highscoreList[i], entryContainer, highscoreEntryTransformList);
-            }
-
-            string jsonToSave = JsonUtility.ToJson(highscoress);
-            PlayerPrefs.SetString("highscoreTable", jsonToSave);
-            PlayerPrefs.Save();
+            rowHighscoreDisplay = highscores.highscoreList.Count;
         }
         else
         {
-            if (highscores.highscoreList.Count < 10)
-            {
-                rowHighscoreDisplay = highscores.highscoreList.Count;
-            }
-            else
-            {
-                rowHighscoreDisplay = 10;
-            }
+            rowHighscoreDisplay = 10;
+        }
 
-            //bubble sort rank
-            for (int i = 0; i < highscores.highscoreList.Count; i++)
+        //bubble sort rank
+        for (int i = 0; i < highscores.highscoreList.Count; i++)
+        {
+            for (int j = highscores.highscoreList.Count - 1; j > i; j--)
             {
-                for (int j = highscores.highscoreList.Count - 1; j > i; j--)
+                if (highscores.highscoreList[j].score < highscores.highscoreList[j - 1].score)
                 {
-                    if (highscores.highscoreList[j].score < highscores.highscoreList[j - 1].score)
-                    {
-                        (highscores.highscoreList[i], highscores.highscoreList[j]) = (highscores.highscoreList[j], highscores.highscoreList[i]);
-                    }
+                    (highscores.highscoreList[i], highscores.highscoreList[j]) = (highscores.highscoreList[j], highscores.highscoreList[i]);
                 }
             }
-            Debug.Log(PlayerPrefs.GetString("highscoreTable"));
-            //show rank
-            highscoreEntryTransformList = new List<Transform>();
-
-            for (int i = 0; i < rowHighscoreDisplay; i++)
-            {
-                UpdateHighscoreList(highscores.highscoreList[i], entryContainer, highscoreEntryTransformList);
-            }
         }
+        Debug.Log(PlayerPrefs.GetString("highscoreTable"));
+        //show rank
+        highscoreEntryTransformList = new List<Transform>();
+
+        for (int i = 0; i < rowHighscoreDisplay; i++)
+        {
+            UpdateHighscoreList(highscores.highscoreList[i], entryContainer, highscoreEntryTransformList);
+        }
+
         base.Init();
     }
 
@@ -100,76 +59,35 @@ public class PopupHighscore : BasePopup
         string jsonToLoad = PlayerPrefs.GetString("highscoreTable");
         Highscores highscores = JsonUtility.FromJson<Highscores>(jsonToLoad);
 
-        if (jsonToLoad == "" || highscores.highscoreList.Count <= 0)
+        if (highscores.highscoreList.Count < 10)
         {
-            Highscores highscoress = new Highscores();
-            highscoress.highscoreList = new List<Highscore>()
-            {
-                new Highscore(){map = "DESERT", level = "EASY", time = "01:30", score = 10000},
-                new Highscore(){map = "ISLAND", level = "MEDIUM", time = "02:50", score = 15000}
-            };
-            //string jsonToSave = JsonUtility.ToJson(highscoress);
-            //PlayerPrefs.SetString("highscoreTable", jsonToSave);
-            //PlayerPrefs.Save();
-
-            //jsonToLoad = PlayerPrefs.GetString("highscoreTable");
-            //highscores = JsonUtility.FromJson<Highscores>(jsonToLoad);
-
-            //bubble sort rank
-            for (int i = 0; i < highscoress.highscoreList.Count; i++)
-            {
-                for (int j = highscoress.highscoreList.Count - 1; j > i; j--)
-                {
-                    if (highscoress.highscoreList[j].score < highscoress.highscoreList[j - 1].score)
-                    {
-                        (highscoress.highscoreList[i], highscoress.highscoreList[j]) = (highscoress.highscoreList[j], highscoress.highscoreList[i]);
-                    }
-                }
-            }
-            Debug.Log(PlayerPrefs.GetString("highscoreTable"));
-            //show rank
-            highscoreEntryTransformList = new List<Transform>();
-
-            for (int i = 0; i < rowHighscoreDisplay; i++)
-            {
-                UpdateHighscoreList(highscoress.highscoreList[i], entryContainer, highscoreEntryTransformList);
-            }
-
-            string jsonToSave = JsonUtility.ToJson(highscoress);
-            PlayerPrefs.SetString("highscoreTable", jsonToSave);
-            PlayerPrefs.Save();
+            rowHighscoreDisplay = highscores.highscoreList.Count;
         }
         else
         {
-            if (highscores.highscoreList.Count < 10)
-            {
-                rowHighscoreDisplay = highscores.highscoreList.Count;
-            }
-            else
-            {
-                rowHighscoreDisplay = 10;
-            }
+            rowHighscoreDisplay = 10;
+        }
 
-            //bubble sort rank
-            for (int i = 0; i < highscores.highscoreList.Count; i++)
+        //bubble sort rank
+        for (int i = 0; i < highscores.highscoreList.Count; i++)
+        {
+            for (int j = highscores.highscoreList.Count - 1; j > i; j--)
             {
-                for (int j = highscores.highscoreList.Count - 1; j > i; j--)
+                if (highscores.highscoreList[j].score < highscores.highscoreList[j - 1].score)
                 {
-                    if (highscores.highscoreList[j].score < highscores.highscoreList[j - 1].score)
-                    {
-                        (highscores.highscoreList[i], highscores.highscoreList[j]) = (highscores.highscoreList[j], highscores.highscoreList[i]);
-                    }
+                    (highscores.highscoreList[i], highscores.highscoreList[j]) = (highscores.highscoreList[j], highscores.highscoreList[i]);
                 }
             }
-            Debug.Log(PlayerPrefs.GetString("highscoreTable"));
-            //show rank
-            highscoreEntryTransformList = new List<Transform>();
-
-            for (int i = 0; i < rowHighscoreDisplay; i++)
-            {
-                UpdateHighscoreList(highscores.highscoreList[i], entryContainer, highscoreEntryTransformList);
-            }
         }
+        Debug.Log(PlayerPrefs.GetString("highscoreTable"));
+        //show rank
+        highscoreEntryTransformList = new List<Transform>();
+
+        for (int i = 0; i < rowHighscoreDisplay; i++)
+        {
+            UpdateHighscoreList(highscores.highscoreList[i], entryContainer, highscoreEntryTransformList);
+        }
+
         base.Show(data);
     }
 
