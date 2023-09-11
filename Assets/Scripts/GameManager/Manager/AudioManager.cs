@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -162,9 +163,12 @@ public class AudioManager : BaseManager<AudioManager>
 
     private void Update()
     {
-        if (!AttachSESource)
+        if (GameManager.HasInstance)
         {
-            AttachSESource = transform.Find("AudioSESource").GetComponent<AudioSource>();
+            if (GameManager.Instance.playerDeath || AttachSESource == null)
+            {
+                AttachSESource = transform.Find("AudioSESource").GetComponent<AudioSource>();
+            }
         }
 
         if (!isFadeOut)
@@ -214,7 +218,7 @@ public class AudioManager : BaseManager<AudioManager>
 
     public void PlayPlayerTalk()
     {
-        Invoke(nameof(DelayPlayerTalk), 3f);
+        DOVirtual.DelayedCall(3f, DelayPlayerTalk);
     }
 
     private void DelayPlayerTalk()

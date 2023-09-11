@@ -4,7 +4,11 @@ public class Health : MonoBehaviour
 {
     protected float maxHealth;
     protected float currentHealth;
+    protected float maxAmor;
+    protected float currentAmor;
     public float CurrentHealth => currentHealth;
+    public float CurrentAmor => currentAmor;
+
     private float lowHealth;
 
     private void Start()
@@ -13,13 +17,28 @@ public class Health : MonoBehaviour
         {
             lowHealth = DataManager.Instance.globalConfig.lowHealth;
         }
-        Setup();
+        Setup("HitBox");
         OnStart();
     }
 
     public void TakeDamage(float amount, Vector3 direction, Rigidbody rigidbody)
     {
-        currentHealth -= amount;
+        if (currentAmor > 0)
+        {
+            int takeHealthOrAmor = Mathf.RoundToInt(Random.Range(0, 2));
+            if (takeHealthOrAmor == 0)
+            {
+                currentHealth -= amount;
+            }
+            else
+            {
+                currentAmor -= amount;
+            }
+        }
+        else
+        {
+            currentHealth -= amount;
+        }
 
         if (IsDead())
         {
@@ -33,8 +52,16 @@ public class Health : MonoBehaviour
 
     public void Heal(float amount)
     {
-        currentHealth += amount;
-        currentHealth = Mathf.Min(currentHealth, maxHealth);
+        if (currentHealth >= maxHealth)
+        {
+            currentAmor += amount;
+            currentAmor = Mathf.Min(currentAmor, maxAmor);
+        }
+        else
+        {
+            currentHealth += amount;
+            currentHealth = Mathf.Min(currentHealth, maxHealth);
+        }
 
         OnHeal(amount);
     }
@@ -49,7 +76,7 @@ public class Health : MonoBehaviour
         return currentHealth < lowHealth;
     }
 
-    private void Setup()
+    private void Setup(string layerMask)
     {
         Rigidbody[] rigidBodies = GetComponentsInChildren<Rigidbody>();
         foreach (Rigidbody rigidBody in rigidBodies)
@@ -60,13 +87,14 @@ public class Health : MonoBehaviour
             hitBox.rb = rigidBody;      //???
             if (hitBox.gameObject != gameObject)
             {
-                hitBox.gameObject.layer = LayerMask.NameToLayer("HitBox");
+                hitBox.gameObject.layer = LayerMask.NameToLayer(layerMask);
             }
         }
     }
 
     protected void Die(Vector3 direction, Rigidbody rigidbody)
     {
+        Setup("Character");
         OnDeath(direction, rigidbody);
     }
 

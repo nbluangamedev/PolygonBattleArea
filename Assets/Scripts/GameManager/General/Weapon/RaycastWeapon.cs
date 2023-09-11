@@ -75,20 +75,81 @@ public class RaycastWeapon : MonoBehaviour
         {
             UpdateFiring(deltaTime, target);
         }
-
         accumulatedTime += deltaTime;
-
         UpdateBullets(deltaTime);
     }
 
     public void UpdateFiring(float deltaTime, Vector3 target)
     {
-        //accumulatedTime += deltaTime;
-        float fireInterval = 1.0f / fireRate;
-        while (accumulatedTime >= 0.0f)
+        if(equipWeaponBy == EquipWeaponBy.Player)
         {
-            FireBullet(target);
-            accumulatedTime -= fireInterval;
+            //accumulatedTime += deltaTime;
+            float fireInterval = 1f / fireRate;
+            while (accumulatedTime >= 0f)
+            {
+                FireBullet(target);
+                accumulatedTime -= fireInterval;
+            }
+        }
+        else
+        {
+            //accumulatedTime += deltaTime;
+            float fireInterval = 2f / fireRate;
+            while (accumulatedTime >= 0f)
+            {
+                FireBullet(target);
+                accumulatedTime -= fireInterval;
+            }
+        }
+    }
+
+    private void FireBullet(Vector3 target)
+    {
+        Vector3 velocity = (target - raycastOrigin.position).normalized * bulletSpeed;
+        if (equipWeaponBy == EquipWeaponBy.Player)
+        {
+            Bullet bullet = ObjectPool.Instance.GetPoolBulletObject();
+            bullet.Active(raycastOrigin.position, velocity);
+        }
+        else
+        {
+            EnemyBullet bullet = ObjectPool.Instance.GetPoolEnemyBulletObject();
+            bullet.Active(raycastOrigin.position, velocity);
+        }
+
+        if (ammoCount <= 0)
+        {
+            return;
+        }
+        ammoCount--;
+
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.BroadCast(ListenType.UPDATE_AMMO, this);
+        }
+
+        foreach (var p in muzzleFlash)
+        {
+            p.Emit(1);
+        }
+
+        EmitBulletCasing();
+
+        if (equipWeaponBy == EquipWeaponBy.Player)
+        {
+            if (weaponName.Equals("Sniper") && !IsEmptyAmmo())
+            {
+                if (characterAiming.isAiming && ammoCount >= 1)
+                {
+                    StartCoroutine(ActivateOnScope());
+                }
+                else
+                {
+                    recoil.rigController.Play("sniperPullBolt");
+                }
+            }
+
+            recoil.GenerateRecoil(weaponName);
         }
     }
 
@@ -305,56 +366,6 @@ public class RaycastWeapon : MonoBehaviour
         }
     }
 
-    private void FireBullet(Vector3 target)
-    {
-        Vector3 velocity = (target - raycastOrigin.position).normalized * bulletSpeed;
-        if (equipWeaponBy == EquipWeaponBy.Player)
-        {
-            Bullet bullet = ObjectPool.Instance.GetPoolBulletObject();
-            bullet.Active(raycastOrigin.position, velocity);
-        }
-        else
-        {
-            EnemyBullet bullet = ObjectPool.Instance.GetPoolEnemyBulletObject();
-            bullet.Active(raycastOrigin.position, velocity);
-        }
-
-        if (ammoCount <= 0)
-        {
-            return;
-        }
-        ammoCount--;
-
-        if (ListenerManager.HasInstance)
-        {
-            ListenerManager.Instance.BroadCast(ListenType.UPDATE_AMMO, this);
-        }
-
-        foreach (var p in muzzleFlash)
-        {
-            p.Emit(1);
-        }
-
-        EmitBulletCasing();
-
-        if (equipWeaponBy == EquipWeaponBy.Player)
-        {
-            if (weaponName.Equals("Sniper") && !IsEmptyAmmo())
-            {
-                if (characterAiming.isAiming && ammoCount >= 1)
-                {
-                    StartCoroutine(ActivateOnScope());
-                }
-                else
-                {
-                    recoil.rigController.Play("sniperPullBolt");
-                }
-            }
-
-            recoil.GenerateRecoil(weaponName);
-        }
-    }
-
     private void DestroyBullets()
     {
         foreach (Bullet bullet in ObjectPool.Instance.pooledBulletObjects)
@@ -388,7 +399,7 @@ public class RaycastWeapon : MonoBehaviour
     {
         //p + v*t + 0.5*g*t*t
         Vector3 gravity = Vector3.down * bulletDrop;
-        return (bullet.initialPosition) + (bullet.initialVelocity * bullet.time) + (0.5f * gravity * bullet.time * bullet.time);
+        return (bullet.initialPosition) + (bullet.initialVelocity * bullet.time) + (0.5f * bullet.time * bullet.time * gravity);
     }
 
     public void EmitBulletCasing()

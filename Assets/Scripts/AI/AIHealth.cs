@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class AIHealth : Health
 {
-    //public AudioClip[] audioKillEnemy;
-
     private UIHealthBar healthBar;
     private float blinkDuration;
     private float timeDestroyAI;
@@ -35,10 +33,6 @@ public class AIHealth : Health
         {
             healthBar.SetHealthBarPercentage(currentHealth / maxHealth);
         }
-        //if(AudioManager.HasInstance)
-        //{
-        //    AudioManager.Instance.PlayEnemyTakeDamage();
-        //}
         StartCoroutine(EnemyFlash());
     }
 
@@ -50,9 +44,7 @@ public class AIHealth : Health
         aiAgent.stateMachine.ChangeState(AIStateID.Death);
         if (AudioManager.HasInstance)
         {
-            //AudioManager.Instance.PlaySEAgent(AUDIO.SE_DIE1);
             AudioManager.Instance.PlayEnemyTakeDamage();
-            //AudioSource.PlayClipAtPoint(audioKillEnemy[Mathf.RoundToInt(Random.Range(0,audioKillEnemy.Length))], this.transform.position, 0.5f);
         }
     }
 

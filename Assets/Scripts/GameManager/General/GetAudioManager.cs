@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class GetAudioManager : MonoBehaviour
 {
-    AudioSource audioSource;
+    private AudioSource audioSource;
 
     private void Awake()
     {
-        audioSource = GetComponent<AudioSource>();    
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Start()

@@ -6,6 +6,7 @@ public class ScreenGame : BaseScreen
     [SerializeField] private TextMeshProUGUI ammoText;
     [SerializeField] private TextMeshProUGUI ammoTotalText;
     [SerializeField] private TextMeshProUGUI healthText;
+    [SerializeField] private TextMeshProUGUI amorText;
     [SerializeField] private TextMeshProUGUI timeText;
     public TextMeshProUGUI enemyCountText;
     public GameObject scopeOverlay;
@@ -74,14 +75,12 @@ public class ScreenGame : BaseScreen
 
     private void OnUpdateHealth(object value)
     {
-        if (value is PlayerHealth currentHealth)
+        if (value is PlayerHealth currentPlayerHealth)
         {
-            float health = Mathf.Max(currentHealth.CurrentHealth, 0.0f);
+            int health = Mathf.RoundToInt(Mathf.Max(currentPlayerHealth.CurrentHealth, 0.0f));
+            int amor = Mathf.RoundToInt(Mathf.Max(currentPlayerHealth.CurrentAmor, 0.0f));
             healthText.text = health.ToString();
-            if (health <= 0.0f)
-            {
-                this.Hide();
-            }
+            amorText.text = amor.ToString();
         }
     }
 

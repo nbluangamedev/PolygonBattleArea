@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -32,13 +33,6 @@ public class GameManager : BaseManager<GameManager>
         set { isPopupSetting = value; }
     }
 
-    //private bool playerDeath = false;
-    //public bool PlayerDeath
-    //{
-    //    get { return playerDeath; }
-    //    set { playerDeath = value; }
-    //}
-
     private int level = 0;
     public int Level
     {
@@ -46,9 +40,10 @@ public class GameManager : BaseManager<GameManager>
         get { return level; }
     }
 
+    public bool playerDeath = false;
+
     [HideInInspector] public float timer = 0;
     [HideInInspector] public int enemySpawn = 12;
-    //[HideInInspector] public float timerPlayerTalk = 0;
 
     private void Start()
     {
@@ -107,19 +102,6 @@ public class GameManager : BaseManager<GameManager>
 
             if (hasScreenGame)
             {
-                //timerPlayerTalk += Time.deltaTime;
-                //if (DataManager.HasInstance)
-                //{
-                //    if (timerPlayerTalk > DataManager.Instance.globalConfig.timerPlayerTalk)
-                //    {
-                //        if (AudioManager.HasInstance)
-                //        {
-                //            AudioManager.Instance.PlayPlayerTalk();
-                //        }
-                //        timerPlayerTalk = 0;
-                //    }
-                //}
-
                 timer += Time.deltaTime;
                 screenGame.DisplayTime(timer);
                 if (enemyCount == enemySpawn)
@@ -244,7 +226,6 @@ public class GameManager : BaseManager<GameManager>
         if (value is int num)
         {
             enemyCount += num;
-            //Debug.Log("enemy count: " + enemyCount);
             if (UIManager.HasInstance)
             {
                 ScreenGame screenGame = UIManager.Instance.GetExistScreen<ScreenGame>();
@@ -253,7 +234,6 @@ public class GameManager : BaseManager<GameManager>
                     screenGame.enemyCountText.text = EnemyCount.ToString();
                 }
             }
-
         }
     }
 
@@ -261,10 +241,18 @@ public class GameManager : BaseManager<GameManager>
     {
         if (value is PlayerHealth health)
         {
-            //playerDeath = health.CurrentHealth <= 0;
-            if (health.CurrentHealth > 0 && AudioManager.HasInstance)
+            if (AudioManager.HasInstance)
             {
-                AudioManager.Instance.PlayPlayerTakeDamage();
+                if (health.CurrentHealth > 0)
+                {
+                    AudioManager.Instance.PlayPlayerTakeDamage();
+                    playerDeath = false;
+                }
+                else
+                {
+                    AudioManager.Instance.PlaySE(AUDIO.SE_DIE2, 0.1f);
+                    playerDeath = true;
+                }
             }
         }
     }
@@ -302,7 +290,6 @@ public class GameManager : BaseManager<GameManager>
         yield return new WaitForSeconds(3f);
         if (UIManager.HasInstance)
         {
-            //Debug.Log("you lose");
             UIManager.Instance.ShowPopup<PopupVictory>();
         }
     }

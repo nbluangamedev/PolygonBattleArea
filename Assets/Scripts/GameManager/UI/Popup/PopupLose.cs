@@ -2,28 +2,27 @@ public class PopupLose : BasePopup
 {
     public override void Init()
     {
-        base.Init();
-
-        if (GameManager.HasInstance)
-        {
-            GameManager.Instance.PauseGame();
-        }
         if (AudioManager.HasInstance)
         {
             AudioManager.Instance.PlaySE(AUDIO.SE_SHOWPOPUP);
+        }
+        base.Init();
+        if (GameManager.HasInstance)
+        {
+            GameManager.Instance.PauseGame();
         }
     }
 
     public override void Show(object data)
     {
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE(AUDIO.SE_SHOWPOPUP);
+        }
         base.Show(data);
         if (GameManager.HasInstance)
         {
             GameManager.Instance.PauseGame();
-        }
-        if (AudioManager.HasInstance)
-        {
-            AudioManager.Instance.PlaySE(AUDIO.SE_SHOWPOPUP);
         }
     }
 
@@ -31,7 +30,7 @@ public class PopupLose : BasePopup
     {
         if (GameManager.HasInstance)
         {
-            GameManager.Instance.ResumeGame();
+            //GameManager.Instance.ResumeGame();
         }
         if (AudioManager.HasInstance)
         {

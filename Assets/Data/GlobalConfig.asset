@@ -33,8 +33,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1527
   scopeOverlay: {fileID: 2287727143583154844, guid: 1b010632b5954a44db5e72a3b00da538, type: 3}
-  playerMaxHealth: 300
+  playerMaxHealth: 100
+  playerMaxAmor: 100
   speedRotateCharacter: 5
+  timerPlayerTalk: 15
   duration: 0.1
   amountBulletInPool: 30
   amountEnemyBulletInPool: 30

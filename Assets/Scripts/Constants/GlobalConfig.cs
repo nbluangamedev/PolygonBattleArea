@@ -28,6 +28,7 @@ public class GlobalConfig : ScriptableObject
 
     [Header("Health")]
     public float playerMaxHealth = 100f;
+    public float playerMaxAmor = 100f;
 
     [Header("Character Selection")]
     public float speedRotateCharacter = 5f;

@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class AIWeapon : MonoBehaviour
 {
-    //public WeaponAnimationEvent animationEvents;
     public RaycastWeapon AICurrentWeapon
     {
         get { return aiWeapons[currentWeaponIndex]; }
@@ -46,7 +45,6 @@ public class AIWeapon : MonoBehaviour
 
     private void Awake()
     {
-        //animationEvents.GetComponent<WeaponAnimationEvent>();
         animator = GetComponent<Animator>();
         weaponIK = GetComponent<WeaponIK>();
         socketController = GetComponent<MeshSocketController>();
@@ -55,7 +53,6 @@ public class AIWeapon : MonoBehaviour
 
     private void Start()
     {
-        //animationEvents.weaponAnimationEvent.AddListener(OnAnimationEventAI);
         foreach (var weapon in aiWeapons)
         {
             if (weapon)
@@ -75,12 +72,10 @@ public class AIWeapon : MonoBehaviour
             if (AICurrentWeapon.weaponName.Equals("Sniper"))
             {
                 target += Random.insideUnitSphere * inAccuracySniper;
-                //WeaponRecoil(AICurrentWeapon.weaponName);
             }
             else
             {
                 target += Random.insideUnitSphere * inAccuracy;
-                //WeaponRecoil(AICurrentWeapon.weaponName);
             }
             AICurrentWeapon.UpdateWeapon(Time.deltaTime, target);
         }
@@ -103,11 +98,6 @@ public class AIWeapon : MonoBehaviour
             AICurrentWeapon.StopFiring();
         }
     }
-
-    //public void WeaponRecoil(string weaponName)
-    //{
-    //    animator.Play("weapon_Recoil_" + weaponName);
-    //}
 
     public bool HasWeapon()
     {

@@ -34,8 +34,9 @@ public class EnemySpawn : MonoBehaviour
             //3d sound
             AudioSource agentAudio = agent.AddComponent<AudioSource>();
             agentAudio.spatialBlend = 1f;
+            agentAudio.reverbZoneMix = 0f;
             agentAudio.dopplerLevel = 0f;
-            agentAudio.rolloffMode = AudioRolloffMode.Linear;
+            agentAudio.rolloffMode = AudioRolloffMode.Logarithmic;
             agentAudio.minDistance = 1f;
             agentAudio.maxDistance = 30f;
             agent.AddComponent<GetAudioSource>();

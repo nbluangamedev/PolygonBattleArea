@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -20,9 +21,11 @@ public class PlayerHealth : Health
         if (DataManager.HasInstance)
         {
             maxHealth = DataManager.Instance.globalConfig.playerMaxHealth;
+            maxAmor = DataManager.Instance.globalConfig.playerMaxAmor;
         }
 
         currentHealth = maxHealth;
+        currentAmor = maxAmor;
         ragdoll = GetComponent<Ragdoll>();
         activeWeapon = GetComponent<ActiveWeapon>();
         aiming = GetComponent<CharacterAiming>();
@@ -39,7 +42,6 @@ public class PlayerHealth : Health
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.BroadCast(ListenType.UPDATE_HEALTH, this);
-            ListenerManager.Instance.BroadCast(ListenType.ON_PLAYER_DEATH, this);
         }
     }
 
@@ -76,6 +78,8 @@ public class PlayerHealth : Health
         {
             ListenerManager.Instance.BroadCast(ListenType.SCOPE, false);
             ListenerManager.Instance.BroadCast(ListenType.ACTIVECROSSHAIR, false);
+            ListenerManager.Instance.BroadCast(ListenType.ON_PLAYER_DEATH, this);
+            ListenerManager.Instance.BroadCast(ListenType.UPDATE_HEALTH, this);
         }
         if (CameraManager.HasInstance)
         {
@@ -84,7 +88,7 @@ public class PlayerHealth : Health
         RaycastWeapon weapon = activeWeapon.GetActiveWeapon();
         if (weapon)
         {
-            activeWeapon.DropWeaponPrefab((int)activeWeapon.GetActiveWeapon().weaponSlot);
+            activeWeapon.DropWeaponPrefab((int)weapon.weaponSlot);
         }
         ragdoll.ActiveRagdoll();
         ragdoll.ApplyForce(direction, ridigBody);
@@ -93,16 +97,12 @@ public class PlayerHealth : Health
         {
             vignette.intensity.value = 0f;
         }
-        if (AudioManager.HasInstance)
-        {
-            AudioManager.Instance.PlaySE(AUDIO.SE_DIE2);
-        }
-        StartCoroutine(ShowPopupWhenDie());
+
+        DOVirtual.DelayedCall(2f, ShowPopupWhenDie);
     }
 
-    private IEnumerator ShowPopupWhenDie()
+    private void ShowPopupWhenDie()
     {
-        yield return new WaitForSeconds(3f);
         if (UIManager.HasInstance)
         {
             UIManager.Instance.ShowPopup<PopupLose>();

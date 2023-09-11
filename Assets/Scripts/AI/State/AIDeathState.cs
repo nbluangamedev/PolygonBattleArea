@@ -25,6 +25,10 @@ public class AIDeathState : AIState
                 ListenerManager.Instance.BroadCast(ListenType.ENEMY_COUNT, 1);
             }
         }
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySEAgent(AUDIO.SE_DIE1);
+        }
         agent.weapon.DropWeaponPrefab((int)agent.weapon.currentWeaponSlot);
         agent.ragdoll.ActiveRagdoll();
         agent.ragdoll.ApplyForce(direction * dieForce, rigidbody);
