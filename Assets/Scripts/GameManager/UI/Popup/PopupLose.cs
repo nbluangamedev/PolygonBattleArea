@@ -8,6 +8,10 @@ public class PopupLose : BasePopup
         {
             GameManager.Instance.PauseGame();
         }
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE(AUDIO.SE_SHOWPOPUP);
+        }
     }
 
     public override void Show(object data)
@@ -17,6 +21,10 @@ public class PopupLose : BasePopup
         {
             GameManager.Instance.PauseGame();
         }
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE(AUDIO.SE_SHOWPOPUP);
+        }
     }
 
     public override void Hide()
@@ -24,6 +32,10 @@ public class PopupLose : BasePopup
         if (GameManager.HasInstance)
         {
             GameManager.Instance.ResumeGame();
+        }
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE(AUDIO.SE_SHOWPOPUP);
         }
         base.Hide();
     }

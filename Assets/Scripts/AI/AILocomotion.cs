@@ -50,7 +50,7 @@ public class AILocomotion : MonoBehaviour
     {
         if (AudioManager.HasInstance)
         {
-            AudioManager.Instance.PlaySEAgent(AUDIO.SE_PL_STEP4);
+            AudioManager.Instance.PlaySEAgent(AUDIO.SE_MOVEMENT, AudioManager.Instance.AttachSESource.volume);
         }
     }
 
@@ -58,7 +58,7 @@ public class AILocomotion : MonoBehaviour
     {
         if (AudioManager.HasInstance)
         {
-            AudioManager.Instance.PlaySEAgent(AUDIO.SE_PL_STEP1);
+            AudioManager.Instance.PlaySEAgent(AUDIO.SE_MOVEMENT, AudioManager.Instance.AttachSESource.volume);
         }
     }
 }

@@ -29,20 +29,4 @@ public class WeaponPickup : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
-    private void GetAmmoInAIWeapon(AIWeapon aiWeapon, int ammoTotal, RaycastWeapon newWeapon)
-    {
-        newWeapon.equipWeaponBy = EquipWeaponBy.AI;
-        //newWeapon.ammoTotal += ammoTotal;
-        aiWeapon.Equip(newWeapon);
-        Destroy(gameObject);
-    }
-
-    private void GetAmmoInWeapon(ActiveWeapon activeWeapon, int ammoTotal, RaycastWeapon newWeapon)
-    {
-        newWeapon.equipWeaponBy = EquipWeaponBy.Player;
-        //newWeapon.ammoTotal += ammoTotal;
-        activeWeapon.Equip(newWeapon);
-        Destroy(gameObject);
-    }
 }

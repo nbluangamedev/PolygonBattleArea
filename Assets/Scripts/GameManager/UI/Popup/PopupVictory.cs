@@ -16,6 +16,10 @@ public class PopupVictory : BasePopup
             timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
             GameManager.Instance.PauseGame();
         }
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE(AUDIO.SE_SHOWPOPUP);
+        }
         base.Init();
     }
 
@@ -30,6 +34,10 @@ public class PopupVictory : BasePopup
             timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
             GameManager.Instance.PauseGame();
         }
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE(AUDIO.SE_SHOWPOPUP);
+        }
         base.Show(data);
     }
 
@@ -40,6 +48,10 @@ public class PopupVictory : BasePopup
         if (GameManager.HasInstance)
         {
             GameManager.Instance.ResumeGame();
+        }
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE(AUDIO.SE_SHOWPOPUP);
         }
     }
 
@@ -110,7 +122,7 @@ public class PopupVictory : BasePopup
             entry.time = string.Format("{0:00}:{1:00}", minutes, seconds);
 
             //score
-            entry.score = (int)(timer / Mathf.Pow(levelScore + 1, 2));
+            entry.score = Mathf.RoundToInt(timer / Mathf.Pow(levelScore + 1, 2));
         }
 
         //load saved highscores

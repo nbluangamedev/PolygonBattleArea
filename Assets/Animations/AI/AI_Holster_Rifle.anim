@@ -52018,7 +52018,7 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 1
-    functionName: OnAnimationEvent
+    functionName: OnAnimationEventAI
     data: holsterWeapon
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

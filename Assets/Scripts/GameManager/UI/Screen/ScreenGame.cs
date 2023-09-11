@@ -28,8 +28,11 @@ public class ScreenGame : BaseScreen
         {
             GameManager.Instance.timer = 0;
         }
-                
         base.Init();
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlayPlayerTalk();
+        }
     }
 
     private void OnDestroy()
@@ -53,8 +56,11 @@ public class ScreenGame : BaseScreen
         ammoTotalText.text = "0";
         enemyCountText.text = "0";
         crossHair.SetActive(true);
-                
         base.Show(data);
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlayPlayerTalk();
+        }
     }
 
     public override void Hide()

@@ -25,6 +25,7 @@ public class PopupSettingOnGame : BasePopup
             bgmSlider.value = bgmValue;
             seSlider.value = seValue;
             mouseSlider.value = mouseValue;
+            AudioManager.Instance.PlaySE(AUDIO.SE_SHOWPOPUP);
         }
         if (GameManager.HasInstance)
         {
@@ -33,6 +34,7 @@ public class PopupSettingOnGame : BasePopup
         qualityValue = QualitySettings.GetQualityLevel();
         PlayerPrefs.SetInt("QUALITY_SETTINGS", qualityValue);
         qualityToggles[qualityValue].isOn = true;
+
         base.Init();
     }
 
@@ -44,6 +46,7 @@ public class PopupSettingOnGame : BasePopup
             seValue = AudioManager.Instance.AttachSESource.volume;
             bgmSlider.value = bgmValue;
             seSlider.value = seValue;
+            AudioManager.Instance.PlaySE(AUDIO.SE_SHOWPOPUP);
         }
         if (GameManager.HasInstance)
         {
@@ -61,6 +64,10 @@ public class PopupSettingOnGame : BasePopup
         {
             GameManager.Instance.IsPopupSetting = false;
             GameManager.Instance.ResumeGame();
+        }
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE(AUDIO.SE_SHOWPOPUP);
         }
         base.Hide();
     }
@@ -87,7 +94,7 @@ public class PopupSettingOnGame : BasePopup
 
     public void OnMouseSpeedValueChange(float v)
     {
-        mouseValue = v;        
+        mouseValue = v;
     }
 
     public void OnToggleSelect()

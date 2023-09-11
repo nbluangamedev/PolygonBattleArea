@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class AIWeapon : MonoBehaviour
 {
-    public WeaponAnimationEvent animationEvents;
+    //public WeaponAnimationEvent animationEvents;
     public RaycastWeapon AICurrentWeapon
     {
         get { return aiWeapons[currentWeaponIndex]; }
@@ -46,7 +46,7 @@ public class AIWeapon : MonoBehaviour
 
     private void Awake()
     {
-        animationEvents.GetComponent<WeaponAnimationEvent>();
+        //animationEvents.GetComponent<WeaponAnimationEvent>();
         animator = GetComponent<Animator>();
         weaponIK = GetComponent<WeaponIK>();
         socketController = GetComponent<MeshSocketController>();
@@ -55,7 +55,7 @@ public class AIWeapon : MonoBehaviour
 
     private void Start()
     {
-        animationEvents.weaponAnimationEvent.AddListener(OnAnimationEventAI);
+        //animationEvents.weaponAnimationEvent.AddListener(OnAnimationEventAI);
         foreach (var weapon in aiWeapons)
         {
             if (weapon)
@@ -337,7 +337,7 @@ public class AIWeapon : MonoBehaviour
             case "AIEquipWeapon":
                 AIEquipWeapon();
                 break;
-            case "RifleReload":
+            case "rifleReload":
                 RifleReload();
                 break;
         }
@@ -408,16 +408,16 @@ public class AIWeapon : MonoBehaviour
             switch (weaponName)
             {
                 case "Pistol":
-                    AudioManager.Instance.PlaySEAgent(AUDIO.SE_PISTOLEQUIP);
+                    AudioManager.Instance.PlaySEAgent(AUDIO.SE_PISTOLEQUIP, AudioManager.Instance.AttachSESource.volume);
                     break;
                 case "Rifle":
-                    AudioManager.Instance.PlaySEAgent(AUDIO.SE_RIFLEEQUIP);
+                    AudioManager.Instance.PlaySEAgent(AUDIO.SE_RIFLEEQUIP, AudioManager.Instance.AttachSESource.volume);
                     break;
                 case "Shotgun":
-                    AudioManager.Instance.PlaySEAgent(AUDIO.SE_SHOTGUNEQUIP);
+                    AudioManager.Instance.PlaySEAgent(AUDIO.SE_SHOTGUNEQUIP, AudioManager.Instance.AttachSESource.volume);
                     break;
                 case "Sniper":
-                    AudioManager.Instance.PlaySEAgent(AUDIO.SE_SNIPERBOLT);
+                    AudioManager.Instance.PlaySEAgent(AUDIO.SE_SNIPERBOLT, AudioManager.Instance.AttachSESource.volume);
                     break;
             }
         }
@@ -427,7 +427,7 @@ public class AIWeapon : MonoBehaviour
     {
         if (AudioManager.HasInstance)
         {
-            AudioManager.Instance.PlaySEAgent(AUDIO.SE_GENERIC_RELOAD);
+            AudioManager.Instance.PlaySEAgent(AUDIO.SE_GENERIC_RELOAD, AudioManager.Instance.AttachSESource.volume);
         }
     }
 

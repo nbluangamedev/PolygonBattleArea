@@ -18,10 +18,6 @@ public class HealthPickup : MonoBehaviour
         if (health)
         {
             health.Heal(healthAmount);
-            if(AudioManager.HasInstance)
-            {
-                AudioManager.Instance.PlaySE(AUDIO.SE_HEALTHPICKUP);
-            }
             Destroy(gameObject);
         }
     }

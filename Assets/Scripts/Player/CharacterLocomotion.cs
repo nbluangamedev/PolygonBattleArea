@@ -213,7 +213,7 @@ public class CharacterLocomotion : MonoBehaviour
     {
         if (AudioManager.HasInstance)
         {
-            AudioManager.Instance.PlaySE(AUDIO.SE_PL_STEP4);
+            AudioManager.Instance.PlaySE(AUDIO.SE_MOVEMENT);
         }
     }
 
@@ -221,7 +221,7 @@ public class CharacterLocomotion : MonoBehaviour
     {
         if (AudioManager.HasInstance)
         {
-            AudioManager.Instance.PlaySE(AUDIO.SE_PL_STEP1);
+            AudioManager.Instance.PlaySE(AUDIO.SE_MOVEMENT);
         }
     }
 
@@ -230,7 +230,6 @@ public class CharacterLocomotion : MonoBehaviour
         if (AudioManager.HasInstance)
         {
             AudioManager.Instance.PlaySE(AUDIO.SE_PL_JUMP1);
-            //Debug.Log("jump");
         }
     }
 
@@ -239,7 +238,6 @@ public class CharacterLocomotion : MonoBehaviour
         if (AudioManager.HasInstance)
         {
             AudioManager.Instance.PlaySE(AUDIO.SE_LANDING);
-            //Debug.Log("landing");
         }
     }
 }

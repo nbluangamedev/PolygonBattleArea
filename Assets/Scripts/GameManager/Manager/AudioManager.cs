@@ -6,8 +6,10 @@ public class AudioManager : BaseManager<AudioManager>
     //key and default value for saving volume
     private const string BGM_VOLUME_KEY = "BGM_VOLUME_KEY";
     private const string SE_VOLUME_KEY = "SE_VOLUME_KEY";
+    //private const string VOICE_VOLUME_KEY = "SE_VOLUME_KEY";        //add
     private const float BGM_VOLUME_DEFULT = 0.2f;
     private const float SE_VOLUME_DEFULT = 0.3f;
+    //private const float VOICE_VOLUME_DEFULT = 0.5f;         //add
 
     //Time it takes for the background music to fade
     public const float BGM_FADE_SPEED_RATE_HIGH = 0.9f;
@@ -18,6 +20,10 @@ public class AudioManager : BaseManager<AudioManager>
     private string nextBGMName;
     private string nextSEName;
 
+    private int enemyKey;     //add
+    private int playerKey;
+    private int talkKey;
+
     //Is the background music fading out?
     private bool isFadeOut = false;
 
@@ -25,10 +31,17 @@ public class AudioManager : BaseManager<AudioManager>
     public AudioSource AttachBGMSource;
     public AudioSource AttachSESource;
 
+    public AudioSource AttachVOICESource;       //add
+
     //Keep All Audio
     private Dictionary<string, AudioClip> bgmDic, seDic;
 
-    //Vector3 positionPlayClip;
+    private Dictionary<int, AudioClip> enemyDic;      //add
+    private Dictionary<int, AudioClip> playerDic;
+    private Dictionary<int, AudioClip> playerTalkDic;
+    private object[] enemyList;
+    private object[] playerList;
+    private object[] playerTalkList;
 
     protected override void Awake()
     {
@@ -37,8 +50,16 @@ public class AudioManager : BaseManager<AudioManager>
         bgmDic = new Dictionary<string, AudioClip>();
         seDic = new Dictionary<string, AudioClip>();
 
+        enemyDic = new Dictionary<int, AudioClip>();        //add
+        playerDic = new Dictionary<int, AudioClip>();
+        playerTalkDic = new Dictionary<int, AudioClip>();
+
         object[] bgmList = Resources.LoadAll("Audio/BGM");
         object[] seList = Resources.LoadAll("Audio/SE");
+
+        enemyList = Resources.LoadAll("Audio/Enemy/TakeDamage");        //add
+        playerList = Resources.LoadAll("Audio/Player/TakeDamage");
+        playerTalkList = Resources.LoadAll("Audio/Player/Talk");
 
         foreach (AudioClip bgm in bgmList)
         {
@@ -48,16 +69,27 @@ public class AudioManager : BaseManager<AudioManager>
         {
             seDic[se.name] = se;
         }
+
+        for (int i = 0; i < enemyList.Length; i++)        //add
+        {
+            enemyDic[i] = (AudioClip)enemyList[i];
+        }
+        for (int i = 0; i < playerList.Length; i++)
+        {
+            playerDic[i] = (AudioClip)playerList[i];
+        }
+        for (int i = 0; i < playerTalkList.Length; i++)
+        {
+            playerTalkDic[i] = (AudioClip)playerTalkList[i];
+        }
     }
 
     private void Start()
     {
-        //if (ListenerManager.HasInstance)
-        //{
-        //    ListenerManager.Instance.Register(ListenType.GET_AUDIOSOURCE, UpdateAudioSource);
-        //}
         AttachBGMSource.volume = PlayerPrefs.GetFloat(BGM_VOLUME_KEY, BGM_VOLUME_DEFULT);
         AttachSESource.volume = PlayerPrefs.GetFloat(SE_VOLUME_KEY, SE_VOLUME_DEFULT);
+
+        AttachVOICESource.volume = PlayerPrefs.GetFloat(SE_VOLUME_KEY, SE_VOLUME_DEFULT);         //add
     }
 
     public void PlaySE(string seName, float delay = 0.0f)
@@ -74,7 +106,7 @@ public class AudioManager : BaseManager<AudioManager>
 
     private void DelayPlaySE()
     {
-        AttachSESource.PlayOneShot(seDic[nextSEName] as AudioClip);
+        AttachSESource.PlayOneShot(seDic[nextSEName] as AudioClip, AttachSESource.volume);
     }
 
     public void PlaySEAgent(string seName, float delay = 0.0f)
@@ -91,7 +123,6 @@ public class AudioManager : BaseManager<AudioManager>
 
     private void DelayPlaySEAgent()
     {
-        //AudioSource.PlayClipAtPoint(seDic[nextSEName], positionPlayClip, PlayerPrefs.GetFloat(SE_VOLUME_KEY));
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.BroadCast(ListenType.GET_AUDIOSOURCE, seDic[nextSEName]);
@@ -157,14 +188,6 @@ public class AudioManager : BaseManager<AudioManager>
         }
     }
 
-    //private void OnDestroy()
-    //{
-    //    if (ListenerManager.HasInstance)
-    //    {
-    //        ListenerManager.Instance.Unregister(ListenType.GET_AUDIOSOURCE, UpdateAudioSource);
-    //    }
-    //}
-
     public void ChangeBGMVolume(float BGMVolume)
     {
         AttachBGMSource.volume = BGMVolume;
@@ -177,11 +200,26 @@ public class AudioManager : BaseManager<AudioManager>
         PlayerPrefs.SetFloat(SE_VOLUME_KEY, SEVolume);
     }
 
-    //private void UpdateAudioSource(object position)
-    //{
-    //    if (position is Vector3 agentPosition)
-    //    {
-    //        positionPlayClip = agentPosition;
-    //    }
-    //}
+    public void PlayEnemyTakeDamage()
+    {
+        enemyKey = Mathf.RoundToInt(Random.Range(0, enemyList.Length));
+        AttachVOICESource.PlayOneShot(enemyDic[enemyKey] as AudioClip, 1f);
+    }
+
+    public void PlayPlayerTakeDamage()
+    {
+        playerKey = Mathf.RoundToInt(Random.Range(0, playerList.Length));
+        AttachVOICESource.PlayOneShot(playerDic[playerKey] as AudioClip, 1f);
+    }
+
+    public void PlayPlayerTalk()
+    {
+        Invoke(nameof(DelayPlayerTalk), 3f);
+    }
+
+    private void DelayPlayerTalk()
+    {
+        talkKey = Mathf.RoundToInt(Random.Range(0, playerTalkList.Length));
+        AttachVOICESource.PlayOneShot(playerTalkDic[talkKey] as AudioClip, 1f);
+    }
 }

@@ -15,6 +15,10 @@ public class PopupHighscore : BasePopup
 
     public override void Init()
     {
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE(AUDIO.SE_SHOWPOPUP);
+        }
         entryHighscore.gameObject.SetActive(false);
         //load saved entry
         string jsonToLoad = PlayerPrefs.GetString("highscoreTable");
@@ -30,17 +34,18 @@ public class PopupHighscore : BasePopup
         }
 
         //bubble sort rank
-        for (int i = 0; i < highscores.highscoreList.Count; i++)
+        for (int i = 0; i < highscores.highscoreList.Count - 1; i++)
         {
-            for (int j = highscores.highscoreList.Count - 1; j > i; j--)
+            for (int j = 0; j < highscores.highscoreList.Count - i - 1; j++)
             {
-                if (highscores.highscoreList[j].score < highscores.highscoreList[j - 1].score)
+                if (highscores.highscoreList[j].score > highscores.highscoreList[j + 1].score)
                 {
-                    (highscores.highscoreList[i], highscores.highscoreList[j]) = (highscores.highscoreList[j], highscores.highscoreList[i]);
+                    (highscores.highscoreList[j], highscores.highscoreList[j+1]) = (highscores.highscoreList[j+1], highscores.highscoreList[j]);
                 }
             }
         }
-        Debug.Log(PlayerPrefs.GetString("highscoreTable"));
+        //Debug.Log(PlayerPrefs.GetString("highscoreTable"));
+
         //show rank
         highscoreEntryTransformList = new List<Transform>();
 
@@ -54,6 +59,10 @@ public class PopupHighscore : BasePopup
 
     public override void Show(object data)
     {
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE(AUDIO.SE_SHOWPOPUP);
+        }
         entryHighscore.gameObject.SetActive(false);
         //load saved entry
         string jsonToLoad = PlayerPrefs.GetString("highscoreTable");
@@ -69,17 +78,18 @@ public class PopupHighscore : BasePopup
         }
 
         //bubble sort rank
-        for (int i = 0; i < highscores.highscoreList.Count; i++)
+        for (int i = 0; i < highscores.highscoreList.Count - 1; i++)
         {
-            for (int j = highscores.highscoreList.Count - 1; j > i; j--)
+            for (int j = 0; j < highscores.highscoreList.Count - i - 1; j++)
             {
-                if (highscores.highscoreList[j].score < highscores.highscoreList[j - 1].score)
+                if (highscores.highscoreList[j].score > highscores.highscoreList[j + 1].score)
                 {
-                    (highscores.highscoreList[i], highscores.highscoreList[j]) = (highscores.highscoreList[j], highscores.highscoreList[i]);
+                    (highscores.highscoreList[j], highscores.highscoreList[j + 1]) = (highscores.highscoreList[j + 1], highscores.highscoreList[j]);
                 }
             }
         }
-        Debug.Log(PlayerPrefs.GetString("highscoreTable"));
+        //Debug.Log(PlayerPrefs.GetString("highscoreTable"));
+
         //show rank
         highscoreEntryTransformList = new List<Transform>();
 
@@ -93,6 +103,10 @@ public class PopupHighscore : BasePopup
 
     public override void Hide()
     {
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE(AUDIO.SE_SHOWPOPUP);
+        }
         foreach (Transform trf in entryContainer)
         {
             Destroy(trf.gameObject);

@@ -647,6 +647,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da6746b8554cb5443a4de38d4ebe0a49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioKillEnemy:
+  - {fileID: 8300000, guid: 237c6f8a37b45bd498fc3a06b9394aed, type: 3}
+  - {fileID: 8300000, guid: fbfe5c170b0897b488a1376ce3ceee5a, type: 3}
+  - {fileID: 8300000, guid: 72cbbfaa032719949a09fb9a85072231, type: 3}
+  - {fileID: 8300000, guid: 1bc0eef621b08264aa95323bb7adf29c, type: 3}
+  - {fileID: 8300000, guid: 1f7939eef8b42b4439febd58dfa4ee5c, type: 3}
+  - {fileID: 8300000, guid: 60c47864fc5653a40b3bcd526c60c27c, type: 3}
 --- !u!114 &-7669629284363804206
 MonoBehaviour:
   m_ObjectHideFlags: 0

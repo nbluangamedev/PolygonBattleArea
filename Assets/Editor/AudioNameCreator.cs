@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using System.Text;
 using UnityEditor;
@@ -6,7 +5,6 @@ using UnityEngine;
 
 public static class AudioNameCreator
 {
-
     private const string MENUITEM_PATH = "NBLuanGD/Create Audio Name Script";
     private const string EXPORT_PATH = "Assets/Scripts/Constants/AUDIO.cs";
 
@@ -36,6 +34,10 @@ public static class AudioNameCreator
         object[] bgmList = Resources.LoadAll("Audio/BGM");
         object[] seList = Resources.LoadAll("Audio/SE");
 
+        object[] enemyHitList = Resources.LoadAll("Audio/Enemy/TakeDamage");        //add
+        object[] playerHitList = Resources.LoadAll("Audio/Player/TakeDamage");
+        object[] playerTalkList = Resources.LoadAll("Audio/Player/Talk");
+
         foreach (AudioClip bgm in bgmList)
         {
             builder.Append("\t").AppendFormat(@"  public const string BGM_{0} = ""{1}"";", bgm.name.ToUpper(), bgm.name).AppendLine();
@@ -46,6 +48,27 @@ public static class AudioNameCreator
         foreach (AudioClip se in seList)
         {
             builder.Append("\t").AppendFormat(@"  public const string SE_{0} = ""{1}"";", se.name.ToUpper(), se.name).AppendLine();
+        }
+
+        builder.AppendLine("\t");
+
+        foreach (AudioClip etd in enemyHitList)     //add
+        {
+            builder.Append("\t").AppendFormat(@"  public const string ETD_{0} = ""{1}"";", etd.name.ToUpper(), etd.name).AppendLine();
+        }
+
+        builder.AppendLine("\t");
+
+        foreach (AudioClip etd in playerHitList)     //add
+        {
+            builder.Append("\t").AppendFormat(@"  public const string PTD_{0} = ""{1}"";", etd.name.ToUpper(), etd.name).AppendLine();
+        }
+
+        builder.AppendLine("\t");
+
+        foreach (AudioClip etd in playerTalkList)     //add
+        {
+            builder.Append("\t").AppendFormat(@"  public const string PT_{0} = ""{1}"";", etd.name.ToUpper(), etd.name).AppendLine();
         }
 
         builder.AppendLine("}");

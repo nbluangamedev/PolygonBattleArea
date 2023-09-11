@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class AIHealth : Health
 {
+    //public AudioClip[] audioKillEnemy;
+
     private UIHealthBar healthBar;
     private float blinkDuration;
     private float timeDestroyAI;
@@ -33,9 +35,11 @@ public class AIHealth : Health
         {
             healthBar.SetHealthBarPercentage(currentHealth / maxHealth);
         }
-        StartCoroutine(EnemyFlash());              
-
-        Debug.Log("ai health: " + currentHealth);
+        //if(AudioManager.HasInstance)
+        //{
+        //    AudioManager.Instance.PlayEnemyTakeDamage();
+        //}
+        StartCoroutine(EnemyFlash());
     }
 
     protected override void OnDeath(Vector3 direction, Rigidbody ridigBody)
@@ -44,6 +48,12 @@ public class AIHealth : Health
         deathState.direction = direction;
         deathState.rigidbody = ridigBody;
         aiAgent.stateMachine.ChangeState(AIStateID.Death);
+        if (AudioManager.HasInstance)
+        {
+            //AudioManager.Instance.PlaySEAgent(AUDIO.SE_DIE1);
+            AudioManager.Instance.PlayEnemyTakeDamage();
+            //AudioSource.PlayClipAtPoint(audioKillEnemy[Mathf.RoundToInt(Random.Range(0,audioKillEnemy.Length))], this.transform.position, 0.5f);
+        }
     }
 
     protected override void OnHeal(float amout)
@@ -51,6 +61,10 @@ public class AIHealth : Health
         if (healthBar)
         {
             healthBar.SetHealthBarPercentage(currentHealth / maxHealth);
+        }
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySEAgent(AUDIO.SE_HEALTHPICKUP, AudioManager.Instance.AttachSESource.volume);
         }
         StartCoroutine(EnemyFlash());
     }

@@ -32,6 +32,9 @@ public class GlobalConfig : ScriptableObject
     [Header("Character Selection")]
     public float speedRotateCharacter = 5f;
 
+    [Header("Game Manager")]
+    public float timerPlayerTalk = 15f;
+
     //---------------------------WEAPON--------------------------//    
     [Header("Weapon Recoil")]
     public float duration;

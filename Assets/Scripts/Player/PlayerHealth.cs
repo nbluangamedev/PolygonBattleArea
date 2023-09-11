@@ -41,8 +41,6 @@ public class PlayerHealth : Health
             ListenerManager.Instance.BroadCast(ListenType.UPDATE_HEALTH, this);
             ListenerManager.Instance.BroadCast(ListenType.ON_PLAYER_DEATH, this);
         }
-
-        Debug.Log("player health: " + currentHealth);
     }
 
     protected override void OnHeal(float amount)
@@ -52,8 +50,10 @@ public class PlayerHealth : Health
         {
             ListenerManager.Instance.BroadCast(ListenType.UPDATE_HEALTH, this);
         }
-
-        Debug.Log("player health: " + currentHealth);
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE(AUDIO.SE_HEALTHPICKUP);
+        }
     }
 
     private void UpdateVignette()
@@ -92,6 +92,10 @@ public class PlayerHealth : Health
         if (postProcessing.profile.TryGet(out Vignette vignette))
         {
             vignette.intensity.value = 0f;
+        }
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE(AUDIO.SE_DIE2);
         }
         StartCoroutine(ShowPopupWhenDie());
     }

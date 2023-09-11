@@ -283,13 +283,9 @@ public class ActiveWeapon : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
             do
             {
-                yield return new WaitForEndOfFrame();
+                yield return new WaitForEndOfFrame();                
             } while (rigController.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f);
             isHolstered = false;
-            if (ListenerManager.HasInstance)
-            {
-                ListenerManager.Instance.BroadCast(ListenType.UPDATE_AMMO, weapon);
-            }
             if (AudioManager.HasInstance)
             {
                 string weaponName = weapon.weaponName;
@@ -309,6 +305,10 @@ public class ActiveWeapon : MonoBehaviour
                         break;
                 }
             }
+            if (ListenerManager.HasInstance)
+            {
+                ListenerManager.Instance.BroadCast(ListenType.UPDATE_AMMO, weapon);
+            }            
         }
         isChangingWeapon = false;
     }

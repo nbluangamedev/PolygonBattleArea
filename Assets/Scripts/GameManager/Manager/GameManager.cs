@@ -32,12 +32,12 @@ public class GameManager : BaseManager<GameManager>
         set { isPopupSetting = value; }
     }
 
-    private bool playerDeath = false;
-    public bool PlayerDeath
-    {
-        get { return playerDeath; }
-        set { playerDeath = value; }
-    }
+    //private bool playerDeath = false;
+    //public bool PlayerDeath
+    //{
+    //    get { return playerDeath; }
+    //    set { playerDeath = value; }
+    //}
 
     private int level = 0;
     public int Level
@@ -48,6 +48,7 @@ public class GameManager : BaseManager<GameManager>
 
     [HideInInspector] public float timer = 0;
     [HideInInspector] public int enemySpawn = 12;
+    //[HideInInspector] public float timerPlayerTalk = 0;
 
     private void Start()
     {
@@ -102,22 +103,40 @@ public class GameManager : BaseManager<GameManager>
             PopupLose popupLose = UIManager.Instance.GetExistPopup<PopupLose>();
             PopupVictory popupVictory = UIManager.Instance.GetExistPopup<PopupVictory>();
 
-            if (screenGame)
+            bool hasScreenGame = screenGame && screenGame.CanvasGroup.alpha == 1;
+
+            if (hasScreenGame)
             {
+                //timerPlayerTalk += Time.deltaTime;
+                //if (DataManager.HasInstance)
+                //{
+                //    if (timerPlayerTalk > DataManager.Instance.globalConfig.timerPlayerTalk)
+                //    {
+                //        if (AudioManager.HasInstance)
+                //        {
+                //            AudioManager.Instance.PlayPlayerTalk();
+                //        }
+                //        timerPlayerTalk = 0;
+                //    }
+                //}
+
+                timer += Time.deltaTime;
+                screenGame.DisplayTime(timer);
                 if (enemyCount == enemySpawn)
                 {
+                    if (AudioManager.HasInstance)
+                    {
+                        AudioManager.Instance.PlaySE(AUDIO.SE_WIN);
+                    }
                     StartCoroutine(ShowPopupWhenVictory());
                     enemyCount = 0;
                 }
             }
 
-            if (screenGame && screenGame.CanvasGroup.alpha == 1)
-            {
-                timer += Time.deltaTime;
-                screenGame.DisplayTime(timer);
-            }
+            bool hasPopupVictory = popupVictory && popupVictory.CanvasGroup.alpha == 1;
+            bool hasPopupLose = popupLose && popupLose.CanvasGroup.alpha == 1;
 
-            if (!popupVictory || !popupLose || popupLose.CanvasGroup.alpha == 0)
+            if (!hasPopupLose && !hasPopupVictory)
             {
                 if (Input.GetKeyDown(KeyCode.Escape))
                 {
@@ -242,8 +261,11 @@ public class GameManager : BaseManager<GameManager>
     {
         if (value is PlayerHealth health)
         {
-            playerDeath = health.CurrentHealth <= 0;
-            //Debug.Log("player death: " + playerDeath);
+            //playerDeath = health.CurrentHealth <= 0;
+            if (health.CurrentHealth > 0 && AudioManager.HasInstance)
+            {
+                AudioManager.Instance.PlayPlayerTakeDamage();
+            }
         }
     }
 

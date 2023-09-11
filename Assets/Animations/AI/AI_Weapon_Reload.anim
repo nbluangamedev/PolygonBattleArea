@@ -76138,35 +76138,35 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0.5
-    functionName: OnAnimationEvent
+    functionName: OnAnimationEventAI
     data: detach_Magazine
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 1
-    functionName: OnAnimationEvent
-    data: RifleReload
+    functionName: OnAnimationEventAI
+    data: rifleReload
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 1.3333334
-    functionName: OnAnimationEvent
+    functionName: OnAnimationEventAI
     data: drop_Magazine
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 2.0666666
-    functionName: OnAnimationEvent
-    data: 
+    functionName: OnAnimationEventAI
+    data: refill_Magazine
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 2.8
-    functionName: OnAnimationEvent
+    functionName: OnAnimationEventAI
     data: attach_Magazine
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
