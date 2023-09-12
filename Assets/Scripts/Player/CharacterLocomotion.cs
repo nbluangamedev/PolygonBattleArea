@@ -63,12 +63,6 @@ public class CharacterLocomotion : MonoBehaviour
     {
         switch (eventName)
         {
-            case "Crouch":
-                CrouchSound();
-                break;
-            case "Sprinting":
-                SprintSound();
-                break;
             case "Locomotion":
                 LocomotionSound();
                 break;
@@ -77,6 +71,9 @@ public class CharacterLocomotion : MonoBehaviour
                 break;
             case "Landing":
                 LandingSound();
+                break;
+            case "Sprinting":
+                SprintSound();
                 break;
         }
     }
@@ -202,11 +199,6 @@ public class CharacterLocomotion : MonoBehaviour
             float jumpVelocity = Mathf.Sqrt(2 * gravity * jumpHeight);
             SetInAir(jumpVelocity);
         }
-    }
-
-    private void CrouchSound()
-    {
-        
     }
 
     private void SprintSound()

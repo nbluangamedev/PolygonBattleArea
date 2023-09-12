@@ -35,7 +35,7 @@ public class NotifyLoadingCharacterSelection : BaseNotify
         while (!asyncOperation.isDone)
         {
             loadingSlider.value = asyncOperation.progress;
-            loadingPercentText.SetText($"CREATING NEW GAME: {asyncOperation.progress * 100}%");
+            loadingPercentText.SetText($"CREATING NEW GAME: {Mathf.RoundToInt(asyncOperation.progress * 100)}%");
             if (asyncOperation.progress >= 0.9f)
             {
                 loadingSlider.value = 1f;
