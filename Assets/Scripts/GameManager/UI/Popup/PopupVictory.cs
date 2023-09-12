@@ -10,6 +10,14 @@ public class PopupVictory : BasePopup
         if (GameManager.HasInstance)
         {
             GameManager.Instance.ReleaseCursor();
+            if (UIManager.HasInstance)
+            {
+                ScreenGame screenGame = UIManager.Instance.GetExistScreen<ScreenGame>();
+                if (screenGame.CanvasGroup.alpha == 1)
+                {
+                    screenGame.Hide();
+                }
+            }
             float timer = GameManager.Instance.timer;
             float minutes = Mathf.FloorToInt(timer / 60);
             float seconds = Mathf.FloorToInt(timer % 60);
@@ -28,10 +36,14 @@ public class PopupVictory : BasePopup
         if (GameManager.HasInstance)
         {
             GameManager.Instance.ReleaseCursor();
-            float timer = GameManager.Instance.timer;
-            float minutes = Mathf.FloorToInt(timer / 60);
-            float seconds = Mathf.FloorToInt(timer % 60);
-            timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+            if (UIManager.HasInstance)
+            {
+                ScreenGame screenGame = UIManager.Instance.GetExistScreen<ScreenGame>();
+                if (screenGame.CanvasGroup.alpha == 1)
+                {
+                    screenGame.Hide();
+                }
+            }
             GameManager.Instance.PauseGame();
         }
         if (AudioManager.HasInstance)
@@ -78,7 +90,7 @@ public class PopupVictory : BasePopup
             if (screenGame)
             {
                 screenGame.Hide();
-            }        
+            }
             UIManager.Instance.ShowNotify<NotifyLoading>();
         }
     }

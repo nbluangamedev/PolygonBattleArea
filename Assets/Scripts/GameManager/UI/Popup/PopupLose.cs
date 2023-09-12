@@ -6,9 +6,17 @@ public class PopupLose : BasePopup
         {
             AudioManager.Instance.PlaySE(AUDIO.SE_SHOWPOPUP);
         }
+        if (UIManager.HasInstance)
+        {
+            ScreenGame screenGame = UIManager.Instance.GetExistScreen<ScreenGame>();
+            if (screenGame.CanvasGroup.alpha == 1)
+            {
+                screenGame.Hide();
+            }
+        }
         base.Init();
         if (GameManager.HasInstance)
-        {
+        {            
             GameManager.Instance.PauseGame();
         }
     }
@@ -18,6 +26,14 @@ public class PopupLose : BasePopup
         if (AudioManager.HasInstance)
         {
             AudioManager.Instance.PlaySE(AUDIO.SE_SHOWPOPUP);
+        }
+        if (UIManager.HasInstance)
+        {
+            ScreenGame screenGame = UIManager.Instance.GetExistScreen<ScreenGame>();
+            if (screenGame.CanvasGroup.alpha == 1)
+            {
+                screenGame.Hide();
+            }
         }
         base.Show(data);
         if (GameManager.HasInstance)

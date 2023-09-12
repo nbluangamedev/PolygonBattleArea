@@ -27,6 +27,7 @@ public class ScreenGame : BaseScreen
         }
         if (GameManager.HasInstance)
         {
+            timeText.text = "00:00";
             GameManager.Instance.timer = 0;
         }
         base.Init();
@@ -51,6 +52,7 @@ public class ScreenGame : BaseScreen
     {
         if (GameManager.HasInstance)
         {
+            timeText.text = "00:00";
             GameManager.Instance.timer = 0;
         }
         ammoText.text = "0";
