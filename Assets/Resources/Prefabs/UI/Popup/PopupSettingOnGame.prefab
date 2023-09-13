@@ -692,7 +692,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
+  m_PixelsPerUnitMultiplier: 10
 --- !u!1 &4056154466072425865
 GameObject:
   m_ObjectHideFlags: 0
@@ -6129,10 +6129,10 @@ MonoBehaviour:
   m_FillRect: {fileID: 860761540321878119}
   m_HandleRect: {fileID: 0}
   m_Direction: 0
-  m_MinValue: 0
-  m_MaxValue: 500
+  m_MinValue: 1
+  m_MaxValue: 1000
   m_WholeNumbers: 0
-  m_Value: 301
+  m_Value: 300
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:

@@ -31,7 +31,7 @@ public class WeaponIK : MonoBehaviour
             boneTransforms[i] = animator.GetBoneTransform(humanBones[i].bone);
         }
     }
-
+    
     private void LateUpdate()
     {
         if (aimTransform == null)
@@ -45,6 +45,11 @@ public class WeaponIK : MonoBehaviour
         }
 
         Vector3 targetPosition = GetTargetPosition();
+        ActiveWeaponAttack(targetPosition);
+    }
+
+    private void ActiveWeaponAttack(Vector3 targetPosition)
+    {
         for (int i = 0; i < iteration; i++)
         {
             for (int b = 0; b < boneTransforms.Length; b++)

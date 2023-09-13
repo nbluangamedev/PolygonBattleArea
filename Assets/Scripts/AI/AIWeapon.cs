@@ -392,23 +392,26 @@ public class AIWeapon : MonoBehaviour
 
     private void AIEquipWeapon()
     {
-        if (AudioManager.HasInstance)
+        if (AICurrentWeapon)
         {
             string weaponName = AICurrentWeapon.weaponName;
-            switch (weaponName)
+            if (AudioManager.HasInstance)
             {
-                case "Pistol":
-                    AudioManager.Instance.PlaySEAgent(AUDIO.SE_PISTOLEQUIP, AudioManager.Instance.AttachSESource.volume);
-                    break;
-                case "Rifle":
-                    AudioManager.Instance.PlaySEAgent(AUDIO.SE_RIFLEEQUIP, AudioManager.Instance.AttachSESource.volume);
-                    break;
-                case "Shotgun":
-                    AudioManager.Instance.PlaySEAgent(AUDIO.SE_SHOTGUNEQUIP, AudioManager.Instance.AttachSESource.volume);
-                    break;
-                case "Sniper":
-                    AudioManager.Instance.PlaySEAgent(AUDIO.SE_SNIPERBOLT, AudioManager.Instance.AttachSESource.volume);
-                    break;
+                switch (weaponName)
+                {
+                    case "Pistol":
+                        AudioManager.Instance.PlaySEAgent(AUDIO.SE_PISTOLEQUIP, AudioManager.Instance.AttachSESource.volume);
+                        break;
+                    case "Rifle":
+                        AudioManager.Instance.PlaySEAgent(AUDIO.SE_RIFLEEQUIP, AudioManager.Instance.AttachSESource.volume);
+                        break;
+                    case "Shotgun":
+                        AudioManager.Instance.PlaySEAgent(AUDIO.SE_SHOTGUNEQUIP, AudioManager.Instance.AttachSESource.volume);
+                        break;
+                    case "Sniper":
+                        AudioManager.Instance.PlaySEAgent(AUDIO.SE_SNIPERBOLT, AudioManager.Instance.AttachSESource.volume);
+                        break;
+                }
             }
         }
     }

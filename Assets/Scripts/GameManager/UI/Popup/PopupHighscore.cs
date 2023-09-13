@@ -64,6 +64,7 @@ public class PopupHighscore : BasePopup
             AudioManager.Instance.PlaySE(AUDIO.SE_SHOWPOPUP);
         }
         entryHighscore.gameObject.SetActive(false);
+
         //load saved entry
         string jsonToLoad = PlayerPrefs.GetString("highscoreTable");
         Highscores highscores = JsonUtility.FromJson<Highscores>(jsonToLoad);
@@ -170,7 +171,7 @@ public class PopupHighscore : BasePopup
         {
             case 1:
                 rankPosition = "1ST";
-                entryTransform.Find("Trophy").GetComponent<Image>().color = new Color(255, 170, 0, 255);
+                entryTransform.Find("Trophy").GetComponent<Image>().color = new Color32(255, 170, 0, 255);
                 entryTransform.Find("Position").GetComponent<TextMeshProUGUI>().color = Color.green;
                 entryTransform.Find("Map").GetComponent<TextMeshProUGUI>().color = Color.green;
                 entryTransform.Find("Level").GetComponent<TextMeshProUGUI>().color = Color.green;
@@ -178,7 +179,7 @@ public class PopupHighscore : BasePopup
                 break;
             case 2:
                 rankPosition = "2ND";
-                entryTransform.Find("Trophy").GetComponent<Image>().color = new Color(255, 255, 255, 255);
+                entryTransform.Find("Trophy").GetComponent<Image>().color = new Color32(255, 255, 255, 255);
                 break;
             case 3:
                 rankPosition = "3ND";

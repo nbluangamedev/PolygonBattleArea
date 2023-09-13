@@ -42,10 +42,7 @@ public class AIHealth : Health
         deathState.direction = direction;
         deathState.rigidbody = ridigBody;
         aiAgent.stateMachine.ChangeState(AIStateID.Death);
-        if (AudioManager.HasInstance)
-        {
-            AudioManager.Instance.PlayEnemyTakeDamage();
-        }
+        Invoke(nameof(PlayEnemyTakeDamage), 1f);
     }
 
     protected override void OnHeal(float amout)
@@ -74,6 +71,14 @@ public class AIHealth : Health
             yield return new WaitForSeconds(blinkDuration);
             skin.material.DisableKeyword("_EMISSION");
             StopCoroutine(nameof(EnemyFlash));
+        }
+    }
+
+    private void PlayEnemyTakeDamage()
+    {
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlayEnemyTakeDamage();
         }
     }
 }

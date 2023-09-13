@@ -9,6 +9,7 @@ public class ScreenGame : BaseScreen
     [SerializeField] private TextMeshProUGUI amorText;
     [SerializeField] private TextMeshProUGUI timeText;
     public TextMeshProUGUI enemyCountText;
+    public TextMeshProUGUI enemyHeadshotText;
     public GameObject scopeOverlay;
     public GameObject crossHair;
 
@@ -29,6 +30,7 @@ public class ScreenGame : BaseScreen
         {
             timeText.text = "00:00";
             GameManager.Instance.timer = 0;
+            GameManager.Instance.ResetWeaponPrefab();
         }
         base.Init();
         if (AudioManager.HasInstance)
@@ -54,10 +56,12 @@ public class ScreenGame : BaseScreen
         {
             timeText.text = "00:00";
             GameManager.Instance.timer = 0;
+            GameManager.Instance.ResetWeaponPrefab();
         }
         ammoText.text = "0";
         ammoTotalText.text = "0";
         enemyCountText.text = "0";
+        enemyHeadshotText.text = "0";
         crossHair.SetActive(true);
         base.Show(data);
         if (AudioManager.HasInstance)

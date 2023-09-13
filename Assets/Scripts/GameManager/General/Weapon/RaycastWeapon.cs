@@ -173,7 +173,7 @@ public class RaycastWeapon : MonoBehaviour
             Vector3 direction = end - start;
             float distance = direction.magnitude;
             ray.origin = start;
-            ray.direction = direction;
+            ray.direction = direction.normalized;
 
             if (Physics.Raycast(ray, out hitInfo, distance, layerMask))
             {
@@ -193,7 +193,11 @@ public class RaycastWeapon : MonoBehaviour
                 HitBox hitBox = hitInfo.collider.GetComponent<HitBox>();
                 if (hitBox)
                 {
-                    hitBox.OnHit(this, ray.direction);
+                    if (hitBox.gameObject.CompareTag("EnemyHead"))
+                    {
+                        hitBox.OnHitHead(ray.direction);
+                    }
+                    else hitBox.OnHit(this, ray.direction);
                 }
 
                 if (bullet.tracer)
@@ -218,7 +222,7 @@ public class RaycastWeapon : MonoBehaviour
                 Vector3 direction = BulletRotationPrecision - start;
                 float distance = direction.magnitude;
                 ray.origin = start;
-                ray.direction = direction;
+                ray.direction = direction.normalized;
 
                 if (Physics.Raycast(ray, out hitInfo, distance, layerMask))
                 {
@@ -238,7 +242,11 @@ public class RaycastWeapon : MonoBehaviour
                     HitBox hitBox = hitInfo.collider.GetComponent<HitBox>();
                     if (hitBox)
                     {
-                        hitBox.OnHit(this, ray.direction);
+                        if (hitBox.gameObject.CompareTag("EnemyHead"))
+                        {
+                            hitBox.OnHitHead(ray.direction);
+                        }
+                        else hitBox.OnHit(this, ray.direction);
                     }
 
                     if (bullet.tracer)
@@ -392,7 +400,7 @@ public class RaycastWeapon : MonoBehaviour
     {
         //p + v*t + 0.5*g*t*t
         Vector3 gravity = Vector3.down * bulletDrop;
-        return (bullet.initialPosition) + (bullet.initialVelocity * bullet.time) + (0.5f * gravity * bullet.time * bullet.time);
+        return (bullet.initialPosition) + (bullet.initialVelocity * bullet.time) + (0.5f * bullet.time * bullet.time * gravity);
     }
 
     private Vector3 GetPositionEnemyBullet(EnemyBullet bullet)

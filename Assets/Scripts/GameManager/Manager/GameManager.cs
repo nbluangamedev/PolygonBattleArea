@@ -1,4 +1,3 @@
-using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -7,6 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : BaseManager<GameManager>
 {
+    #region Variable
+
     private int selectedCharacter;
     public int SelectedCharacter
     {
@@ -24,6 +25,13 @@ public class GameManager : BaseManager<GameManager>
     {
         get { return enemyCount; }
         set { enemyCount = value; }
+    }
+
+    private int enemyHeadshot = 0;
+    public int EnemyHeadshot
+    {
+        get { return enemyHeadshot; }
+        set { enemyHeadshot = value; }
     }
 
     private bool isPopupSetting = false;
@@ -44,6 +52,9 @@ public class GameManager : BaseManager<GameManager>
 
     [HideInInspector] public float timer = 0;
     [HideInInspector] public int enemySpawn = 12;
+    public GameObject[] weaponPrefabs;
+
+    #endregion
 
     private void Start()
     {
@@ -52,6 +63,7 @@ public class GameManager : BaseManager<GameManager>
             ListenerManager.Instance.Register(ListenType.SELECTED_CHARACTER, UpdateSelectedCharacter);
             ListenerManager.Instance.Register(ListenType.SELECTED_MAP, UpdateSelectedMap);
             ListenerManager.Instance.Register(ListenType.ENEMY_COUNT, UpdateEnemyCount);
+            ListenerManager.Instance.Register(ListenType.ENEMY_HEADSHOT, UpdateEnemyHeadshot);
             ListenerManager.Instance.Register(ListenType.ON_PLAYER_DEATH, UpdatePlayerHealth);
             ListenerManager.Instance.Register(ListenType.SELECTED_LEVEL, UpdateSelectedLevel);
         }
@@ -79,13 +91,16 @@ public class GameManager : BaseManager<GameManager>
             Highscores highscoress = new Highscores();
             highscoress.highscoreList = new List<Highscore>()
             {
-                new Highscore(){map = "DESERT", level = "EASY", time = "01:30", score = 10000},
-                new Highscore(){map = "ISLAND", level = "MEDIUM", time = "02:50", score = 15000}
+                new Highscore(){map = "DESERT", level = "EASY", time = "03:20", score = 200},
+                new Highscore(){map = "ISLAND", level = "MEDIUM", time = "15:00", score = 225}
             };
             string jsonToSave = JsonUtility.ToJson(highscoress);
             PlayerPrefs.SetString("highscoreTable", jsonToSave);
             PlayerPrefs.Save();
         }
+
+        //reset weapon
+        ResetWeaponPrefab();
     }
 
     private void Update()
@@ -106,10 +121,7 @@ public class GameManager : BaseManager<GameManager>
                 screenGame.DisplayTime(timer);
                 if (enemyCount == enemySpawn)
                 {
-                    if (AudioManager.HasInstance)
-                    {
-                        AudioManager.Instance.PlaySE(AUDIO.SE_WIN);
-                    }
+                    Invoke(nameof(PlayWinSound), 2f);
                     StartCoroutine(ShowPopupWhenVictory());
                     enemyCount = 0;
                 }
@@ -177,6 +189,7 @@ public class GameManager : BaseManager<GameManager>
             ListenerManager.Instance.Unregister(ListenType.SELECTED_CHARACTER, UpdateSelectedCharacter);
             ListenerManager.Instance.Unregister(ListenType.SELECTED_MAP, UpdateSelectedMap);
             ListenerManager.Instance.Unregister(ListenType.ENEMY_COUNT, UpdateEnemyCount);
+            ListenerManager.Instance.Unregister(ListenType.ENEMY_HEADSHOT, UpdateEnemyHeadshot);
             ListenerManager.Instance.Unregister(ListenType.ON_PLAYER_DEATH, UpdatePlayerHealth);
             ListenerManager.Instance.Unregister(ListenType.SELECTED_LEVEL, UpdateSelectedLevel);
         }
@@ -203,6 +216,34 @@ public class GameManager : BaseManager<GameManager>
         EditorApplication.isPlaying = false;
 #endif
         Application.Quit();
+    }
+
+    public void ResetWeaponPrefab()
+    {
+        foreach (GameObject weapon in weaponPrefabs)
+        {
+            RaycastWeapon weaponReset = weapon.GetComponent<RaycastWeapon>();
+            string weaponName = weaponReset.weaponName;
+            switch (weaponName)
+            {
+                case "Pistol":
+                    weaponReset.ammoCount = 12;
+                    weaponReset.ammoTotal = 12;
+                    break;
+                case "Rifle":
+                    weaponReset.ammoCount = 30;
+                    weaponReset.ammoTotal = 30;
+                    break;
+                case "Shotgun":
+                    weaponReset.ammoCount = 8;
+                    weaponReset.ammoTotal = 8;
+                    break;
+                case "Sniper":
+                    weaponReset.ammoCount = 10;
+                    weaponReset.ammoTotal = 10;
+                    break;
+            }
+        }
     }
 
     private void UpdateSelectedCharacter(object select)
@@ -237,21 +278,32 @@ public class GameManager : BaseManager<GameManager>
         }
     }
 
+    private void UpdateEnemyHeadshot(object value)
+    {
+        if (value is int num)
+        {
+            enemyHeadshot += num;
+            if (UIManager.HasInstance)
+            {
+                ScreenGame screenGame = UIManager.Instance.GetExistScreen<ScreenGame>();
+                if (screenGame.CanvasGroup.alpha == 1)
+                {
+                    screenGame.enemyHeadshotText.text = EnemyHeadshot.ToString();
+                }
+            }
+        }
+    }
+
     private void UpdatePlayerHealth(object value)
     {
         if (value is PlayerHealth health)
         {
             if (AudioManager.HasInstance)
             {
-                if (health.CurrentHealth > 0)
+                if (health.CurrentHealth <= 0)
                 {
-                    AudioManager.Instance.PlayPlayerTakeDamage();
-                    playerDeath = false;
-                }
-                else
-                {
-                    AudioManager.Instance.PlaySE(AUDIO.SE_DIE2, 0.1f);
                     playerDeath = true;
+                    AudioManager.Instance.PlaySE(AUDIO.SE_DIE2, 0.1f);
                 }
             }
         }
@@ -287,10 +339,65 @@ public class GameManager : BaseManager<GameManager>
 
     private IEnumerator ShowPopupWhenVictory()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(5f);
         if (UIManager.HasInstance)
         {
             UIManager.Instance.ShowPopup<PopupVictory>();
         }
+    }
+
+    private void PlayWinSound()
+    {
+        if(AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE(AUDIO.SE_WIN);
+        }
+    }
+
+    public void AddHighscoreEntry()
+    {
+        //Highscore entry = new Highscore();
+        Highscore entry = new Highscore();
+
+        if (GameManager.HasInstance)
+        {
+            //map
+            if (GameManager.Instance.SelectedMap == 0)
+            {
+                entry.map = "DESERT";
+            }
+            else entry.map = "ISLAND";
+
+            //level
+            int levelScore = GameManager.Instance.Level;
+            entry.level = levelScore switch
+            {
+                0 => "EASY",
+                1 => "MEDIUM",
+                2 => "HARD",
+                _ => "-",
+            };
+
+            //time
+            float timer = GameManager.Instance.timer;
+            float minutes = Mathf.FloorToInt(timer / 60);
+            float seconds = Mathf.FloorToInt(timer % 60);
+            entry.time = string.Format("{0:00}:{1:00}", minutes, seconds);
+
+            //score
+            entry.score = Mathf.RoundToInt(timer / Mathf.Pow(levelScore + 1, 2));
+        }
+
+        //load saved highscores
+        string jsonToLoad = PlayerPrefs.GetString("highscoreTable");
+        Highscores highscores = JsonUtility.FromJson<Highscores>(jsonToLoad);
+
+        //add new entry to highscores
+        highscores.highscoreList.Add(entry);
+
+        //save updated highscores
+        string jsonToSave = JsonUtility.ToJson(highscores);
+        PlayerPrefs.SetString("highscoreTable", jsonToSave);
+        PlayerPrefs.Save();
     }
 }

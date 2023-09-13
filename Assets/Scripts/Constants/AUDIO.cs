@@ -15,6 +15,8 @@
 	  public const string SE_DIE2 = "die2";
 	  public const string SE_DIE3 = "die3";
 	  public const string SE_GENERIC_RELOAD = "generic_reload";
+	  public const string SE_HEADSHOT1 = "headshot1";
+	  public const string SE_HEADSHOT2 = "headshot2";
 	  public const string SE_HEALTHPICKUP = "healthPickup";
 	  public const string SE_HOVERBUTTON1 = "hoverButton1";
 	  public const string SE_HOVERBUTTON2 = "hoverButton2";

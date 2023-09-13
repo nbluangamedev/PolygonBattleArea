@@ -9,4 +9,17 @@ public class HitBox : MonoBehaviour
     {
         health.TakeDamage(weapon.damage, direction, rb);
     }
-}
+
+    public void OnHitHead(Vector3 direction)
+    {
+        health.TakeDamage(100f, direction, rb);
+        if(AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE(AUDIO.SE_HEADSHOT1);
+        }
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.BroadCast(ListenType.ENEMY_HEADSHOT, 1);
+        }
+    }
+} 

@@ -11,6 +11,7 @@ TagManager:
   - Waypoint
   - WeaponCamera
   - Bullet
+  - EnemyHead
   layers:
   - Default
   - TransparentFX

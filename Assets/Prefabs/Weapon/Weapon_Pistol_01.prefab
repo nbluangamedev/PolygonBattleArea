@@ -404,10 +404,10 @@ MonoBehaviour:
   recoilForceRotation: 1.5
   lossOfAccuracyPerShot: 0
   magazine: {fileID: 2054690038695303234}
-  forceBullet: 1.5
+  forceBullet: 1
   ammoCount: 12
   clipSize: 12
-  ammoTotal: 0
+  ammoTotal: 12
   damage: 10
   BulletCasingPrefab: {fileID: 3525363408539371240, guid: 646dbef2eecbba041bde7b716db6d7e2, type: 3}
   GunSlider: {fileID: 3645663858191130892}

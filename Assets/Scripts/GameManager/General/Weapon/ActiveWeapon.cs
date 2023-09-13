@@ -1,4 +1,3 @@
-using Photon.Realtime;
 using System.Collections;
 using UnityEngine;
 
@@ -6,6 +5,7 @@ public class ActiveWeapon : MonoBehaviour
 {
     public WeaponSlot weaponSlot;
 
+    private bool canDropWeapon;
     public bool canFire;
     public bool isChangingWeapon;
     public bool isHolstered = false;
@@ -36,9 +36,10 @@ public class ActiveWeapon : MonoBehaviour
 
     private void Update()
     {
-        RaycastWeapon weapon = GetWeapon(activeWeaponIndex);
+        RaycastWeapon weapon = GetActiveWeapon();
         bool notSprinting = rigController.GetCurrentAnimatorStateInfo(2).shortNameHash == Animator.StringToHash("notSprinting");
         canFire = !isHolstered && notSprinting && !weaponReload.isReloading && !isChangingWeapon;
+        canDropWeapon = !isHolstered && !weaponReload.isReloading && !isChangingWeapon;
 
         if (weapon)
         {
@@ -93,6 +94,12 @@ public class ActiveWeapon : MonoBehaviour
                     }
                 }
             }
+
+            if (Input.GetKeyDown(KeyCode.G) && canDropWeapon)
+            {
+                DropWeaponPrefab(activeWeaponIndex);
+                rigController.Play("weapon_Unarmed", 0);
+            }
         }
     }
 
@@ -130,25 +137,26 @@ public class ActiveWeapon : MonoBehaviour
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.BroadCast(ListenType.UPDATE_AMMO, equipWeapon);
-        }        
-    }
-
-    public void DropWeapon(int weaponDropSlot)
-    {
-        RaycastWeapon currentWeapon = GetWeapon(weaponDropSlot);
-        if (currentWeapon)
-        {
-            currentWeapon.transform.SetParent(null);
-            currentWeapon.gameObject.GetComponent<BoxCollider>().enabled = true;
-            foreach (Transform child in currentWeapon.transform)
-            {
-                child.gameObject.layer = LayerMask.NameToLayer("Default");
-            }
-            currentWeapon.gameObject.AddComponent<Rigidbody>();
-            equippedWeapon[weaponDropSlot] = null;
-            Destroy(currentWeapon, 5f);
+            ListenerManager.Instance.BroadCast(ListenType.ACTIVE_WEAPON_UI, equipWeapon);
         }
     }
+
+    //public void DropWeapon(int weaponDropSlot)
+    //{
+    //    RaycastWeapon currentWeapon = GetWeapon(weaponDropSlot);
+    //    if (currentWeapon)
+    //    {
+    //        currentWeapon.transform.SetParent(null);
+    //        currentWeapon.gameObject.GetComponent<BoxCollider>().enabled = true;
+    //        foreach (Transform child in currentWeapon.transform)
+    //        {
+    //            child.gameObject.layer = LayerMask.NameToLayer("Default");
+    //        }
+    //        currentWeapon.gameObject.AddComponent<Rigidbody>();
+    //        equippedWeapon[weaponDropSlot] = null;
+    //        Destroy(currentWeapon, 5f);
+    //    }
+    //}
 
     public void DropWeaponPrefab(int weaponDropSlot)
     {
@@ -156,6 +164,10 @@ public class ActiveWeapon : MonoBehaviour
         Vector3 position = positionDropWeapon.TransformPoint(Vector3.forward);
         if (currentWeapon)
         {
+            if (ListenerManager.HasInstance)
+            {
+                ListenerManager.Instance.BroadCast(ListenType.DROP_WEAPON_UI, currentWeapon);
+            }
             int ammoCount = currentWeapon.ammoCount;
             int ammoTotal = currentWeapon.ammoTotal;
             currentWeapon.transform.SetParent(null);
@@ -248,6 +260,7 @@ public class ActiveWeapon : MonoBehaviour
             if (ListenerManager.HasInstance)
             {
                 ListenerManager.Instance.BroadCast(ListenType.ACTIVECROSSHAIR, true);
+                ListenerManager.Instance.BroadCast(ListenType.HOLSTER_WEAPON_UI, weapon);
             }
 
             yield return new WaitForSeconds(0.1f);
@@ -278,12 +291,13 @@ public class ActiveWeapon : MonoBehaviour
                 {
                     ListenerManager.Instance.BroadCast(ListenType.ACTIVECROSSHAIR, true);
                 }
+                ListenerManager.Instance.BroadCast(ListenType.ACTIVE_WEAPON_UI, weapon);
             }
 
             yield return new WaitForSeconds(0.1f);
             do
             {
-                yield return new WaitForEndOfFrame();                
+                yield return new WaitForEndOfFrame();
             } while (rigController.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f);
             isHolstered = false;
             if (AudioManager.HasInstance)
@@ -308,7 +322,7 @@ public class ActiveWeapon : MonoBehaviour
             if (ListenerManager.HasInstance)
             {
                 ListenerManager.Instance.BroadCast(ListenType.UPDATE_AMMO, weapon);
-            }            
+            }
         }
         isChangingWeapon = false;
     }

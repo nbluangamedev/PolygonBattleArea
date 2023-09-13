@@ -59,7 +59,7 @@ public class GlobalConfig : ScriptableObject
     public float closeRange = 7.0f;
 
     [Header("Death")]
-    public float enemyDieForce = .5f;
+    public float enemyDieForce = .1f;
 
     [Header("Find weapon")]
     public float findWeaponSpeed = 7f;

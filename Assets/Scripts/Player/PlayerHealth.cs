@@ -43,6 +43,7 @@ public class PlayerHealth : Health
         {
             ListenerManager.Instance.BroadCast(ListenType.UPDATE_HEALTH, this);
         }
+        Invoke(nameof(PlayPlayerTakeDamage), 0.1f);
     }
 
     protected override void OnHeal(float amount)
@@ -107,6 +108,14 @@ public class PlayerHealth : Health
         {
             UIManager.Instance.ShowPopup<PopupLose>();
             this.gameObject.SetActive(false);
+        }
+    }
+
+    private void PlayPlayerTakeDamage()
+    {
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlayPlayerTakeDamage();
         }
     }
 }
