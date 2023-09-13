@@ -24,36 +24,40 @@ public class PopupHighscore : BasePopup
         string jsonToLoad = PlayerPrefs.GetString("highscoreTable");
         Highscores highscores = JsonUtility.FromJson<Highscores>(jsonToLoad);
 
-        if (highscores.highscoreList.Count < 10)
+        if (jsonToLoad != "" || highscores.highscoreList.Count > 0)
         {
-            rowHighscoreDisplay = highscores.highscoreList.Count;
-        }
-        else
-        {
-            rowHighscoreDisplay = 10;
-        }
-
-        //bubble sort rank
-        for (int i = 0; i < highscores.highscoreList.Count - 1; i++)
-        {
-            for (int j = 0; j < highscores.highscoreList.Count - i - 1; j++)
+            if (highscores.highscoreList.Count < 10)
             {
-                if (highscores.highscoreList[j].score > highscores.highscoreList[j + 1].score)
+                rowHighscoreDisplay = highscores.highscoreList.Count;
+            }
+            else
+            {
+                rowHighscoreDisplay = 10;
+            }
+
+            //bubble sort rank
+            for (int i = 0; i < highscores.highscoreList.Count - 1; i++)
+            {
+                for (int j = 0; j < highscores.highscoreList.Count - i - 1; j++)
                 {
-                    (highscores.highscoreList[j], highscores.highscoreList[j+1]) = (highscores.highscoreList[j+1], highscores.highscoreList[j]);
+                    if (highscores.highscoreList[j].score > highscores.highscoreList[j + 1].score)
+                    {
+                        (highscores.highscoreList[j], highscores.highscoreList[j + 1]) = (highscores.highscoreList[j + 1], highscores.highscoreList[j]);
+                    }
                 }
             }
+            //Debug.Log(PlayerPrefs.GetString("highscoreTable"));
+
+            //show rank
+            highscoreEntryTransformList = new List<Transform>();
+
+            for (int i = 0; i < rowHighscoreDisplay; i++)
+            {
+                UpdateHighscoreList(highscores.highscoreList[i], entryContainer, highscoreEntryTransformList);
+            }
+
+            inputField.text = "Number";
         }
-        //Debug.Log(PlayerPrefs.GetString("highscoreTable"));
-
-        //show rank
-        highscoreEntryTransformList = new List<Transform>();
-
-        for (int i = 0; i < rowHighscoreDisplay; i++)
-        {
-            UpdateHighscoreList(highscores.highscoreList[i], entryContainer, highscoreEntryTransformList);
-        }
-
         base.Init();
     }
 
@@ -69,36 +73,40 @@ public class PopupHighscore : BasePopup
         string jsonToLoad = PlayerPrefs.GetString("highscoreTable");
         Highscores highscores = JsonUtility.FromJson<Highscores>(jsonToLoad);
 
-        if (highscores.highscoreList.Count < 10)
+        if (jsonToLoad != "" || highscores.highscoreList.Count > 0)
         {
-            rowHighscoreDisplay = highscores.highscoreList.Count;
-        }
-        else
-        {
-            rowHighscoreDisplay = 10;
-        }
-
-        //bubble sort rank
-        for (int i = 0; i < highscores.highscoreList.Count - 1; i++)
-        {
-            for (int j = 0; j < highscores.highscoreList.Count - i - 1; j++)
+            if (highscores.highscoreList.Count < 10)
             {
-                if (highscores.highscoreList[j].score > highscores.highscoreList[j + 1].score)
+                rowHighscoreDisplay = highscores.highscoreList.Count;
+            }
+            else
+            {
+                rowHighscoreDisplay = 10;
+            }
+
+            //bubble sort rank
+            for (int i = 0; i < highscores.highscoreList.Count - 1; i++)
+            {
+                for (int j = 0; j < highscores.highscoreList.Count - i - 1; j++)
                 {
-                    (highscores.highscoreList[j], highscores.highscoreList[j + 1]) = (highscores.highscoreList[j + 1], highscores.highscoreList[j]);
+                    if (highscores.highscoreList[j].score > highscores.highscoreList[j + 1].score)
+                    {
+                        (highscores.highscoreList[j], highscores.highscoreList[j + 1]) = (highscores.highscoreList[j + 1], highscores.highscoreList[j]);
+                    }
                 }
             }
+            //Debug.Log(PlayerPrefs.GetString("highscoreTable"));
+
+            //show rank
+            highscoreEntryTransformList = new List<Transform>();
+
+            for (int i = 0; i < rowHighscoreDisplay; i++)
+            {
+                UpdateHighscoreList(highscores.highscoreList[i], entryContainer, highscoreEntryTransformList);
+            }
+
+            inputField.text = "Number";
         }
-        //Debug.Log(PlayerPrefs.GetString("highscoreTable"));
-
-        //show rank
-        highscoreEntryTransformList = new List<Transform>();
-
-        for (int i = 0; i < rowHighscoreDisplay; i++)
-        {
-            UpdateHighscoreList(highscores.highscoreList[i], entryContainer, highscoreEntryTransformList);
-        }
-
         base.Show(data);
     }
 
@@ -138,7 +146,7 @@ public class PopupHighscore : BasePopup
         }
 
         removePositionHighscore = int.Parse(inputField.text);
-        if (removePositionHighscore <= highscores.highscoreList.Count)
+        if (removePositionHighscore <= highscores.highscoreList.Count && removePositionHighscore >= 0)
         {
             highscores.highscoreList.RemoveAt(removePositionHighscore - 1);
         }

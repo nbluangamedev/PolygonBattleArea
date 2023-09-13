@@ -84,20 +84,20 @@ public class GameManager : BaseManager<GameManager>
         }
 
         //init highscore
-        string jsonToLoad = PlayerPrefs.GetString("highscoreTable");
-        Highscores highscores = JsonUtility.FromJson<Highscores>(jsonToLoad);
-        if (jsonToLoad == "" || highscores.highscoreList.Count <= 0)
-        {
-            Highscores highscoress = new Highscores();
-            highscoress.highscoreList = new List<Highscore>()
-            {
-                new Highscore(){map = "DESERT", level = "EASY", time = "03:20", score = 200},
-                new Highscore(){map = "ISLAND", level = "MEDIUM", time = "15:00", score = 225}
-            };
-            string jsonToSave = JsonUtility.ToJson(highscoress);
-            PlayerPrefs.SetString("highscoreTable", jsonToSave);
-            PlayerPrefs.Save();
-        }
+        //string jsonToLoad = PlayerPrefs.GetString("highscoreTable");
+        //Highscores highscores = JsonUtility.FromJson<Highscores>(jsonToLoad);
+        //if (jsonToLoad == "" || highscores.highscoreList.Count <= 0)
+        //{
+        //    Highscores highscoress = new Highscores();
+        //    highscoress.highscoreList = new List<Highscore>()
+        //    {
+        //        new Highscore(){map = "DESERT", level = "EASY", time = "03:20", score = 200},
+        //        new Highscore(){map = "ISLAND", level = "MEDIUM", time = "15:00", score = 225}
+        //    };
+        //    string jsonToSave = JsonUtility.ToJson(highscoress);
+        //    PlayerPrefs.SetString("highscoreTable", jsonToSave);
+        //    PlayerPrefs.Save();
+        //}
 
         //reset weapon
         ResetWeaponPrefab();
