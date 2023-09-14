@@ -1249,7 +1249,7 @@ MonoBehaviour:
   playerDeath: 0
   timer: 0
   enemySpawn: 12
-  weaponPrefabs:
+  weaponResetPrefabs:
   - {fileID: 3172744936653632961, guid: 34f731d8925f71f40ac8aa4962af99be, type: 3}
   - {fileID: 3172744936653632961, guid: 654cd15554992bc4d9a7295c64f5121c, type: 3}
   - {fileID: 3172744936653632961, guid: de81ad37b3e194f47bc8d0b42c5fe523, type: 3}

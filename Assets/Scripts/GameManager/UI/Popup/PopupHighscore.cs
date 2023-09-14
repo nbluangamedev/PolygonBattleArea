@@ -9,7 +9,7 @@ public class PopupHighscore : BasePopup
     public Transform entryHighscore;
     public TMP_InputField inputField;
     private List<Transform> highscoreEntryTransformList;
-
+    private readonly string HIGHSCORE_TABLE = "highscoreTable";
     private int removePositionHighscore;
     private int rowHighscoreDisplay = 10;
 
@@ -17,36 +17,29 @@ public class PopupHighscore : BasePopup
     {
         if (AudioManager.HasInstance)
         {
-            AudioManager.Instance.PlaySE(AUDIO.SE_SHOWPOPUP);
+            AudioManager.Instance.PlaySE(AUDIO.SE_SHOWPOPUP1);
         }
         entryHighscore.gameObject.SetActive(false);
+
         //load saved entry
-        string jsonToLoad = PlayerPrefs.GetString("highscoreTable");
+        string jsonToLoad = PlayerPrefs.GetString(HIGHSCORE_TABLE, "");
         Highscores highscores = JsonUtility.FromJson<Highscores>(jsonToLoad);
 
         if (jsonToLoad != "" || highscores.highscoreList.Count > 0)
         {
-            if (highscores.highscoreList.Count < 10)
-            {
-                rowHighscoreDisplay = highscores.highscoreList.Count;
-            }
-            else
-            {
-                rowHighscoreDisplay = 10;
-            }
+            rowHighscoreDisplay = Mathf.Min(10, highscores.highscoreList.Count);
 
             //bubble sort rank
             for (int i = 0; i < highscores.highscoreList.Count - 1; i++)
             {
                 for (int j = 0; j < highscores.highscoreList.Count - i - 1; j++)
                 {
-                    if (highscores.highscoreList[j].score > highscores.highscoreList[j + 1].score)
+                    if (highscores.highscoreList[j].score <= highscores.highscoreList[j + 1].score)
                     {
                         (highscores.highscoreList[j], highscores.highscoreList[j + 1]) = (highscores.highscoreList[j + 1], highscores.highscoreList[j]);
                     }
                 }
             }
-            //Debug.Log(PlayerPrefs.GetString("highscoreTable"));
 
             //show rank
             highscoreEntryTransformList = new List<Transform>();
@@ -65,31 +58,24 @@ public class PopupHighscore : BasePopup
     {
         if (AudioManager.HasInstance)
         {
-            AudioManager.Instance.PlaySE(AUDIO.SE_SHOWPOPUP);
+            AudioManager.Instance.PlaySE(AUDIO.SE_SHOWPOPUP1);
         }
         entryHighscore.gameObject.SetActive(false);
 
         //load saved entry
-        string jsonToLoad = PlayerPrefs.GetString("highscoreTable");
+        string jsonToLoad = PlayerPrefs.GetString(HIGHSCORE_TABLE, "");
         Highscores highscores = JsonUtility.FromJson<Highscores>(jsonToLoad);
 
         if (jsonToLoad != "" || highscores.highscoreList.Count > 0)
         {
-            if (highscores.highscoreList.Count < 10)
-            {
-                rowHighscoreDisplay = highscores.highscoreList.Count;
-            }
-            else
-            {
-                rowHighscoreDisplay = 10;
-            }
+            rowHighscoreDisplay = Mathf.Min(10, highscores.highscoreList.Count);
 
             //bubble sort rank
             for (int i = 0; i < highscores.highscoreList.Count - 1; i++)
             {
                 for (int j = 0; j < highscores.highscoreList.Count - i - 1; j++)
                 {
-                    if (highscores.highscoreList[j].score > highscores.highscoreList[j + 1].score)
+                    if (highscores.highscoreList[j].score <= highscores.highscoreList[j + 1].score)
                     {
                         (highscores.highscoreList[j], highscores.highscoreList[j + 1]) = (highscores.highscoreList[j + 1], highscores.highscoreList[j]);
                     }
@@ -114,7 +100,7 @@ public class PopupHighscore : BasePopup
     {
         if (AudioManager.HasInstance)
         {
-            AudioManager.Instance.PlaySE(AUDIO.SE_SHOWPOPUP);
+            AudioManager.Instance.PlaySE(AUDIO.SE_SHOWPOPUP1);
         }
         foreach (Transform trf in entryContainer)
         {
@@ -130,37 +116,41 @@ public class PopupHighscore : BasePopup
 
     public void OnRemoveHighscore()
     {
-        string jsonToLoad = PlayerPrefs.GetString("highscoreTable");
+        //load highscore
+        string jsonToLoad = PlayerPrefs.GetString(HIGHSCORE_TABLE, "");
         Highscores highscores = JsonUtility.FromJson<Highscores>(jsonToLoad);
 
-        //bubble sort rank
-        for (int i = 0; i < highscores.highscoreList.Count; i++)
+        if (jsonToLoad != "" || highscores.highscoreList.Count > 0)
         {
-            for (int j = highscores.highscoreList.Count - 1; j > i; j--)
+            //bubble sort rank
+            for (int i = 0; i < highscores.highscoreList.Count - 1; i++)
             {
-                if (highscores.highscoreList[j].score < highscores.highscoreList[j - 1].score)
+                for (int j = 0; j < highscores.highscoreList.Count - i - 1; j++)
                 {
-                    (highscores.highscoreList[i], highscores.highscoreList[j]) = (highscores.highscoreList[j], highscores.highscoreList[i]);
+                    if (highscores.highscoreList[j].score <= highscores.highscoreList[j + 1].score)
+                    {
+                        (highscores.highscoreList[j], highscores.highscoreList[j + 1]) = (highscores.highscoreList[j + 1], highscores.highscoreList[j]);
+                    }
                 }
             }
-        }
 
-        removePositionHighscore = int.Parse(inputField.text);
-        if (removePositionHighscore <= highscores.highscoreList.Count && removePositionHighscore >= 0)
-        {
-            highscores.highscoreList.RemoveAt(removePositionHighscore - 1);
-        }
-        else
-        {
-            Debug.Log("Khong co position can xoa");
-            //return;
-        }
+            //remove highscore
+            removePositionHighscore = int.Parse(inputField.text);
+            if (removePositionHighscore <= highscores.highscoreList.Count && removePositionHighscore >= 0)
+            {
+                highscores.highscoreList.RemoveAt(removePositionHighscore - 1);
+            }
+            else
+            {
+                Debug.Log("Khong co position can xoa");
+                //return;
+            }
 
-        //save highscore
-        string jsonToSave = JsonUtility.ToJson(highscores);
-        PlayerPrefs.SetString("highscoreTable", jsonToSave);
-        PlayerPrefs.Save();
-
+            //save highscore
+            string jsonToSave = JsonUtility.ToJson(highscores);
+            PlayerPrefs.SetString(HIGHSCORE_TABLE, jsonToSave);
+            PlayerPrefs.Save();
+        }
         this.Hide();
     }
 
@@ -172,9 +162,9 @@ public class PopupHighscore : BasePopup
         entryRect.anchoredPosition = new Vector2(0, -entryHeight * transformList.Count);
         entryTransform.gameObject.SetActive(true);
 
+        //position
         int rank = transformList.Count + 1;
         string rankPosition;
-
         switch (rank)
         {
             case 1:
@@ -183,7 +173,11 @@ public class PopupHighscore : BasePopup
                 entryTransform.Find("Position").GetComponent<TextMeshProUGUI>().color = Color.green;
                 entryTransform.Find("Map").GetComponent<TextMeshProUGUI>().color = Color.green;
                 entryTransform.Find("Level").GetComponent<TextMeshProUGUI>().color = Color.green;
+                entryTransform.Find("Headshot").GetComponent<TextMeshProUGUI>().color = Color.green;
+                entryTransform.Find("Split").GetComponent<TextMeshProUGUI>().color = Color.green;
+                entryTransform.Find("Kill").GetComponent<TextMeshProUGUI>().color = Color.green;
                 entryTransform.Find("Timer").GetComponent<TextMeshProUGUI>().color = Color.green;
+                entryTransform.Find("TotalScore").GetComponent<TextMeshProUGUI>().color = Color.green;
                 break;
             case 2:
                 rankPosition = "2ND";
@@ -197,11 +191,27 @@ public class PopupHighscore : BasePopup
                 entryTransform.Find("Trophy").gameObject.SetActive(false);
                 break;
         }
-
         entryTransform.Find("Position").GetComponent<TextMeshProUGUI>().text = rankPosition;
+        
+        //map
         entryTransform.Find("Map").GetComponent<TextMeshProUGUI>().text = entry.map;
+        
+        //level
         entryTransform.Find("Level").GetComponent<TextMeshProUGUI>().text = entry.level;
+
+        //headshot
+        entryTransform.Find("Headshot").GetComponent<TextMeshProUGUI>().text = entry.headshot.ToString();
+
+        //kill
+        entryTransform.Find("Kill").GetComponent<TextMeshProUGUI>().text = entry.kill.ToString();
+
+        //timer
         entryTransform.Find("Timer").GetComponent<TextMeshProUGUI>().text = entry.time;
+
+        //score
+        entryTransform.Find("TotalScore").GetComponent<TextMeshProUGUI>().text = entry.score.ToString();
+
+        //background
         entryTransform.Find("Background").gameObject.SetActive(rank % 2 == 1);
 
         transformList.Add(entryTransform);

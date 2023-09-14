@@ -9,7 +9,7 @@ public class PopupHowToPlay : BasePopup
         base.Init();
         if (AudioManager.HasInstance)
         {
-            AudioManager.Instance.PlaySE(AUDIO.SE_SHOWPOPUP);
+            AudioManager.Instance.PlaySE(AUDIO.SE_SHOWPOPUP1);
         }
     }
 
@@ -18,7 +18,7 @@ public class PopupHowToPlay : BasePopup
         base.Show(data);
         if (AudioManager.HasInstance)
         {
-            AudioManager.Instance.PlaySE(AUDIO.SE_SHOWPOPUP);
+            AudioManager.Instance.PlaySE(AUDIO.SE_SHOWPOPUP1);
         }
     }
 
@@ -26,7 +26,7 @@ public class PopupHowToPlay : BasePopup
     {
         if (AudioManager.HasInstance)
         {
-            AudioManager.Instance.PlaySE(AUDIO.SE_SHOWPOPUP);
+            AudioManager.Instance.PlaySE(AUDIO.SE_SHOWPOPUP1);
         }
         base.Hide();
     }

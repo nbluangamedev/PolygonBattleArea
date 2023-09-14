@@ -20,10 +20,20 @@ public class NotifyLoadingGame : BaseNotify
         if (sceneNumber == 0)
         {
             StartCoroutine(LoadScene("Medium"));
+            if (AudioManager.HasInstance)
+            {
+                AudioManager.Instance.FadeOutBGM(1f);
+                AudioManager.Instance.PlayBGM(AUDIO.BGM_3ORIGINAL);
+            }
         }
         if (sceneNumber == 1)
         {
             StartCoroutine(LoadScene("Small"));
+            if (AudioManager.HasInstance)
+            {
+                AudioManager.Instance.FadeOutBGM(1f);
+                AudioManager.Instance.PlayBGM(AUDIO.BGM_4MARIAN);
+            }
         }
         //Debug.Log("Init sceneNumber " + sceneNumber);
         base.Init();
@@ -38,10 +48,20 @@ public class NotifyLoadingGame : BaseNotify
         if (sceneNumber == 0)
         {
             StartCoroutine(LoadScene("Medium"));
+            if (AudioManager.HasInstance)
+            {
+                AudioManager.Instance.FadeOutBGM(1f);
+                AudioManager.Instance.PlayBGM(AUDIO.BGM_3ORIGINAL);
+            }
         }
         if (sceneNumber == 1)
         {
             StartCoroutine(LoadScene("Small"));
+            if (AudioManager.HasInstance)
+            {
+                AudioManager.Instance.FadeOutBGM(1f);
+                AudioManager.Instance.PlayBGM(AUDIO.BGM_4MARIAN);
+            }
         }
         //Debug.Log("Show sceneNumber" + sceneNumber);        
         base.Show(data);
@@ -73,12 +93,7 @@ public class NotifyLoadingGame : BaseNotify
                     UIManager.Instance.ShowScreen<ScreenGame>();
                     this.Hide();
                     asyncOperation.allowSceneActivation = true;
-                }
-                if (AudioManager.HasInstance)
-                {
-                    AudioManager.Instance.FadeOutBGM(1f);
-                    AudioManager.Instance.PlayBGM(AUDIO.BGM_MARIAN);
-                }
+                }                
             }
             yield return null;
         }

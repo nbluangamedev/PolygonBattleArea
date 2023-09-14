@@ -4,6 +4,7 @@ using UnityEngine;
 public class PopupVictory : BasePopup
 {
     [SerializeField] private TextMeshProUGUI timerText;
+    [SerializeField] private TextMeshProUGUI scoreText;
 
     public override void Init()
     {
@@ -18,15 +19,20 @@ public class PopupVictory : BasePopup
                     screenGame.Hide();
                 }
             }
+            GameManager.Instance.PauseGame();
+
+            float levelMap = GameManager.Instance.Level;
+            float enemySpawn = GameManager.Instance.enemySpawn;
+            float headshot = GameManager.Instance.EnemyHeadshot;
             float timer = GameManager.Instance.timer;
             float minutes = Mathf.FloorToInt(timer / 60);
             float seconds = Mathf.FloorToInt(timer % 60);
             timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
-            GameManager.Instance.PauseGame();
+            scoreText.text = ((headshot * 10) + Mathf.RoundToInt((timer * Mathf.Pow((levelMap + 1), 2)) / enemySpawn) - ((int)seconds % 5)).ToString();
         }
         if (AudioManager.HasInstance)
         {
-            AudioManager.Instance.PlaySE(AUDIO.SE_SHOWPOPUP);
+            AudioManager.Instance.PlaySE(AUDIO.SE_SHOWPOPUP1);
         }
         base.Init();
     }
@@ -45,10 +51,19 @@ public class PopupVictory : BasePopup
                 }
             }
             GameManager.Instance.PauseGame();
+
+            float levelMap = GameManager.Instance.Level;
+            float enemySpawn = GameManager.Instance.enemySpawn;
+            float headshot = GameManager.Instance.EnemyHeadshot;
+            float timer = GameManager.Instance.timer;
+            float minutes = Mathf.FloorToInt(timer / 60);
+            float seconds = Mathf.FloorToInt(timer % 60);
+            timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+            scoreText.text = ((headshot * 10) + Mathf.RoundToInt((timer * Mathf.Pow((levelMap + 1), 2)) / enemySpawn) - ((int)seconds % 5)).ToString();
         }
         if (AudioManager.HasInstance)
         {
-            AudioManager.Instance.PlaySE(AUDIO.SE_SHOWPOPUP);
+            AudioManager.Instance.PlaySE(AUDIO.SE_SHOWPOPUP1);
         }
         base.Show(data);
     }
@@ -63,7 +78,7 @@ public class PopupVictory : BasePopup
         }
         if (AudioManager.HasInstance)
         {
-            AudioManager.Instance.PlaySE(AUDIO.SE_SHOWPOPUP);
+            AudioManager.Instance.PlaySE(AUDIO.SE_SHOWPOPUP1);
         }
     }
 

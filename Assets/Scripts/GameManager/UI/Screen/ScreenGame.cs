@@ -12,6 +12,8 @@ public class ScreenGame : BaseScreen
     public TextMeshProUGUI enemyHeadshotText;
     public GameObject scopeOverlay;
     public GameObject crossHair;
+    public RaycastWeapon weaponPrefabPistol;
+    public RaycastWeapon weaponPrefabRifle;
 
     public override void Init()
     {
@@ -25,11 +27,14 @@ public class ScreenGame : BaseScreen
             ListenerManager.Instance.Register(ListenType.SCOPE, OnUpdateScope);
             ListenerManager.Instance.Register(ListenType.ACTIVECROSSHAIR, OnUpdateDeactiveCrossHair);
             ListenerManager.Instance.Register(ListenType.UPDATE_HEALTH, OnUpdateHealth);
+            ListenerManager.Instance.BroadCast(ListenType.DROP_WEAPON_UI, weaponPrefabPistol);
+            ListenerManager.Instance.BroadCast(ListenType.DROP_WEAPON_UI, weaponPrefabRifle);
         }
         if (GameManager.HasInstance)
         {
             timeText.text = "00:00";
             GameManager.Instance.timer = 0;
+            GameManager.Instance.EnemyHeadshot = 0;
             GameManager.Instance.ResetWeaponPrefab();
         }
         base.Init();
@@ -56,7 +61,13 @@ public class ScreenGame : BaseScreen
         {
             timeText.text = "00:00";
             GameManager.Instance.timer = 0;
+            GameManager.Instance.EnemyHeadshot = 0;
             GameManager.Instance.ResetWeaponPrefab();
+        }
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.BroadCast(ListenType.DROP_WEAPON_UI, weaponPrefabPistol);
+            ListenerManager.Instance.BroadCast(ListenType.DROP_WEAPON_UI, weaponPrefabRifle);
         }
         ammoText.text = "0";
         ammoTotalText.text = "0";

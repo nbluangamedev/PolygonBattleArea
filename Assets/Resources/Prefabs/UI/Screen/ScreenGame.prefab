@@ -1442,6 +1442,8 @@ MonoBehaviour:
   enemyHeadshotText: {fileID: 6557394889861559807}
   scopeOverlay: {fileID: 1243033627830754741}
   crossHair: {fileID: 5059419406541598955}
+  weaponPrefabPistol: {fileID: 3172744936653632963, guid: 34f731d8925f71f40ac8aa4962af99be, type: 3}
+  weaponPrefabRifle: {fileID: 3172744936653632963, guid: 654cd15554992bc4d9a7295c64f5121c, type: 3}
 --- !u!1 &5059419405296855383
 GameObject:
   m_ObjectHideFlags: 0

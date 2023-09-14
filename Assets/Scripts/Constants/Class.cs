@@ -26,14 +26,8 @@ public class Highscore
 {
     public string map;
     public string level;
+    public int headshot;
+    public int kill;
     public string time;
     public int score;
-
-    public Highscore()
-    {
-        this.map = "";
-        this.level = "";
-        this.time = "";
-        score = 10000;
-    }
 }

@@ -95,11 +95,11 @@ public class ActiveWeapon : MonoBehaviour
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.G) && canDropWeapon)
-            {
-                DropWeaponPrefab(activeWeaponIndex);
-                rigController.Play("weapon_Unarmed", 0);
-            }
+            //if (Input.GetKeyDown(KeyCode.G) && canDropWeapon)
+            //{
+            //    DropWeaponPrefab(activeWeaponIndex);
+            //    rigController.Play("weapon_Unarmed", 0);
+            //}
         }
     }
 

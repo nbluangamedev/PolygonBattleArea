@@ -21,10 +21,10 @@ public class WeaponReload : MonoBehaviour
     private void Update()
     {
         RaycastWeapon weapon = activeWeapon.GetActiveWeapon();
-        bool canReload = !characterLocomotion.isCrouching;
 
         if (weapon)
         {
+            bool canReload = !characterLocomotion.isCrouching && weapon.ammoCount < weapon.clipSize;
             if (canReload)
             {
                 if ((Input.GetKeyDown(KeyCode.R) && weapon.ammoTotal > 0) || weapon.ShouldReload())

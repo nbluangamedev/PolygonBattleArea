@@ -221,7 +221,7 @@ public class CharacterAiming : MonoBehaviour
     {
         if(value is float maxSpeed)
         {
-            yAxis.m_MaxSpeed = maxSpeed;
+            xAxis.m_MaxSpeed = maxSpeed;
         }
     }
 }

@@ -22,7 +22,7 @@ public class PopupSetting : BasePopup
             seValue = AudioManager.Instance.AttachSESource.volume;
             bgmSlider.value = bgmValue;
             seSlider.value = seValue;
-            AudioManager.Instance.PlaySE(AUDIO.SE_SHOWPOPUP);
+            AudioManager.Instance.PlaySE(AUDIO.SE_SHOWPOPUP1);
         }
 
         value = QualitySettings.GetQualityLevel();
@@ -41,7 +41,7 @@ public class PopupSetting : BasePopup
             seValue = AudioManager.Instance.AttachSESource.volume;
             bgmSlider.value = bgmValue;
             seSlider.value = seValue;
-            AudioManager.Instance.PlaySE(AUDIO.SE_SHOWPOPUP);
+            AudioManager.Instance.PlaySE(AUDIO.SE_SHOWPOPUP1);
         }
     }
 
@@ -54,7 +54,7 @@ public class PopupSetting : BasePopup
         }
         if (AudioManager.HasInstance)
         {
-            AudioManager.Instance.PlaySE(AUDIO.SE_SHOWPOPUP);
+            AudioManager.Instance.PlaySE(AUDIO.SE_SHOWPOPUP1);
         }
     }
 

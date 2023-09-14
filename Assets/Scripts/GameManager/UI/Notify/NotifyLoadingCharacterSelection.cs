@@ -48,6 +48,11 @@ public class NotifyLoadingCharacterSelection : BaseNotify
                     this.Hide();
                     asyncOperation.allowSceneActivation = true;
                 }
+                if (AudioManager.HasInstance)
+                {
+                    AudioManager.Instance.FadeOutBGM(1f);
+                    AudioManager.Instance.PlayBGM(AUDIO.BGM_2LETTHEGAMEBEGINCUTD);
+                }
             }
             yield return null;
         }

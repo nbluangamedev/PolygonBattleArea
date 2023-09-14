@@ -8,6 +8,8 @@ public class GameManager : BaseManager<GameManager>
 {
     #region Variable
 
+    private readonly string HIGHSCORE_TABLE = "highscoreTable";
+
     private int selectedCharacter;
     public int SelectedCharacter
     {
@@ -52,7 +54,7 @@ public class GameManager : BaseManager<GameManager>
 
     [HideInInspector] public float timer = 0;
     [HideInInspector] public int enemySpawn = 12;
-    public GameObject[] weaponPrefabs;
+    public GameObject[] weaponResetPrefabs;
 
     #endregion
 
@@ -82,22 +84,6 @@ public class GameManager : BaseManager<GameManager>
                 });
             }
         }
-
-        //init highscore
-        //string jsonToLoad = PlayerPrefs.GetString("highscoreTable");
-        //Highscores highscores = JsonUtility.FromJson<Highscores>(jsonToLoad);
-        //if (jsonToLoad == "" || highscores.highscoreList.Count <= 0)
-        //{
-        //    Highscores highscoress = new Highscores();
-        //    highscoress.highscoreList = new List<Highscore>()
-        //    {
-        //        new Highscore(){map = "DESERT", level = "EASY", time = "03:20", score = 200},
-        //        new Highscore(){map = "ISLAND", level = "MEDIUM", time = "15:00", score = 225}
-        //    };
-        //    string jsonToSave = JsonUtility.ToJson(highscoress);
-        //    PlayerPrefs.SetString("highscoreTable", jsonToSave);
-        //    PlayerPrefs.Save();
-        //}
 
         //reset weapon
         ResetWeaponPrefab();
@@ -220,7 +206,7 @@ public class GameManager : BaseManager<GameManager>
 
     public void ResetWeaponPrefab()
     {
-        foreach (GameObject weapon in weaponPrefabs)
+        foreach (GameObject weapon in weaponResetPrefabs)
         {
             RaycastWeapon weaponReset = weapon.GetComponent<RaycastWeapon>();
             string weaponName = weaponReset.weaponName;
@@ -348,7 +334,7 @@ public class GameManager : BaseManager<GameManager>
 
     private void PlayWinSound()
     {
-        if(AudioManager.HasInstance)
+        if (AudioManager.HasInstance)
         {
             AudioManager.Instance.PlaySE(AUDIO.SE_WIN);
         }
@@ -356,40 +342,42 @@ public class GameManager : BaseManager<GameManager>
 
     public void AddHighscoreEntry()
     {
-        //Highscore entry = new Highscore();
-        Highscore entry = new Highscore();
+        Highscore entry = new();
 
-        if (GameManager.HasInstance)
+        //map
+        if (SelectedMap == 0)
         {
-            //map
-            if (GameManager.Instance.SelectedMap == 0)
-            {
-                entry.map = "DESERT";
-            }
-            else entry.map = "ISLAND";
-
-            //level
-            int levelScore = GameManager.Instance.Level;
-            entry.level = levelScore switch
-            {
-                0 => "EASY",
-                1 => "MEDIUM",
-                2 => "HARD",
-                _ => "-",
-            };
-
-            //time
-            float timer = GameManager.Instance.timer;
-            float minutes = Mathf.FloorToInt(timer / 60);
-            float seconds = Mathf.FloorToInt(timer % 60);
-            entry.time = string.Format("{0:00}:{1:00}", minutes, seconds);
-
-            //score
-            entry.score = Mathf.RoundToInt(timer / Mathf.Pow(levelScore + 1, 2));
+            entry.map = "DESERT";
         }
+        else entry.map = "ISLAND";
+
+        //level
+        int levelScore = Level;
+        entry.level = levelScore switch
+        {
+            0 => "EASY",
+            1 => "MEDIUM",
+            2 => "HARD",
+            _ => "-",
+        };
+
+        //headshot
+        entry.headshot = enemyHeadshot;
+
+        //kill
+        entry.kill = enemySpawn;
+
+        //time
+        float timer = this.timer;
+        float minutes = Mathf.FloorToInt(timer / 60);
+        float seconds = Mathf.FloorToInt(timer % 60);
+        entry.time = string.Format("{0:00}:{1:00}", minutes, seconds);
+
+        //score
+        entry.score = (EnemyHeadshot * 10) + Mathf.RoundToInt((timer * Mathf.Pow((level + 1), 2)) / enemySpawn) - ((int)seconds % 5);
 
         //load saved highscores
-        string jsonToLoad = PlayerPrefs.GetString("highscoreTable");
+        string jsonToLoad = PlayerPrefs.GetString(HIGHSCORE_TABLE, "");
         Highscores highscores = JsonUtility.FromJson<Highscores>(jsonToLoad);
 
         //add new entry to highscores
@@ -397,7 +385,7 @@ public class GameManager : BaseManager<GameManager>
 
         //save updated highscores
         string jsonToSave = JsonUtility.ToJson(highscores);
-        PlayerPrefs.SetString("highscoreTable", jsonToSave);
+        PlayerPrefs.SetString(HIGHSCORE_TABLE, jsonToSave);
         PlayerPrefs.Save();
     }
 }

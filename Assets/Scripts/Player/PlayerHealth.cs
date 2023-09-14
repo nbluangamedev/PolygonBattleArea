@@ -1,6 +1,5 @@
 using DG.Tweening;
 using System;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
@@ -15,6 +14,9 @@ public class PlayerHealth : Health
     private ActiveWeapon activeWeapon;
     private CharacterAiming aiming;
     private CharacterLocomotion locomotion;
+    private Animator animator;
+
+    private int playerDeath = Animator.StringToHash("playerDeath");
 
     protected override void OnStart()
     {
@@ -30,6 +32,7 @@ public class PlayerHealth : Health
         activeWeapon = GetComponent<ActiveWeapon>();
         aiming = GetComponent<CharacterAiming>();
         locomotion = GetComponent<CharacterLocomotion>();
+        animator = GetComponent<Animator>();
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.BroadCast(ListenType.UPDATE_HEALTH, this);
@@ -70,6 +73,8 @@ public class PlayerHealth : Health
 
     protected override void OnDeath(Vector3 direction, Rigidbody ridigBody)
     {
+        animator.SetTrigger(playerDeath);
+        Debug.Log("death animation");
         aiming.enabled = false;
         if (GameManager.HasInstance)
         {
@@ -99,7 +104,7 @@ public class PlayerHealth : Health
             vignette.intensity.value = 0f;
         }
 
-        DOVirtual.DelayedCall(2f, ShowPopupWhenDie);
+        DOVirtual.DelayedCall(3f, ShowPopupWhenDie);
     }
 
     private void ShowPopupWhenDie()

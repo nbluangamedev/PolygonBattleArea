@@ -5,7 +5,7 @@ public class WeaponPickupUI : MonoBehaviour
 {
     public Sprite[] sprites;
     public Transform primary, secondary;
-    private Color alphaColor = new Color32(255, 255, 255, 100);
+    private Color alphaColor = new Color32(255, 255, 255, 60);
     private Color normalColor = new Color32(255, 255, 255, 255);
 
     private void Start()

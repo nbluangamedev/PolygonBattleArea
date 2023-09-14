@@ -1,16 +1,15 @@
 ﻿public static class AUDIO
 {
-	  public const string BGM_GAME_1 = "Game_1";
-	  public const string BGM_GAME_1_LOOP = "Game_1_loop";
-	  public const string BGM_LETTHEGAMEBEGINCUTB = "LetTheGameBeginCutB";
-	  public const string BGM_LETTHEGAMEBEGINCUTC = "LetTheGameBeginCutC";
-	  public const string BGM_LETTHEGAMEBEGINCUTD = "LetTheGameBeginCutD";
-	  public const string BGM_MARIAN = "MARiAN";
-	  public const string BGM_ORIGINAL = "Original";
-	  public const string BGM_WARPED_SHOOTING_FX = "warped_shooting_fx";
+	  public const string BGM_1GAME = "1Game";
+	  public const string BGM_2LETTHEGAMEBEGINCUTD = "2LetTheGameBeginCutD";
+	  public const string BGM_3ORIGINAL = "3Original";
+	  public const string BGM_4MARIAN = "4MARiAN";
 	
-	  public const string SE_AMMOPICKUP = "ammoPickup";
-	  public const string SE_CONFIRMBUTTON = "confirmButton";
+	  public const string SE_AMMOPICKUP1 = "ammopickup1";
+	  public const string SE_AMMOPICKUP2 = "ammopickup2";
+	  public const string SE_BUTTONCLICK = "buttonclick";
+	  public const string SE_BUTTONCLICKRELEASE = "buttonclickrelease";
+	  public const string SE_BUTTONROLLOVER = "buttonrollover";
 	  public const string SE_DIE1 = "die1";
 	  public const string SE_DIE2 = "die2";
 	  public const string SE_DIE3 = "die3";
@@ -18,8 +17,6 @@
 	  public const string SE_HEADSHOT1 = "headshot1";
 	  public const string SE_HEADSHOT2 = "headshot2";
 	  public const string SE_HEALTHPICKUP = "healthPickup";
-	  public const string SE_HOVERBUTTON1 = "hoverButton1";
-	  public const string SE_HOVERBUTTON2 = "hoverButton2";
 	  public const string SE_KNIFE_SLASH1 = "knife_slash1";
 	  public const string SE_KNIFE_SLASH2 = "knife_slash2";
 	  public const string SE_KNIFE_STAB = "knife_stab";
@@ -51,7 +48,7 @@
 	  public const string SE_SHOTGUNATTACH = "shotgunAttach";
 	  public const string SE_SHOTGUNEQUIP = "shotgunEquip";
 	  public const string SE_SHOTGUNREFILL = "shotgunRefill";
-	  public const string SE_SHOWPOPUP = "showPopup";
+	  public const string SE_SHOWPOPUP1 = "showPopup1";
 	  public const string SE_SNIPER = "sniper";
 	  public const string SE_SNIPERATTACHMAGAZINE = "sniperAttachMagazine";
 	  public const string SE_SNIPERBOLT = "sniperBolt";

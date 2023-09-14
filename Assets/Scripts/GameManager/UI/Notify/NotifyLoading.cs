@@ -103,5 +103,10 @@ public class NotifyLoading : BaseNotify
             }
             yield return null;
         }
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.FadeOutBGM(1f);
+            AudioManager.Instance.PlayBGM(AUDIO.BGM_1GAME);
+        }
     }
 }

@@ -6,7 +6,7 @@ public class ButtonController : MonoBehaviour
     {
         if (AudioManager.HasInstance)
         {
-            AudioManager.Instance.PlaySE(AUDIO.SE_HOVERBUTTON1);
+            AudioManager.Instance.PlaySE(AUDIO.SE_BUTTONROLLOVER);
         }
     }
 
@@ -14,7 +14,7 @@ public class ButtonController : MonoBehaviour
     {
         if (AudioManager.HasInstance)
         {
-            AudioManager.Instance.PlaySE(AUDIO.SE_CONFIRMBUTTON);
+            AudioManager.Instance.PlaySE(AUDIO.SE_BUTTONCLICKRELEASE);
         }
     }
 }

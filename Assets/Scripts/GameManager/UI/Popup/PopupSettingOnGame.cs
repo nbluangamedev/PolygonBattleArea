@@ -14,7 +14,7 @@ public class PopupSettingOnGame : BasePopup
     private float bgmValue;
     private float seValue;
     private float mouseValue = 300f;
-    private string MOUSE_SPEED = "MouseSpeed";
+    private readonly string MOUSE_SPEED = "MouseSpeed";
     private int qualityValue;
 
     public override void Init()
@@ -25,8 +25,8 @@ public class PopupSettingOnGame : BasePopup
             seValue = AudioManager.Instance.AttachSESource.volume;
             bgmSlider.value = bgmValue;
             seSlider.value = seValue;
-            mouseSlider.value = PlayerPrefs.GetFloat(MOUSE_SPEED);
-            AudioManager.Instance.PlaySE(AUDIO.SE_SHOWPOPUP);
+            mouseSlider.value = PlayerPrefs.GetFloat(MOUSE_SPEED, 300f);
+            AudioManager.Instance.PlaySE(AUDIO.SE_SHOWPOPUP1);
         }
         if (GameManager.HasInstance)
         {
@@ -47,7 +47,7 @@ public class PopupSettingOnGame : BasePopup
             seValue = AudioManager.Instance.AttachSESource.volume;
             bgmSlider.value = bgmValue;
             seSlider.value = seValue;
-            AudioManager.Instance.PlaySE(AUDIO.SE_SHOWPOPUP);
+            AudioManager.Instance.PlaySE(AUDIO.SE_SHOWPOPUP1);
         }
         if (GameManager.HasInstance)
         {
@@ -68,7 +68,7 @@ public class PopupSettingOnGame : BasePopup
         }
         if (AudioManager.HasInstance)
         {
-            AudioManager.Instance.PlaySE(AUDIO.SE_SHOWPOPUP);
+            AudioManager.Instance.PlaySE(AUDIO.SE_SHOWPOPUP1);
         }
         base.Hide();
     }
