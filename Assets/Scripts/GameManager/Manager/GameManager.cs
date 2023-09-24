@@ -374,7 +374,7 @@ public class GameManager : BaseManager<GameManager>
         entry.time = string.Format("{0:00}:{1:00}", minutes, seconds);
 
         //score
-        entry.score = (EnemyHeadshot * 10) + Mathf.RoundToInt((timer * Mathf.Pow((level + 1), 2)) / enemySpawn) - ((int)seconds % 5);
+        entry.score = (EnemyHeadshot * 10) + Mathf.RoundToInt((timer * Mathf.Pow((level + 1), 2)) / enemySpawn) - ((int)seconds % 10);
 
         //load saved highscores
         string jsonToLoad = PlayerPrefs.GetString(HIGHSCORE_TABLE, "");

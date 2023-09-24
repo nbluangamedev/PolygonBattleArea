@@ -28,7 +28,7 @@ public class PopupVictory : BasePopup
             float minutes = Mathf.FloorToInt(timer / 60);
             float seconds = Mathf.FloorToInt(timer % 60);
             timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
-            scoreText.text = ((headshot * 10) + Mathf.RoundToInt((timer * Mathf.Pow((levelMap + 1), 2)) / enemySpawn) - ((int)seconds % 5)).ToString();
+            scoreText.text = ((headshot * 10) + Mathf.RoundToInt((timer * Mathf.Pow((levelMap + 1), 2)) / enemySpawn) - ((int)seconds % 10)).ToString();
         }
         if (AudioManager.HasInstance)
         {
@@ -59,7 +59,7 @@ public class PopupVictory : BasePopup
             float minutes = Mathf.FloorToInt(timer / 60);
             float seconds = Mathf.FloorToInt(timer % 60);
             timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
-            scoreText.text = ((headshot * 10) + Mathf.RoundToInt((timer * Mathf.Pow((levelMap + 1), 2)) / enemySpawn) - ((int)seconds % 5)).ToString();
+            scoreText.text = ((headshot * 10) + Mathf.RoundToInt((timer * Mathf.Pow((levelMap + 1), 2)) / enemySpawn) - ((int)seconds % 10)).ToString();
         }
         if (AudioManager.HasInstance)
         {
